@@ -105,11 +105,35 @@
 #include "nrf_log_default_backends.h"
 
 
+//Inlcudes for UWB
+#include "FreeRTOS.h"
+#include "task.h"
+#include "timers.h"
+#include "bsp.h"
+#include "boards.h"
+#include "nrf_drv_clock.h"
+#include "nrf_drv_spi.h"
+#include "nrf_uart.h"
+#include "app_util_platform.h"
+#include "nrf_gpio.h"
+#include "nrf_delay.h"
+#include "nrf.h"
+#include "app_error.h"
+#include "port_platform.h"
+#include "deca_types.h"
+#include "deca_param_types.h"
+#include "deca_regs.h"
+#include "deca_device_api.h"
+#include "uart.h"
+#include "nrf_drv_gpiote.h"
 
-#define PERIPHERAL_ADVERTISING_LED      BSP_BOARD_LED_2
-#define PERIPHERAL_CONNECTED_LED        BSP_BOARD_LED_3
-#define CENTRAL_SCANNING_LED            BSP_BOARD_LED_0
-#define CENTRAL_CONNECTED_LED           BSP_BOARD_LED_1
+
+
+
+#define PERIPHERAL_ADVERTISING_LED      LED_0
+#define PERIPHERAL_CONNECTED_LED        LED_1
+#define CENTRAL_SCANNING_LED            LED_2
+#define CENTRAL_CONNECTED_LED           LED_3
 
 #define DEVICE_NAME                     "nRF Relay"                                 /**< Name of device used for advertising. */
 #define MANUFACTURER_NAME               "NordicSemiconductor"                       /**< Manufacturer. Passed to Device Information Service. */
@@ -141,6 +165,13 @@
 #define APP_BLE_OBSERVER_PRIO           3
 
 #define DB_DISCOVERY_INSTANCE_CNT       2  /**< Number of DB Discovery instances. */
+
+
+
+#define TASK_DELAY        100           /**< Task delay. Delays a LED0 task for 200 ms */
+TaskHandle_t  led_toggle_task_handle;   /**< Reference to LED0 toggling FreeRTOS task. */
+
+
 
 static ble_hrs_t m_hrs;                                             /**< Heart Rate Service instance. */
 static ble_rscs_t m_rscs;                                           /**< Running Speed and Cadence Service instance. */
@@ -396,7 +427,7 @@ static void hrs_c_evt_handler(ble_hrs_c_t * p_hrs_c, ble_hrs_c_evt_t * p_hrs_c_e
                 ret_code_t err_code;
 
                 m_conn_handle_hrs_c = p_hrs_c_evt->conn_handle;
-                NRF_LOG_INFO("HRS discovered on conn_handle 0x%x", m_conn_handle_hrs_c);
+                printf("HRS discovered on conn_handle 0x%x\r\n", m_conn_handle_hrs_c);
 
                 filter_settings_change();
 
@@ -421,7 +452,7 @@ static void hrs_c_evt_handler(ble_hrs_c_t * p_hrs_c, ble_hrs_c_evt_t * p_hrs_c_e
         {
             ret_code_t err_code;
 
-            NRF_LOG_INFO("Heart Rate = %d", p_hrs_c_evt->params.hrm.hr_value);
+            printf("Heart Rate = %d\r\n", p_hrs_c_evt->params.hrm.hr_value);
 
             err_code = ble_hrs_heart_rate_measurement_send(&m_hrs, p_hrs_c_evt->params.hrm.hr_value);
             if ((err_code != NRF_SUCCESS) &&
@@ -455,7 +486,7 @@ static void rscs_c_evt_handler(ble_rscs_c_t * p_rscs_c, ble_rscs_c_evt_t * p_rsc
                 ret_code_t err_code;
 
                 m_conn_handle_rscs_c = p_rscs_c_evt->conn_handle;
-                NRF_LOG_INFO("Running Speed and Cadence service discovered on conn_handle 0x%x",
+                printf("Running Speed and Cadence service discovered on conn_handle 0x%x\r\n",
                              m_conn_handle_rscs_c);
 
                 filter_settings_change();
@@ -483,7 +514,7 @@ static void rscs_c_evt_handler(ble_rscs_c_t * p_rscs_c, ble_rscs_c_evt_t * p_rsc
             ret_code_t      err_code;
             ble_rscs_meas_t rscs_measurment;
 
-            NRF_LOG_INFO("Speed      = %d", p_rscs_c_evt->params.rsc.inst_speed);
+            printf("Speed      = %d\r\n", p_rscs_c_evt->params.rsc.inst_speed);
 
             rscs_measurment.is_running                  = p_rscs_c_evt->params.rsc.is_running;
             rscs_measurment.is_inst_stride_len_present  = p_rscs_c_evt->params.rsc.is_inst_stride_len_present;
@@ -550,12 +581,14 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
         // discovery, update LEDs status, and resume scanning, if necessary.
         case BLE_GAP_EVT_CONNECTED:
         {
-            NRF_LOG_INFO("Central connected");
+            printf("Central connected\r\n");
+            LEDS_OFF(BSP_LED_0_MASK);
+            LEDS_ON(BSP_LED_3_MASK);
             // If no Heart Rate sensor or RSC sensor is currently connected, try to find them on this peripheral.
             if (   (m_conn_handle_hrs_c  == BLE_CONN_HANDLE_INVALID)
                 || (m_conn_handle_rscs_c == BLE_CONN_HANDLE_INVALID))
             {
-                NRF_LOG_INFO("Attempt to find HRS or RSC on conn_handle 0x%x", p_gap_evt->conn_handle);
+                printf("Attempt to find HRS or RSC on conn_handle 0x%x\r\n", p_gap_evt->conn_handle);
 
                 err_code = ble_db_discovery_start(&m_db_discovery[0], p_gap_evt->conn_handle);
                 if (err_code == NRF_ERROR_BUSY)
@@ -573,7 +606,7 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
             multi_qwr_conn_handle_assign(p_gap_evt->conn_handle);
 
             // Update LEDs status, and check whether to look for more peripherals to connect to.
-            bsp_board_led_on(CENTRAL_CONNECTED_LED);
+            
             if (ble_conn_state_central_conn_count() == NRF_SDH_BLE_CENTRAL_LINK_COUNT)
             {
                 bsp_board_led_off(CENTRAL_SCANNING_LED);
@@ -581,7 +614,6 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
             else
             {
                 // Resume scanning.
-                bsp_board_led_on(CENTRAL_SCANNING_LED);
                 scan_start();
             }
         } break; // BLE_GAP_EVT_CONNECTED
@@ -590,9 +622,12 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
         // update the LEDs status and start scanning again.
         case BLE_GAP_EVT_DISCONNECTED:
         {
+            printf("Central disconnected\r\n");
+            LEDS_INVERT(BSP_LED_0_MASK);
+            LEDS_INVERT(BSP_LED_3_MASK);
             if (p_gap_evt->conn_handle == m_conn_handle_hrs_c)
             {
-                NRF_LOG_INFO("HRS central disconnected (reason: %d)",
+                printf("HRS central disconnected (reason: %d)\r\n",
                              p_gap_evt->params.disconnected.reason);
 
                 m_conn_handle_hrs_c = BLE_CONN_HANDLE_INVALID;
@@ -604,7 +639,7 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
             }
             if (p_gap_evt->conn_handle == m_conn_handle_rscs_c)
             {
-                NRF_LOG_INFO("RSC central disconnected (reason: %d)",
+                printf("RSC central disconnected (reason: %d)\r\n",
                              p_gap_evt->params.disconnected.reason);
 
                 m_conn_handle_rscs_c = BLE_CONN_HANDLE_INVALID;
@@ -636,7 +671,7 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
             // No timeout for scanning is specified, so only connection attemps can timeout.
             if (p_gap_evt->params.timeout.src == BLE_GAP_TIMEOUT_SRC_CONN)
             {
-                NRF_LOG_INFO("Connection Request timed out.");
+                printf("Connection Request timed out.\r\n");
             }
         } break;
 
@@ -696,19 +731,22 @@ static void on_ble_peripheral_evt(ble_evt_t const * p_ble_evt)
     switch (p_ble_evt->header.evt_id)
     {
         case BLE_GAP_EVT_CONNECTED:
-            NRF_LOG_INFO("Peripheral connected");
-            bsp_board_led_off(PERIPHERAL_ADVERTISING_LED);
-            bsp_board_led_on(PERIPHERAL_CONNECTED_LED);
+            printf("Peripheral connected\r\n");
+            LEDS_INVERT(BSP_LED_1_MASK);
+            LEDS_INVERT(BSP_LED_2_MASK);
 
             // Assign connection handle to the QWR module.
             multi_qwr_conn_handle_assign(p_ble_evt->evt.gap_evt.conn_handle);
             break;
 
         case BLE_GAP_EVT_DISCONNECTED:
-            NRF_LOG_INFO("Peripheral disconnected. conn_handle: 0x%x, reason: 0x%x",
+            LEDS_INVERT(BSP_LED_1_MASK);
+            LEDS_INVERT(BSP_LED_2_MASK);
+            printf("Peripheral disconnected. conn_handle: 0x%x, reason: 0x%x\r\n",
                          p_gap_evt->conn_handle,
                          p_gap_evt->params.disconnected.reason);
 
+            
             bsp_board_led_off(PERIPHERAL_CONNECTED_LED);
             break;
 
@@ -757,7 +795,7 @@ static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
     {
         case BLE_ADV_EVT_FAST:
         {
-            NRF_LOG_INFO("Fast advertising.");
+            printf("Fast advertising.\r\n");
             bsp_board_led_on(PERIPHERAL_ADVERTISING_LED);
         } break;
 
@@ -908,7 +946,7 @@ static void delete_bonds(void)
 {
     ret_code_t err_code;
 
-    NRF_LOG_INFO("Erase bonds!");
+    printf("Erase bonds!\r\n");
 
     err_code = pm_peers_delete();
     APP_ERROR_CHECK(err_code);
@@ -1013,10 +1051,10 @@ static void db_disc_handler(ble_db_discovery_evt_t * p_evt)
     ble_rscs_on_db_disc_evt(&m_rscs_c, p_evt);
 
     if (p_evt->evt_type == BLE_DB_DISCOVERY_AVAILABLE) {
-        NRF_LOG_INFO("DB Discovery instance %p available on conn handle: %d",
+        printf("DB Discovery instance %p available on conn handle: %d\r\n",
                      p_db,
                      p_evt->conn_handle);
-        NRF_LOG_INFO("Found %d services on conn_handle: %d",
+        printf("Found %d services on conn_handle: %d\r\n",
                      p_db->srv_count,
                      p_evt->conn_handle);
     }
@@ -1176,6 +1214,33 @@ static void timer_init(void)
 }
 
 
+
+void leds_init(){
+
+    LEDS_CONFIGURE(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK| BSP_LED_3_MASK);
+    LEDS_ON(BSP_LED_1_MASK | BSP_LED_0_MASK);
+    LEDS_OFF( BSP_LED_3_MASK | BSP_LED_2_MASK);
+}
+
+
+
+static void led_toggle_task_function (void * pvParameter)
+{
+    UNUSED_PARAMETER(pvParameter);
+    while (true)
+    {
+        bsp_board_led_invert(BSP_BOARD_LED_2);
+
+        /* Delay a task for a given number of ticks */
+        vTaskDelay(TASK_DELAY);
+
+        /* Tasks must be implemented to never return... */
+    }
+}
+
+
+
+
 /**@brief Function for initializing the application main entry.
  */
 int main(void)
@@ -1183,9 +1248,9 @@ int main(void)
     bool erase_bonds;
 
     // Initialize.
-    log_init();
+    boUART_Init(); //<---- Decawave UART Serial
     timer_init();
-    buttons_leds_init(&erase_bonds);
+    leds_init();
     power_management_init();
     ble_stack_init();
     scan_init();
@@ -1200,8 +1265,10 @@ int main(void)
     advertising_init();
 
     // Start execution.
-    NRF_LOG_INFO("Relay example started.");
+    printf("Decawave-BLE\r\n");
 
+
+    
     if (erase_bonds == true)
     {
         // Scanning and advertising is done upon PM_EVT_PEERS_DELETE_SUCCEEDED event.
@@ -1213,6 +1280,18 @@ int main(void)
     }
 
     // Enter main loop.
+
+    /* Create task for LED0 blinking with priority set to 2 */
+    UNUSED_VARIABLE(xTaskCreate(led_toggle_task_function, "LED0", configMINIMAL_STACK_SIZE + 200, NULL, 2, &led_toggle_task_handle));
+  
+    /* Activate deep sleep mode */
+    SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+    
+    /* Start FreeRTOS scheduler. */
+    //vTaskStartScheduler();
+    
+
+
     for (;;)
     {
         idle_state_handle();

@@ -8602,6 +8602,108 @@
 #define SLIP_ENABLED 0
 #endif
 
+//==========================================================
+// <q> APP_FIFO_ENABLED  - app_fifo - Software FIFO implementation
+ 
+
+#ifndef APP_FIFO_ENABLED
+#define APP_FIFO_ENABLED 1
+#endif
+
+// <e> APP_UART_ENABLED - app_uart - UART driver
+//==========================================================
+#ifndef APP_UART_ENABLED
+#define APP_UART_ENABLED 1
+#endif
+// <o> APP_UART_DRIVER_INSTANCE  - UART instance used
+ 
+// <0=> 0 
+
+#ifndef APP_UART_DRIVER_INSTANCE
+#define APP_UART_DRIVER_INSTANCE 0
+#endif
+
+// </e>
+
+// <q> APP_USBD_CLASS_AUDIO_ENABLED  - app_usbd_audio - USB AUDIO class
+ 
+
+#ifndef APP_USBD_CLASS_AUDIO_ENABLED
+#define APP_USBD_CLASS_AUDIO_ENABLED 0
+#endif
+
+// <q> APP_USBD_CLASS_CDC_ACM_ENABLED  - app_usbd_cdc_acm - USB CDC ACM class
+ 
+
+#ifndef APP_USBD_CLASS_CDC_ACM_ENABLED
+#define APP_USBD_CLASS_CDC_ACM_ENABLED 0
+#endif
+
+// <q> APP_USBD_CLASS_HID_ENABLED  - app_usbd_hid - USB HID class
+ 
+
+#ifndef APP_USBD_CLASS_HID_ENABLED
+#define APP_USBD_CLASS_HID_ENABLED 0
+#endif
+
+// <q> APP_USBD_HID_GENERIC_ENABLED  - app_usbd_hid_generic - USB HID generic
+ 
+
+#ifndef APP_USBD_HID_GENERIC_ENABLED
+#define APP_USBD_HID_GENERIC_ENABLED 0
+#endif
+
+// <q> APP_USBD_HID_KBD_ENABLED  - app_usbd_hid_kbd - USB HID keyboard
+ 
+
+#ifndef APP_USBD_HID_KBD_ENABLED
+#define APP_USBD_HID_KBD_ENABLED 0
+#endif
+
+// <q> APP_USBD_HID_MOUSE_ENABLED  - app_usbd_hid_mouse - USB HID mouse
+ 
+
+#ifndef APP_USBD_HID_MOUSE_ENABLED
+#define APP_USBD_HID_MOUSE_ENABLED 0
+#endif
+
+// <q> APP_USBD_MSC_ENABLED  - app_usbd_msc - USB MSC class
+ 
+
+#ifndef APP_USBD_MSC_ENABLED
+#define APP_USBD_MSC_ENABLED 0
+#endif
+
+// <q> BUTTON_ENABLED  - app_button - buttons handling module
+ 
+
+#ifndef BUTTON_ENABLED
+#define BUTTON_ENABLED 0
+#endif
+
+// <q> CRC16_ENABLED  - crc16 - CRC16 calculation routines
+ 
+
+#ifndef CRC16_ENABLED
+#define CRC16_ENABLED 0
+#endif
+
+// <q> CRC32_ENABLED  - crc32 - CRC32 calculation routines
+ 
+
+#ifndef CRC32_ENABLED
+#define CRC32_ENABLED 0
+#endif
+
+// <q> ECC_ENABLED  - ecc - Elliptic Curve Cryptography Library
+ 
+
+#ifndef ECC_ENABLED
+#define ECC_ENABLED 0
+#endif
+
+
+
 // <e> TASK_MANAGER_ENABLED - task_manager - Task manager.
 //==========================================================
 #ifndef TASK_MANAGER_ENABLED
