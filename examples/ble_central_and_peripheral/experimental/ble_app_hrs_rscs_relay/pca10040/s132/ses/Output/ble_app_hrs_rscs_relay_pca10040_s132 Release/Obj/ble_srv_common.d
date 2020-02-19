@@ -1,6 +1,6 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/ble_srv_common.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\common\ble_srv_common.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\common\ble_srv_common.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\common\ble_srv_common.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\common\ble_srv_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
  ../../../../../../../components/softdevice/s132/headers/ble_types.h \

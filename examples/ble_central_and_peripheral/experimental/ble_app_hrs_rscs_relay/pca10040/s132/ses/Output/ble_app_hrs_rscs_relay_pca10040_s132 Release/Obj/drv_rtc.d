@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/drv_rtc.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\timer\drv_rtc.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\timer\drv_rtc.c \
  ../../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../../integration/nrfx/nrfx_config.h \
  ../config/sdk_config.h \

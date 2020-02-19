@@ -1,8 +1,8 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_drv_common.o: \
- C:\Users\danie\OneDrive\Desktop\dwm1001-examples\nRF5_SDK_14.2.0\components\drivers_nrf\common\nrf_drv_common.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\drivers_nrf\common\nrf_drv_common.c \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
- C:\Users\danie\OneDrive\Desktop\dwm1001-examples\nRF5_SDK_14.2.0\components\drivers_nrf\common\nrf_drv_common.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\drivers_nrf\common\nrf_drv_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
  ../../../../../../../modules/nrfx/mdk/nrf.h \

@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_fprintf_format.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\external\fprintf\nrf_fprintf_format.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\external\fprintf\nrf_fprintf_format.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
@@ -32,5 +32,5 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_fprintf_format.o: \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdarg.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\external\fprintf\nrf_fprintf.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\external\fprintf\nrf_fprintf_format.h
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\external\fprintf\nrf_fprintf.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\external\fprintf\nrf_fprintf_format.h

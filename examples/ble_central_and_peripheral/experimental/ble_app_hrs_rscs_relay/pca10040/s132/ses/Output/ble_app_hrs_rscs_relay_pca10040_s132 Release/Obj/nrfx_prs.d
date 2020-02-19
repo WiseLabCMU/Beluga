@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrfx_prs.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\modules\nrfx\drivers\src\prs\nrfx_prs.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\modules\nrfx\drivers\src\prs\nrfx_prs.c \
  ../../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../../integration/nrfx/nrfx_config.h \
  ../config/sdk_config.h \
@@ -52,7 +52,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrfx_prs.o: \
  ../../../../../../../components/libraries/util/sdk_resources.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_sd_def.h \
  ../../../../../../../modules/nrfx/drivers/nrfx_errors.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\modules\nrfx\drivers\src\prs\nrfx_prs.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\modules\nrfx\drivers\src\prs\nrfx_prs.h \
  ../../../../../../../integration/nrfx/nrfx_log.h \
  ../../../../../../../components/libraries/log/nrf_log.h \
  ../../../../../../../components/libraries/util/sdk_common.h \

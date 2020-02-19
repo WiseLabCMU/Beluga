@@ -1,6 +1,6 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/boards.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\boards\boards.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\boards\boards.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\boards\boards.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\boards\boards.h \
  ../../../../../../../modules/nrfx/hal/nrf_gpio.h \
  ../../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../../integration/nrfx/nrfx_config.h \
@@ -54,4 +54,4 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/boards.o: \
  ../../../../../../../components/libraries/util/sdk_resources.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_sd_def.h \
  ../../../../../../../modules/nrfx/drivers/nrfx_errors.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\boards\dw1001_dev.h
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\boards\dw1001_dev.h

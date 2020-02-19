@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/peer_id.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\peer_id.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_id.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
@@ -30,7 +30,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/peer_id.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\peer_id.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_id.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gap.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
@@ -39,7 +39,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/peer_id.o: \
  ../../../../../../../components/softdevice/s132/headers/ble_ranges.h \
  ../../../../../../../components/softdevice/s132/headers/ble_types.h \
  ../../../../../../../components/softdevice/s132/headers/ble_err.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\peer_manager_types.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_manager_types.h \
  ../../../../../../../components/softdevice/s132/headers/ble_hci.h \
  ../../../../../../../components/ble/common/ble_gatt_db.h \
  ../../../../../../../components/softdevice/s132/headers/ble.h \

@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/fds.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\fds\fds.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\fds\fds.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
@@ -30,7 +30,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/fds.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\fds\fds.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\fds\fds.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/libraries/util/app_util_platform.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_soc.h \
@@ -41,7 +41,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/fds.o: \
  ../../../../../../../components/libraries/util/app_error.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\fds\fds_internal_defs.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\fds\fds_internal_defs.h \
  ../../../../../../../components/libraries/atomic/nrf_atomic.h \
  ../../../../../../../components/libraries/atomic_fifo/nrf_atfifo.h \
  ../../../../../../../components/libraries/util/nordic_common.h \

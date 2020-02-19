@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/ble_rscs.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\ble_services\ble_rscs\ble_rscs.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\ble_services\ble_rscs\ble_rscs.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
@@ -30,7 +30,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/ble_rscs.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\ble_services\ble_rscs\ble_rscs.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\ble_services\ble_rscs\ble_rscs.h \
  ../../../../../../../components/ble/common/ble_srv_common.h \
  ../../../../../../../components/softdevice/s132/headers/ble_types.h \
  ../../../../../../../components/libraries/util/app_util.h \

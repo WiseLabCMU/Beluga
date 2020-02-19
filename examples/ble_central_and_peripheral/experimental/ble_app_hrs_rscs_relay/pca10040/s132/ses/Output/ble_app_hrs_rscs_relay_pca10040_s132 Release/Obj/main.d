@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/main.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\main.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\main.c \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
@@ -144,11 +144,9 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/main.o: \
  ../../../../../../../modules/nrfx/drivers/include/nrfx_clock.h \
  ../../../../../../../modules/nrfx/hal/nrf_clock.h \
  ../../../../../../../modules/nrfx/drivers/include/nrfx_power_clock.h \
- ../../../../../../../integration/nrfx/legacy/nrf_drv_spi.h \
- ../../../../../../../modules/nrfx/drivers/include/nrfx_spim.h \
- ../../../../../../../modules/nrfx/hal/nrf_spim.h \
- ../../../../../../../modules/nrfx/drivers/include/nrfx_spi.h \
+ ../../../../../../../components/drivers_nrf/spi_master/nrf_drv_spi.h \
  ../../../../../../../modules/nrfx/hal/nrf_spi.h \
+ ../../../../../../../modules/nrfx/hal/nrf_spim.h \
  ../../../../../../../modules/nrfx/hal/nrf_uart.h \
  ../../../../../../../components/libraries/delay/nrf_delay.h \
  ../../../../../../../deca_driver/port/port_platform.h \
@@ -162,4 +160,5 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/main.o: \
  ../../../../../../../integration/nrfx/legacy/nrf_drv_gpiote.h \
  ../../../../../../../modules/nrfx/drivers/include/nrfx_gpiote.h \
  ../../../../../../../modules/nrfx/hal/nrf_gpiote.h \
- ../../../../../../../modules/nrfx/hal/nrf_gpio.h
+ ../../../../../../../modules/nrfx/hal/nrf_gpio.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.h

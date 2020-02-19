@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrfx_gpiote.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\modules\nrfx\drivers\src\nrfx_gpiote.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\modules\nrfx\drivers\src\nrfx_gpiote.c \
  ../../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../../integration/nrfx/nrfx_config.h \
  ../config/sdk_config.h \

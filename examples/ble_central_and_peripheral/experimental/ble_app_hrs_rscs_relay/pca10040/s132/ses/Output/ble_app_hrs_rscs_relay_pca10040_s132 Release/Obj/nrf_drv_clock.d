@@ -1,7 +1,7 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_drv_clock.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\integration\nrfx\legacy\nrf_drv_clock.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\integration\nrfx\legacy\nrf_drv_clock.c \
  ../../../../../../../components/libraries/util/nordic_common.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\integration\nrfx\legacy\nrf_drv_clock.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\integration\nrfx\legacy\nrf_drv_clock.h \
  ../../../../../../../modules/nrfx/drivers/include/nrfx_clock.h \
  ../../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../../integration/nrfx/nrfx_config.h \

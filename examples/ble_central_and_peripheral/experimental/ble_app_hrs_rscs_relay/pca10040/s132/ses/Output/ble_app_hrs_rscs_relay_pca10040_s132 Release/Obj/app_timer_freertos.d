@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/app_timer_freertos.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\timer\app_timer_freertos.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\timer\app_timer_freertos.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
@@ -53,7 +53,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/app_timer_freertos.o: \
  ../../../../../../../external/freertos/source/include/list.h \
  ../../../../../../../external/freertos/source/include/timers.h \
  ../../../../../../../external/freertos/source/include/task.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\timer\app_timer.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\timer\app_timer.h \
  ../../../../../../../components/libraries/util/app_error.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/libraries/log/nrf_log_instance.h \

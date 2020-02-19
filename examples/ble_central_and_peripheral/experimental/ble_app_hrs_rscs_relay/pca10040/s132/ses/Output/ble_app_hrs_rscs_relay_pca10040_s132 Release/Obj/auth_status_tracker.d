@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/auth_status_tracker.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\auth_status_tracker.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\auth_status_tracker.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \

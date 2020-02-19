@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_section_iter.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\experimental_section_vars\nrf_section_iter.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\experimental_section_vars\nrf_section_iter.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
@@ -30,8 +30,8 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_section_iter.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\experimental_section_vars\nrf_section_iter.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\experimental_section_vars\nrf_section.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\experimental_section_vars\nrf_section_iter.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\experimental_section_vars\nrf_section.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/util/app_util.h

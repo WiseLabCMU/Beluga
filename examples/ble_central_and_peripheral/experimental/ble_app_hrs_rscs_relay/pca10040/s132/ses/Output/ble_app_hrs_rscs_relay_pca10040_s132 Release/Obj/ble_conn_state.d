@@ -1,6 +1,6 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/ble_conn_state.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\common\ble_conn_state.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\common\ble_conn_state.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\common\ble_conn_state.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\common\ble_conn_state.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  ../../../../../../../components/softdevice/s132/headers/ble.h \

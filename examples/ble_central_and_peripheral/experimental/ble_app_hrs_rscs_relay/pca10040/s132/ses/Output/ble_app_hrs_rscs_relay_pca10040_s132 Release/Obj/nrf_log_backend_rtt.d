@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_log_backend_rtt.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\log\src\nrf_log_backend_rtt.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\log\src\nrf_log_backend_rtt.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \

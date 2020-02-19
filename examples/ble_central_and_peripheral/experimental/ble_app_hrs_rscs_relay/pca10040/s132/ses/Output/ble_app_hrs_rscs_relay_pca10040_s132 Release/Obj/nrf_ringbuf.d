@@ -1,6 +1,6 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_ringbuf.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\ringbuf\nrf_ringbuf.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\ringbuf\nrf_ringbuf.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\ringbuf\nrf_ringbuf.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\ringbuf\nrf_ringbuf.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  ../../../../../../../components/libraries/atomic/nrf_atomic.h \
  ../../../../../../../components/libraries/util/sdk_common.h \

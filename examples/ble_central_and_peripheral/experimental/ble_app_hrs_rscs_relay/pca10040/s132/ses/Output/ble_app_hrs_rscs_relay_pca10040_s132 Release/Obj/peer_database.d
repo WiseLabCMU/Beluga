@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/peer_database.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\peer_database.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_database.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
@@ -30,8 +30,8 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/peer_database.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\peer_database.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\peer_manager_types.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_database.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_manager_types.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gap.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
@@ -56,10 +56,10 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/peer_database.o: \
  ../../../../../../../components/libraries/util/app_error.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\peer_manager_internal.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_manager_internal.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\peer_data_storage.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\pm_buffer.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_data_storage.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\pm_buffer.h \
  ../../../../../../../components/libraries/atomic_flags/nrf_atflags.h \
  ../../../../../../../components/libraries/log/nrf_log.h \
  ../../../../../../../components/libraries/experimental_section_vars/nrf_section.h \

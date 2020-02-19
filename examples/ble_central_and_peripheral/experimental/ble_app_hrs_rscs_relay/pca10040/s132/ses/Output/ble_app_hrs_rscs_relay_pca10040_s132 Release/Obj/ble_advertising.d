@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/ble_advertising.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\ble_advertising\ble_advertising.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\ble_advertising\ble_advertising.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
@@ -43,7 +43,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/ble_advertising.o: \
  ../../../../../../../components/softdevice/s132/headers/ble_gatt.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gattc.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gatts.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\ble_advertising\ble_advertising.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\ble_advertising\ble_advertising.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gap.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gattc.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_soc.h \

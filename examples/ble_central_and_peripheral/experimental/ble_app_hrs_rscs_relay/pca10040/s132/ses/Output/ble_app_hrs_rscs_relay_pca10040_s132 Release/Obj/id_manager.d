@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/id_manager.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\id_manager.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\id_manager.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
@@ -30,7 +30,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/id_manager.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\id_manager.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\id_manager.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/ble.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
@@ -45,7 +45,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/id_manager.o: \
  ../../../../../../../components/softdevice/s132/headers/ble_gattc.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gatts.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gap.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\peer_manager_types.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_manager_types.h \
  ../../../../../../../components/softdevice/s132/headers/ble_hci.h \
  ../../../../../../../components/ble/common/ble_gatt_db.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gattc.h \
@@ -57,10 +57,10 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/id_manager.o: \
  ../../../../../../../components/libraries/util/app_error.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\peer_manager_internal.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_manager_internal.h \
  ../../../../../../../components/softdevice/s132/headers/ble_err.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\peer_database.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\peer_manager\peer_data_storage.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_database.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_data_storage.h \
  ../../../../../../../components/ble/common/ble_conn_state.h \
  ../../../../../../../components/libraries/atomic/nrf_atomic.h \
  ../../../../../../../components/libraries/log/nrf_log.h \

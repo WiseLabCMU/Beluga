@@ -1,6 +1,6 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrfx_atomic.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\modules\nrfx\soc\nrfx_atomic.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\modules\nrfx\soc\nrfx_atomic.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\modules\nrfx\soc\nrfx_atomic.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\modules\nrfx\soc\nrfx_atomic.h \
  ../../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../../integration/nrfx/nrfx_config.h \
  ../config/sdk_config.h \
@@ -53,4 +53,4 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrfx_atomic.o: \
  ../../../../../../../components/libraries/util/sdk_resources.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_sd_def.h \
  ../../../../../../../modules/nrfx/drivers/nrfx_errors.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\modules\nrfx\soc\nrfx_atomic_internal.h
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\modules\nrfx\soc\nrfx_atomic_internal.h

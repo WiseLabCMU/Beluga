@@ -1,7 +1,7 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_fstorage.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\fstorage\nrf_fstorage.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\fstorage\nrf_fstorage.c \
  ../config/sdk_config.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\fstorage\nrf_fstorage.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\fstorage\nrf_fstorage.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \

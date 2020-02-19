@@ -1,7 +1,7 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/SEGGER_RTT_printf.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\external\segger_rtt\SEGGER_RTT_printf.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\external\segger_rtt\SEGGER_RTT.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\external\segger_rtt\SEGGER_RTT_Conf.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\external\segger_rtt\SEGGER_RTT_printf.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\external\segger_rtt\SEGGER_RTT.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\external\segger_rtt\SEGGER_RTT_Conf.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/libraries/util/app_util_platform.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \

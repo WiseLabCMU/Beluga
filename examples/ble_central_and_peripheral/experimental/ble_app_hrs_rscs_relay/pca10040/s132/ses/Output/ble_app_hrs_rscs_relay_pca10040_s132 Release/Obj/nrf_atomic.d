@@ -1,6 +1,6 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_atomic.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\atomic\nrf_atomic.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\atomic\nrf_atomic.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\atomic\nrf_atomic.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\atomic\nrf_atomic.h \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
@@ -31,4 +31,4 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_atomic.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\atomic\nrf_atomic_internal.h
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\atomic\nrf_atomic_internal.h

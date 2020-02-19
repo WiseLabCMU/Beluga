@@ -1,6 +1,6 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_memobj.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\memobj\nrf_memobj.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\memobj\nrf_memobj.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\memobj\nrf_memobj.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\memobj\nrf_memobj.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdlib.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \

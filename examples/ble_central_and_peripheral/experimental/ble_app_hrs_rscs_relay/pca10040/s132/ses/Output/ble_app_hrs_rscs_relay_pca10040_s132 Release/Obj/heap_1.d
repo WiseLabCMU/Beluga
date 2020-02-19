@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/heap_1.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\external\freertos\source\portable\MemMang\heap_1.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\external\freertos\source\portable\MemMang\heap_1.c \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdlib.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
  ../../../../../../../external/freertos/source/include/FreeRTOS.h \

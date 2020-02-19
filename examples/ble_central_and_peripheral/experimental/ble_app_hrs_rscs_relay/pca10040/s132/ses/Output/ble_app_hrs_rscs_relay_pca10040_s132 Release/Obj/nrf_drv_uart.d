@@ -1,6 +1,6 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_drv_uart.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\integration\nrfx\legacy\nrf_drv_uart.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\integration\nrfx\legacy\nrf_drv_uart.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\integration\nrfx\legacy\nrf_drv_uart.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\integration\nrfx\legacy\nrf_drv_uart.h \
  ../../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../../integration/nrfx/nrfx_config.h \
  ../config/sdk_config.h \

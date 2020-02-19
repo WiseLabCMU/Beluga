@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_atflags.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\atomic_flags\nrf_atflags.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\atomic_flags\nrf_atflags.c \
  ../../../../../../../modules/nrfx/mdk/nrf.h \
  ../../../../../../../modules/nrfx/mdk/nrf52.h \
  ../../../../../../../components/toolchain/cmsis/include/core_cm4.h \
@@ -31,4 +31,4 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_atflags.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\atomic_flags\nrf_atflags.h
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\atomic_flags\nrf_atflags.h

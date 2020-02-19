@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_fstorage_sd.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\fstorage\nrf_fstorage_sd.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\fstorage\nrf_fstorage_sd.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
@@ -30,8 +30,8 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_fstorage_sd.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\fstorage\nrf_fstorage_sd.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\fstorage\nrf_fstorage.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\fstorage\nrf_fstorage_sd.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\fstorage\nrf_fstorage.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/libraries/experimental_section_vars/nrf_section.h \
  ../../../../../../../components/libraries/util/nordic_common.h \

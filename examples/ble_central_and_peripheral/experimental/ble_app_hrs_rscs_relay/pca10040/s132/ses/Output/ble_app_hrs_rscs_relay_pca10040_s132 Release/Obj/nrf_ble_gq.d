@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_ble_gq.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\nrf_ble_gq\nrf_ble_gq.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\nrf_ble_gq\nrf_ble_gq.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
@@ -30,7 +30,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_ble_gq.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\ble\nrf_ble_gq\nrf_ble_gq.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\nrf_ble_gq\nrf_ble_gq.h \
  ../../../../../../../components/libraries/memobj/nrf_memobj.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdlib.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \

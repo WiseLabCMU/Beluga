@@ -1,7 +1,9 @@
 <!DOCTYPE CrossStudio_Session_File>
 <session>
  <Bookmarks/>
- <Breakpoints groups="Breakpoints" active_group="Breakpoints"/>
+ <Breakpoints groups="Breakpoints" active_group="Breakpoints">
+  <BreakpointListItem trigger="" line="521" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../../../../../integration/nrfx/legacy/nrf_drv_spi.h" useHWbreakpoint="false"/>
+ </Breakpoints>
  <ExecutionProfileWindow/>
  <FrameBufferWindow>
   <FrameBufferWindow bufferHeight="-1" addressSpace="" addressText="" bufferWidth="-1"/>
@@ -17,11 +19,13 @@
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Board Definition"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Board Support"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Config"/>
+  <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Decadriver"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Freertos"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;None"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;nRF_BLE"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;nRF_Drivers"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;nRF_Libraries"/>
+  <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;nRF_Log"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Uart"/>
  </Project>
  <Register1/>
@@ -47,11 +51,7 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="4" y="1288" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="1" top="1270" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="25" y="201" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/boards/boards.h" selected="0" top="189" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="46" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/boards/boards.c" selected="0" top="35" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="34" y="21" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/boards/dw1001_dev.h" selected="0" top="9" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="353" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/ble/common/ble_conn_state.c" selected="0" top="341" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="54" y="1329" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="1" top="1315" codecName="Default"/>
  </Files>
- <ARMCrossStudioWindow activeProject="ble_app_hrs_rscs_relay_pca10040_s132" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Release" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3711"/>
+ <ARMCrossStudioWindow activeProject="ble_app_hrs_rscs_relay_pca10040_s132" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Release" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

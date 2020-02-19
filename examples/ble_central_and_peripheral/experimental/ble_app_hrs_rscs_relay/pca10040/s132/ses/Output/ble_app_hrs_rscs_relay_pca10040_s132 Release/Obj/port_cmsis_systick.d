@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/port_cmsis_systick.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\external\freertos\portable\CMSIS\nrf52\port_cmsis_systick.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\external\freertos\portable\CMSIS\nrf52\port_cmsis_systick.c \
  ../../../../../../../external/freertos/source/include/FreeRTOS.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \

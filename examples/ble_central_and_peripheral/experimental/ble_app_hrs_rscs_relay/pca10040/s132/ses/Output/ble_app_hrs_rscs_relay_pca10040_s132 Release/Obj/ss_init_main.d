@@ -1,7 +1,9 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/ss_init_main.o: \
- C:\Users\danie\OneDrive\Desktop\dwm1001-examples\examples\ss_twr_init\ss_init_main.c \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
+ C:\Users\danie\OneDrive\Desktop\ss_twr_init_int\ss_init_main.c \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/time.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/sys/time.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
  ../../../../../../../external/freertos/source/include/FreeRTOS.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
@@ -51,28 +53,26 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/ss_init_main.o: \
  ../../../../../../../deca_driver/deca_version.h \
  ../../../../../../../deca_driver/port/port_platform.h \
  ../../../../../../../deca_driver/deca_types.h \
- ../../../../../../../integration/nrfx/legacy/nrf_drv_spi.h \
- ../../../../../../../modules/nrfx/nrfx.h \
- ../../../../../../../integration/nrfx/nrfx_config.h \
+ ../../../../../../../components/drivers_nrf/spi_master/nrf_drv_spi.h \
+ ../../../../../../../components/libraries/util/nordic_common.h \
  ../config/sdk_config.h \
- ../../../../../../../modules/nrfx/drivers/nrfx_common.h \
  ../../../../../../../modules/nrfx/mdk/nrf_peripherals.h \
  ../../../../../../../modules/nrfx/mdk/nrf52832_peripherals.h \
+ ../../../../../../../components/libraries/util/sdk_errors.h \
+ ../../../../../../../modules/nrfx/hal/nrf_spi.h \
+ ../../../../../../../modules/nrfx/nrfx.h \
+ ../../../../../../../integration/nrfx/nrfx_config.h \
+ ../../../../../../../modules/nrfx/drivers/nrfx_common.h \
  ../../../../../../../integration/nrfx/nrfx_glue.h \
  ../../../../../../../integration/nrfx/legacy/apply_old_config.h \
  ../../../../../../../modules/nrfx/soc/nrfx_irqs.h \
  ../../../../../../../modules/nrfx/soc/nrfx_irqs_nrf52832.h \
- ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../modules/nrfx/soc/nrfx_coredep.h \
  ../../../../../../../modules/nrfx/soc/nrfx_atomic.h \
- ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/libraries/util/sdk_resources.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_sd_def.h \
  ../../../../../../../modules/nrfx/drivers/nrfx_errors.h \
- ../../../../../../../modules/nrfx/drivers/include/nrfx_spim.h \
  ../../../../../../../modules/nrfx/hal/nrf_spim.h \
- ../../../../../../../modules/nrfx/drivers/include/nrfx_spi.h \
- ../../../../../../../modules/nrfx/hal/nrf_spi.h \
  ../../../../../../../modules/nrfx/hal/nrf_gpio.h \
  ../../../../../../../components/libraries/delay/nrf_delay.h \
  ../../../../../../../components/libraries/log/nrf_log.h \
@@ -88,4 +88,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/ss_init_main.o: \
  ../../../../../../../components/libraries/log/nrf_log_types.h \
  ../../../../../../../components/boards/boards.h \
  ../../../../../../../components/boards/dw1001_dev.h \
- ../../../../../../../components/libraries/util/app_error.h
+ ../../../../../../../components/libraries/util/app_error.h \
+ C:\Users\danie\OneDrive\Desktop\ss_twr_init_int\ss_init_main.h \
+ ../../../../../../../external/freertos/source/include/semphr.h \
+ ../../../../../../../external/freertos/source/include/queue.h

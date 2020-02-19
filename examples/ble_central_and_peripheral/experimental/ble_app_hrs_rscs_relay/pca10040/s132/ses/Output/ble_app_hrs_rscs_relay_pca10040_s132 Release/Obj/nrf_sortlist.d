@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_sortlist.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\sortlist\nrf_sortlist.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\sortlist\nrf_sortlist.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
@@ -30,7 +30,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_sortlist.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble-master\components\libraries\sortlist\nrf_sortlist.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\sortlist\nrf_sortlist.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/log/nrf_log.h \
  ../../../../../../../components/libraries/experimental_section_vars/nrf_section.h \
