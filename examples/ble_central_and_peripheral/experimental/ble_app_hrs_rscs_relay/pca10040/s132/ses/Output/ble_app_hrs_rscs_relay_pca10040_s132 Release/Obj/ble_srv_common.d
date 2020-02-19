@@ -1,12 +1,12 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/ble_srv_common.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\common\ble_srv_common.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\common\ble_srv_common.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\ble\common\ble_srv_common.c \
+ C:\Users\vikra\Desktop\decawave-ble\components\ble\common\ble_srv_common.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
  ../../../../../../../components/softdevice/s132/headers/ble_types.h \
  ../../../../../../../components/libraries/util/app_util.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
  ../../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../modules/nrfx/mdk/nrf.h \
@@ -38,10 +38,10 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/ble_srv_common.o: \
  ../../../../../../../components/softdevice/s132/headers/ble_gatts.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gap.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gatt.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/libraries/util/app_error_weak.h

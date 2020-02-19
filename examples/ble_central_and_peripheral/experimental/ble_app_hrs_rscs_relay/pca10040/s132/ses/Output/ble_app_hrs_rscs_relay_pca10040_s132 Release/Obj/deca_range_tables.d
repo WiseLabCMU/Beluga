@@ -1,8 +1,8 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/deca_range_tables.o: \
- C:\Users\danie\OneDrive\Desktop\dwm1001-examples\deca_driver\deca_range_tables.c \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdlib.h \
- C:\Users\danie\OneDrive\Desktop\dwm1001-examples\deca_driver\deca_device_api.h \
- C:\Users\danie\OneDrive\Desktop\dwm1001-examples\deca_driver\deca_param_types.h \
- C:\Users\danie\OneDrive\Desktop\dwm1001-examples\deca_driver\deca_types.h
+ C:\Users\vikra\Desktop\decawave-ble\deca_driver\deca_range_tables.c \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h \
+ C:\Users\vikra\Desktop\decawave-ble\deca_driver\deca_device_api.h \
+ C:\Users\vikra\Desktop\decawave-ble\deca_driver\deca_param_types.h \
+ C:\Users\vikra\Desktop\decawave-ble\deca_driver\deca_types.h

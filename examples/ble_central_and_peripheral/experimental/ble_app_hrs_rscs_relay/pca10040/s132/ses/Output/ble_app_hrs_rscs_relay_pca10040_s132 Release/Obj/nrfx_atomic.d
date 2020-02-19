@@ -1,14 +1,14 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrfx_atomic.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\modules\nrfx\soc\nrfx_atomic.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\modules\nrfx\soc\nrfx_atomic.h \
+ C:\Users\vikra\Desktop\decawave-ble\modules\nrfx\soc\nrfx_atomic.c \
+ C:\Users\vikra\Desktop\decawave-ble\modules\nrfx\soc\nrfx_atomic.h \
  ../../../../../../../modules/nrfx/nrfx.h \
  ../../../../../../../integration/nrfx/nrfx_config.h \
  ../config/sdk_config.h \
  ../../../../../../../modules/nrfx/drivers/nrfx_common.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
  ../../../../../../../modules/nrfx/mdk/nrf.h \
  ../../../../../../../modules/nrfx/mdk/nrf52.h \
  ../../../../../../../components/toolchain/cmsis/include/core_cm4.h \
@@ -43,7 +43,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrfx_atomic.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
@@ -53,4 +53,4 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrfx_atomic.o: \
  ../../../../../../../components/libraries/util/sdk_resources.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_sd_def.h \
  ../../../../../../../modules/nrfx/drivers/nrfx_errors.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\modules\nrfx\soc\nrfx_atomic_internal.h
+ C:\Users\vikra\Desktop\decawave-ble\modules\nrfx\soc\nrfx_atomic_internal.h

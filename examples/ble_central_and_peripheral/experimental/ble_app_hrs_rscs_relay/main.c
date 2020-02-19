@@ -1362,6 +1362,8 @@ int main(void)
     // Initialize.
     vInterruptInit();
     boUART_Init(); //<---- Decawave UART Serial
+
+    printf("HELLO\r\n");
     timer_init();
     leds_init();
     power_management_init();
@@ -1378,24 +1380,26 @@ int main(void)
     advertising_init();
 
 
-
+    printf("Before Reset\r\n");
     reset_DW1000(); 
-
+  
+    printf("Before slowrate\r\n");
     /* Set SPI clock to 2MHz */
     port_set_dw1000_slowrate();			
-  
+    printf("After slowrate\r\n");
     /* Init the DW1000 */
     if (dwt_initialise(DWT_LOADUCODE) == DWT_ERROR)
     {
       //Init of DW1000 Failed
       while (1) {};   //Here is a wait that occurs if DW1000 init fails
     }
-
+    printf("After init success\r\n");
     // Set SPI to 8MHz clock  
     port_set_dw1000_fastrate();
-
+    printf("After fastrate\r\n");
     /* Configure DW1000. */
     dwt_configure(&config);
+    printf("After config\r\n");
 
     /* Initialization of the DW1000 interrupt*/
     /* Callback are defined in ss_init_main.c */

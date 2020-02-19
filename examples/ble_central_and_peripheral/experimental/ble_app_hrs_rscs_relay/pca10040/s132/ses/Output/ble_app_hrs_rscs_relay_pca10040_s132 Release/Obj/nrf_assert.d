@@ -1,7 +1,7 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_assert.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\util\nrf_assert.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\util\nrf_assert.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\util\nrf_assert.c \
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\util\nrf_assert.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  ../../../../../../../modules/nrfx/mdk/nrf.h \
  ../../../../../../../modules/nrfx/mdk/nrf52.h \
  ../../../../../../../components/toolchain/cmsis/include/core_cm4.h \
@@ -15,11 +15,11 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_assert.o: \
  ../../../../../../../modules/nrfx/mdk/nrf51_to_nrf52.h \
  ../../../../../../../modules/nrfx/mdk/nrf52_name_change.h \
  ../../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\util\app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\util\sdk_errors.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\util\app_error.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\util\sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\util\nordic_common.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\util\app_error_weak.h
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\util\nordic_common.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\util\app_error_weak.h

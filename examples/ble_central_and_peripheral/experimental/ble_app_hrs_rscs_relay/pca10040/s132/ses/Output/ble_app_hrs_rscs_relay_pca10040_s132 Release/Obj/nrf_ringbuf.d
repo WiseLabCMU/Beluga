@@ -1,12 +1,12 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_ringbuf.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\ringbuf\nrf_ringbuf.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\ringbuf\nrf_ringbuf.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\ringbuf\nrf_ringbuf.c \
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\ringbuf\nrf_ringbuf.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  ../../../../../../../components/libraries/atomic/nrf_atomic.h \
  ../../../../../../../components/libraries/util/sdk_common.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
  ../config/sdk_config.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
@@ -14,7 +14,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_ringbuf.o: \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/libraries/util/app_util.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
  ../../../../../../../modules/nrfx/mdk/nrf.h \
  ../../../../../../../modules/nrfx/mdk/nrf52.h \
  ../../../../../../../components/toolchain/cmsis/include/core_cm4.h \
@@ -40,6 +40,6 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_ringbuf.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
  ../../../../../../../components/libraries/util/nrf_assert.h

@@ -1,13 +1,13 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/ss_init_main.o: \
- C:\Users\danie\OneDrive\Desktop\ss_twr_init_int\ss_init_main.c \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/time.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/sys/time.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
+ C:\Users\vikra\Desktop\decawave-ble\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.c \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/time.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/sys/time.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
  ../../../../../../../external/freertos/source/include/FreeRTOS.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  ../../../../../../../external/freertos/config/FreeRTOSConfig.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_soc.h \
  ../../../../../../../modules/nrfx/mdk/nrf.h \
@@ -31,7 +31,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/ss_init_main.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
@@ -89,6 +89,6 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/ss_init_main.o: \
  ../../../../../../../components/boards/boards.h \
  ../../../../../../../components/boards/dw1001_dev.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:\Users\danie\OneDrive\Desktop\ss_twr_init_int\ss_init_main.h \
+ C:\Users\vikra\Desktop\decawave-ble\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.h \
  ../../../../../../../external/freertos/source/include/semphr.h \
  ../../../../../../../external/freertos/source/include/queue.h

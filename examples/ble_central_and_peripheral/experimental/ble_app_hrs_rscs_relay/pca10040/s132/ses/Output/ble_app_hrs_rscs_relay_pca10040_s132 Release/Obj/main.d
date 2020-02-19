@@ -1,17 +1,17 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/main.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\main.c \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
+ C:\Users\vikra\Desktop\decawave-ble\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\main.c \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/softdevice/common/nrf_sdh.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
  ../config/sdk_config.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/libraries/experimental_section_vars/nrf_section_iter.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
  ../../../../../../../components/libraries/experimental_section_vars/nrf_section.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../modules/nrfx/mdk/nrf.h \
@@ -103,7 +103,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/main.o: \
  ../../../../../../../components/ble/ble_db_discovery/ble_db_discovery.h \
  ../../../../../../../components/ble/nrf_ble_gq/nrf_ble_gq.h \
  ../../../../../../../components/libraries/memobj/nrf_memobj.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdlib.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h \
  ../../../../../../../components/libraries/balloc/nrf_balloc.h \
  ../../../../../../../components/libraries/queue/nrf_queue.h \
  ../../../../../../../components/ble/ble_services/ble_hrs/ble_hrs.h \
@@ -161,4 +161,4 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/main.o: \
  ../../../../../../../modules/nrfx/drivers/include/nrfx_gpiote.h \
  ../../../../../../../modules/nrfx/hal/nrf_gpiote.h \
  ../../../../../../../modules/nrfx/hal/nrf_gpio.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.h
+ C:\Users\vikra\Desktop\decawave-ble\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.h

@@ -50,8 +50,6 @@
  <Watch4>
   <Watches active="0" update="Never"/>
  </Watch4>
- <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="54" y="1329" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="1" top="1315" codecName="Default"/>
- </Files>
+ <Files/>
  <ARMCrossStudioWindow activeProject="ble_app_hrs_rscs_relay_pca10040_s132" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Release" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

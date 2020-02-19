@@ -1,9 +1,9 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/UART.o: \
- C:\Users\danie\OneDrive\Desktop\dwm1001-examples\examples\ss_twr_init\UART\UART.c \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
+ C:\Users\vikra\Desktop\decawave-ble\UART\UART.c \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
  ../../../../../../../components/libraries/uart/app_uart.h \
  ../../../../../../../components/libraries/util/app_util_platform.h \
  ../../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
@@ -37,7 +37,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/UART.o: \
  ../../../../../../../integration/nrfx/nrfx_config.h \
  ../config/sdk_config.h \
  ../../../../../../../modules/nrfx/drivers/nrfx_common.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
  ../../../../../../../modules/nrfx/mdk/nrf_peripherals.h \
  ../../../../../../../modules/nrfx/mdk/nrf52832_peripherals.h \
  ../../../../../../../integration/nrfx/nrfx_glue.h \
@@ -56,7 +56,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/UART.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_sd_def.h \
  ../../../../../../../modules/nrfx/drivers/nrfx_errors.h \
  ../../../../../../../modules/nrfx/hal/nrf_uart.h \
- C:\Users\danie\OneDrive\Desktop\dwm1001-examples\examples\ss_twr_init\UART\UART.h \
+ C:\Users\vikra\Desktop\decawave-ble\UART\UART.h \
  ../../../../../../../components/libraries/bsp/bsp.h \
  ../../../../../../../components/boards/boards.h \
  ../../../../../../../modules/nrfx/hal/nrf_gpio.h \

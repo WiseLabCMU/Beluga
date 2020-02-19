@@ -1,10 +1,10 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/SEGGER_RTT_printf.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\external\segger_rtt\SEGGER_RTT_printf.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\external\segger_rtt\SEGGER_RTT.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\external\segger_rtt\SEGGER_RTT_Conf.h \
+ C:\Users\vikra\Desktop\decawave-ble\external\segger_rtt\SEGGER_RTT_printf.c \
+ C:\Users\vikra\Desktop\decawave-ble\external\segger_rtt\SEGGER_RTT.h \
+ C:\Users\vikra\Desktop\decawave-ble\external\segger_rtt\SEGGER_RTT_Conf.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/libraries/util/app_util_platform.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  ../../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
  ../../../../../../../modules/nrfx/mdk/nrf.h \
  ../../../../../../../modules/nrfx/mdk/nrf52.h \
@@ -26,13 +26,13 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/SEGGER_RTT_printf.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
  ../config/sdk_config.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdlib.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdarg.h
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdarg.h

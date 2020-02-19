@@ -1,7 +1,7 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/app_util_platform.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\util\app_util_platform.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\util\app_util_platform.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\util\app_util_platform.c \
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\util\app_util_platform.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  ../../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
  ../../../../../../../modules/nrfx/mdk/nrf.h \
  ../../../../../../../modules/nrfx/mdk/nrf52.h \
@@ -21,12 +21,12 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/app_util_platform.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\util\nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\util\app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\util\sdk_errors.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\util\nrf_assert.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\util\app_error.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\util\sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\util\nordic_common.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\libraries\util\app_error_weak.h
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\util\nordic_common.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\libraries\util\app_error_weak.h

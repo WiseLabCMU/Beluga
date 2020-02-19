@@ -1,10 +1,10 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/peer_data_storage.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_data_storage.c \
+ C:\Users\vikra\Desktop\decawave-ble\components\ble\peer_manager\peer_data_storage.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
  ../config/sdk_config.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
@@ -12,7 +12,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/peer_data_storage.o: \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/libraries/util/app_util.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
  ../../../../../../../modules/nrfx/mdk/nrf.h \
  ../../../../../../../modules/nrfx/mdk/nrf52.h \
  ../../../../../../../components/toolchain/cmsis/include/core_cm4.h \
@@ -30,7 +30,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/peer_data_storage.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_data_storage.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\ble\peer_manager\peer_data_storage.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gap.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
@@ -39,7 +39,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/peer_data_storage.o: \
  ../../../../../../../components/softdevice/s132/headers/ble_ranges.h \
  ../../../../../../../components/softdevice/s132/headers/ble_types.h \
  ../../../../../../../components/softdevice/s132/headers/ble_err.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_manager_types.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\ble\peer_manager\peer_manager_types.h \
  ../../../../../../../components/softdevice/s132/headers/ble_hci.h \
  ../../../../../../../components/ble/common/ble_gatt_db.h \
  ../../../../../../../components/softdevice/s132/headers/ble.h \
@@ -55,10 +55,10 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/peer_data_storage.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_manager_internal.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\ble\peer_manager\peer_id.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\ble\peer_manager\peer_manager_internal.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\ble\peer_manager\peer_id.h \
  ../../../../../../../components/libraries/fds/fds.h \
  ../../../../../../../components/libraries/log/nrf_log.h \
  ../../../../../../../components/libraries/experimental_section_vars/nrf_section.h \
@@ -72,5 +72,5 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/peer_data_storage.o: \
  ../../../../../../../components/libraries/log/src/nrf_log_ctrl_internal.h \
  ../../../../../../../components/libraries/log/nrf_log_backend_interface.h \
  ../../../../../../../components/libraries/memobj/nrf_memobj.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdlib.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h \
  ../../../../../../../components/libraries/balloc/nrf_balloc.h

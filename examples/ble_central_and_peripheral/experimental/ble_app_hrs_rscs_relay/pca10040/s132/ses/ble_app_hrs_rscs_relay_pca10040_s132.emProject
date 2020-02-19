@@ -76,10 +76,10 @@
       <file file_name="../../../../../../../components/libraries/experimental_section_vars/nrf_section_iter.c" />
       <file file_name="../../../../../../../components/libraries/sortlist/nrf_sortlist.c" />
       <file file_name="../../../../../../../components/libraries/strerror/nrf_strerror.c" />
-      <file file_name="../../../../../../../../dwm1001-examples/nRF5_SDK_14.2.0/components/libraries/fifo/app_fifo.c" />
-      <file file_name="../../../../../../../../dwm1001-examples/nRF5_SDK_14.2.0/components/libraries/uart/app_uart_fifo.c" />
-      <file file_name="../../../../../../../../dwm1001-examples/nRF5_SDK_14.2.0/components/libraries/uart/retarget.c" />
       <file file_name="../../../../../../../components/libraries/scheduler/app_scheduler.c" />
+      <file file_name="../../../../../../../components/libraries/fifo/app_fifo.c" />
+      <file file_name="../../../../../../../components/libraries/uart/app_uart_fifo.c" />
+      <file file_name="../../../../../../../components/libraries/uart/retarget.c" />
     </folder>
     <folder Name="None">
       <file file_name="../../../../../../../modules/nrfx/mdk/ses_startup_nrf52.s" />
@@ -114,7 +114,7 @@
     <folder Name="Application">
       <file file_name="../../../main.c" />
       <file file_name="../config/sdk_config.h" />
-      <file file_name="../../../../../../../../ss_twr_init_int/ss_init_main.c" />
+      <file file_name="../../../ss_init_main.c" />
     </folder>
     <folder Name="nRF_Segger_RTT">
       <file file_name="../../../../../../../external/segger_rtt/SEGGER_RTT.c" />
@@ -163,14 +163,14 @@
       <file file_name="../../../../../../../../dwm1001-examples/nRF5_SDK_14.2.0/external/freertos/config/FreeRTOSConfig.h" />
     </folder>
     <folder Name="Decadriver">
-      <file file_name="../../../../../../../../dwm1001-examples/deca_driver/deca_params_init.c" />
-      <file file_name="../../../../../../../../dwm1001-examples/deca_driver/deca_range_tables.c" />
-      <file file_name="../../../../../../../../dwm1001-examples/deca_driver/deca_regs.h" />
-      <file file_name="../../../../../../../../dwm1001-examples/deca_driver/deca_types.h" />
-      <file file_name="../../../../../../../../dwm1001-examples/deca_driver/deca_version.h" />
-      <file file_name="../../../../../../../../dwm1001-examples/deca_driver/deca_device.c" />
-      <file file_name="../../../../../../../../dwm1001-examples/deca_driver/deca_device_api.h" />
-      <file file_name="../../../../../../../../dwm1001-examples/deca_driver/deca_param_types.h" />
+      <file file_name="../../../../../../../deca_driver/deca_device.c" />
+      <file file_name="../../../../../../../deca_driver/deca_device_api.h" />
+      <file file_name="../../../../../../../deca_driver/deca_param_types.h" />
+      <file file_name="../../../../../../../deca_driver/deca_params_init.c" />
+      <file file_name="../../../../../../../deca_driver/deca_range_tables.c" />
+      <file file_name="../../../../../../../deca_driver/deca_regs.h" />
+      <file file_name="../../../../../../../deca_driver/deca_types.h" />
+      <file file_name="../../../../../../../deca_driver/deca_version.h" />
       <file file_name="../../../../../../../deca_driver/port/port_platform.c" />
     </folder>
     <folder Name="Freertos">
@@ -190,7 +190,7 @@
       <file file_name="../../../../../../../external/freertos/source/tasks.c" />
     </folder>
     <folder Name="Uart">
-      <file file_name="../../../../../../../../dwm1001-examples/examples/ss_twr_init/UART/UART.c" />
+      <file file_name="../../../../../../../UART/UART.c" />
     </folder>
   </project>
   <configuration

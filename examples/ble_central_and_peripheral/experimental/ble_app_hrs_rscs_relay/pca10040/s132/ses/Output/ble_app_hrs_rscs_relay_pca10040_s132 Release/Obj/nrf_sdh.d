@@ -1,10 +1,10 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_sdh.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\softdevice\common\nrf_sdh.c \
+ C:\Users\vikra\Desktop\decawave-ble\components\softdevice\common\nrf_sdh.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
  ../config/sdk_config.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../modules/nrfx/mdk/compiler_abstraction.h \
@@ -12,7 +12,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_sdh.o: \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/libraries/util/app_util.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
  ../../../../../../../modules/nrfx/mdk/nrf.h \
  ../../../../../../../modules/nrfx/mdk/nrf52.h \
  ../../../../../../../components/toolchain/cmsis/include/core_cm4.h \
@@ -30,7 +30,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_sdh.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\components\softdevice\common\nrf_sdh.h \
+ C:\Users\vikra\Desktop\decawave-ble\components\softdevice\common\nrf_sdh.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/libraries/experimental_section_vars/nrf_section_iter.h \
  ../../../../../../../components/libraries/experimental_section_vars/nrf_section.h \
@@ -45,7 +45,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/nrf_sdh.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
  ../../../../../../../components/libraries/util/app_util_platform.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_soc.h \
