@@ -1385,11 +1385,14 @@ int main(void)
   
     printf("Before slowrate\r\n");
     /* Set SPI clock to 2MHz */
-    port_set_dw1000_slowrate();			
+    port_set_dw1000_slowrate();
+                            
     printf("After slowrate\r\n");
     /* Init the DW1000 */
+
     if (dwt_initialise(DWT_LOADUCODE) == DWT_ERROR)
     {
+      printf("Fail\r\n");
       //Init of DW1000 Failed
       while (1) {};   //Here is a wait that occurs if DW1000 init fails
     }

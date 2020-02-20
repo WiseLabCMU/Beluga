@@ -1,6 +1,6 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Release/Obj/port_platform.o: \
- C:\Users\vikra\Downloads\dwm1001\dwm1001-examples-master\deca_driver\port\port_platform.c \
- C:\Users\vikra\Downloads\dwm1001\dwm1001-examples-master\deca_driver\port\port_platform.h \
+ C:\Users\vikra\Desktop\decawave-ble\deca_driver\port\port_platform.c \
+ C:\Users\vikra\Desktop\decawave-ble\deca_driver\port\port_platform.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
