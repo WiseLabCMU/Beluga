@@ -62,6 +62,7 @@ extern "C" {
 
 /** @defgroup UUID_SERVICES Service UUID definitions
  * @{ */
+
 #define BLE_UUID_ALERT_NOTIFICATION_SERVICE                      0x1811     /**< Alert Notification service UUID. */
 #define BLE_UUID_BATTERY_SERVICE                                 0x180F     /**< Battery service UUID. */
 #define BLE_UUID_BLOOD_PRESSURE_SERVICE                          0x1810     /**< Blood Pressure service UUID. */

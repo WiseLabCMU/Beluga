@@ -381,6 +381,8 @@ uint32_t ble_advertising_init(ble_advertising_t            * const p_advertising
 
     if (p_init->advdata.p_manuf_specific_data != NULL)
     {
+
+        
         p_advertising->advdata.p_manuf_specific_data   = &(p_advertising->manuf_specific_data);
         p_advertising->manuf_specific_data.data.p_data = p_advertising->manuf_data_array;
         p_advertising->advdata.p_manuf_specific_data->company_identifier =
@@ -389,12 +391,15 @@ uint32_t ble_advertising_init(ble_advertising_t            * const p_advertising
 
         for (uint32_t i = 0; i < p_advertising->advdata.p_manuf_specific_data->data.size; i++)
         {
+            //printf("%d\r\n", p_init->advdata.p_manuf_specific_data->data.p_data[i]);
             p_advertising->manuf_data_array[i] = p_init->advdata.p_manuf_specific_data->data.p_data[i];
+            printf("%d\r\n", p_advertising->manuf_data_array[i]);
         }
     }
 
     if (p_init->advdata.p_service_data_array != NULL)
     {
+        
         p_advertising->service_data.data.p_data                   = p_advertising->service_data_array;
         p_advertising->advdata.p_service_data_array               = &(p_advertising->service_data);
         p_advertising->advdata.p_service_data_array->data.p_data  = p_advertising->service_data_array;
@@ -433,6 +438,7 @@ uint32_t ble_advertising_init(ble_advertising_t            * const p_advertising
         }
 #endif
     ret = ble_advdata_set(&(p_advertising->advdata), &(p_init->srdata));
+    printf("ret: %d", ret);
     return ret;
 }
 

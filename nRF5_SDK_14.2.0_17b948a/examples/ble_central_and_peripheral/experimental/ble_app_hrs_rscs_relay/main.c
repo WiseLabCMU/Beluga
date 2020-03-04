@@ -73,6 +73,7 @@
  *    +--------+
  */
 
+
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -125,12 +126,17 @@
 #include "ss_init_main.h"
 #include "port_platform.h"
 
+#define RESPONDER 0
+#define INITIATOR 1
+
+static int mode;
+
 #define PERIPHERAL_ADVERTISING_LED      BSP_BOARD_LED_2
 #define PERIPHERAL_CONNECTED_LED        BSP_BOARD_LED_3
 #define CENTRAL_SCANNING_LED            BSP_BOARD_LED_0
 #define CENTRAL_CONNECTED_LED           BSP_BOARD_LED_1
 
-#define DEVICE_NAME                     "Relay"                                     /**< Name of device used for advertising. */
+#define DEVICE_NAME                     "Master"                                     /**< Name of device used for advertising. */
 #define MANUFACTURER_NAME               "NordicSemiconductor"                       /**< Manufacturer. Will be passed to Device Information Service. */
 #define APP_ADV_INTERVAL                300                                         /**< The advertising interval (in units of 0.625 ms). This value corresponds to 187.5 ms. */
 #define APP_ADV_TIMEOUT_IN_SECONDS      180                                         /**< The advertising timeout in units of seconds. */
@@ -187,6 +193,10 @@ typedef struct
 } data_t;
 
 
+
+
+
+
 static ble_hrs_t m_hrs;                                             /**< Heart rate service instance. */
 static ble_rscs_t m_rscs;                                           /**< Running speed and cadence service instance. */
 static ble_hrs_c_t m_hrs_c;                                         /**< Heart rate service client instance. */
@@ -202,16 +212,43 @@ static uint16_t m_conn_handle_rscs_c = BLE_CONN_HANDLE_INVALID;     /**< Connect
 /**@brief names which the central applications will scan for, and which will be advertised by the peripherals.
  *  if these are set to empty strings, the UUIDs defined below will be used
  */
-static char const m_target_periph_name[] = "";
+static char const m_target_periph_name[] = "Node";
 
 /**@brief UUIDs which the central applications will scan for if the name above is set to an empty string,
  * and which will be advertised by the peripherals.
  */
+#define MAX_ANCHOR_COUNT 8
+
+static int range_flag;
+#define BLE_UUID_SYSTEM_ADDED             0x2800
+#define BLE_INDICATOR 0x01 
+#define BLE_UWB_RANGE0 0x0000
+#define BLE_UWB_RANGE1 0x0000
+#define BLE_UWB_RANGE2 0x0000
+static ble_uuid_t m_adv_uuids[] =
+{
+    {BLE_INDICATOR              , BLE_UUID_TYPE_BLE},
+    {BLE_UUID_SYSTEM_ADDED      , BLE_UUID_TYPE_BLE}
+    //{BLE_UWB_RANGE0             , BLE_UUID_TYPE_BLE},
+    //{BLE_UWB_RANGE1             , BLE_UUID_TYPE_BLE},
+    //{BLE_UWB_RANGE2             , BLE_UUID_TYPE_BLE}
+     
+};
+//static int BLE_UWB_RANGE = 0;
+
+
+
+/*
 static ble_uuid_t m_adv_uuids[] =
 {
     {BLE_UUID_HEART_RATE_SERVICE,        BLE_UUID_TYPE_BLE},
-    {BLE_UUID_RUNNING_SPEED_AND_CADENCE, BLE_UUID_TYPE_BLE}
+    {BLE_UUID_RUNNING_SPEED_AND_CADENCE, BLE_UUID_TYPE_BLE},
+    {BLE_UUID_SYSTEM_ADDED             , BLE_UUID_TYPE_BLE},
+    {BLE_UWB_RANGE                     , BLE_UUID_TYPE_VENDOR_BEGIN}
 };
+*/
+
+
 
 /**@brief Parameters used when scanning. */
 static ble_gap_scan_params_t const m_scan_params =
@@ -237,6 +274,42 @@ static ble_gap_conn_params_t const m_connection_param =
     SLAVE_LATENCY,
     SUPERVISION_TIMEOUT
 };
+
+uint16_t seen_list[MAX_ANCHOR_COUNT];
+int last_seen_idx = 0;
+
+
+
+typedef struct node{
+    int UUID;
+    int RSSI;
+    int time_stamp;
+    float range;
+} node;
+
+
+bool in_list(int i)
+{
+  for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
+  {
+    if(seen_list[j] == i) return true;
+  }
+  return false;
+}
+
+
+void print_seen_list()
+{
+
+  printf("#######################\r\n");
+  for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
+  {
+    printf("%d = %d\r\n", j, seen_list[j]);
+  }
+  printf("#######################\r\n");
+}
+
+
 
 
 //-----------------dw1000----------------------------
@@ -265,6 +338,8 @@ static dwt_config_t config = {
 #define RX_ANT_DLY 16456
 
 extern int ss_init_run(void);	
+extern int ds_init_run(void);	
+extern float ds_resp_run(void);	
 //--------------dw1000---end---------------
 /**@brief Function to handle asserts in the SoftDevice.
  *
@@ -617,6 +692,7 @@ static bool find_adv_name(ble_gap_evt_adv_report_t const * p_adv_report, char co
     {
         if (memcmp(name_to_find, dev_name.p_data, dev_name.data_len)== 0)
         {
+            
             return true;
         }
     }
@@ -685,6 +761,51 @@ static bool find_adv_uuid(ble_gap_evt_adv_report_t const * p_adv_report, uint16_
         if (extracted_uuid == uuid_to_find)
         {
             return true;
+        }
+    }
+    return false;
+}
+
+
+static bool find_adv_uuid_next(ble_gap_evt_adv_report_t const * p_adv_report, uint16_t indicator, uint16_t uuid_to_find)
+{
+    ret_code_t err_code;
+    data_t     adv_data;
+    data_t     type_data;
+
+    // Initialize advertisement report for parsing.
+    adv_data.p_data   = (uint8_t *)p_adv_report->data;
+    adv_data.data_len = p_adv_report->dlen;
+
+    err_code = adv_report_parse(BLE_GAP_AD_TYPE_16BIT_SERVICE_UUID_MORE_AVAILABLE,
+                                &adv_data,
+                                &type_data);
+
+    if (err_code != NRF_SUCCESS)
+    {
+        // Look for the services in 'complete' if it was not found in 'more available'.
+        err_code = adv_report_parse(BLE_GAP_AD_TYPE_16BIT_SERVICE_UUID_COMPLETE,
+                                    &adv_data,
+                                    &type_data);
+
+        if (err_code != NRF_SUCCESS)
+        {
+            // If we can't parse the data, then exit.
+            return false;
+        }
+    }
+
+    // Verify if any UUID match the given UUID.
+    for (uint32_t i = 0; i < (type_data.data_len / UUID16_SIZE); i++)
+    {
+        uint16_t extracted_uuid;
+        UUID16_EXTRACT(&extracted_uuid, &type_data.p_data[i * UUID16_SIZE]);
+
+        if (extracted_uuid == indicator)
+        {
+            UUID16_EXTRACT(&extracted_uuid, &type_data.p_data[(i+1) * UUID16_SIZE]);
+
+            if(extracted_uuid == uuid_to_find) return true;
         }
     }
     return false;
@@ -780,19 +901,53 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
 
         case BLE_GAP_EVT_ADV_REPORT:
         {
+            
             if (strlen(m_target_periph_name) != 0)
             {
+                
                 if (find_adv_name(&p_gap_evt->params.adv_report, m_target_periph_name))
                 {
+                    //Node Found
+                    /*
+                    Add to List
+  
+                     - Get UUID
+                     - Get RSSI
+                     - Get Current Timestamp
+
+
+                     */
+
+
+
+
+                    for (int i = 0; i < MAX_ANCHOR_COUNT; i++)
+                    {
+                      uint16_t indicator = 0x01;
+                      if(find_adv_uuid_next(&p_gap_evt->params.adv_report,indicator, i) && !in_list(i) )
+                        {
+                          printf("not in list \r\n");
+                          //Add to last seen list
+                          seen_list[last_seen_idx] = i;
+                          last_seen_idx++;
+                          last_seen_idx %= MAX_ANCHOR_COUNT;
+                          //Initiate Ranging
+                          range_flag = 1;
+                          //ss_init_run();
+                        }
+                    }
                     // Initiate connection.
+                    /*
                     err_code = sd_ble_gap_connect(&p_gap_evt->params.adv_report.peer_addr,
                                                   &m_scan_params,
                                                   &m_connection_param,
                                                   APP_BLE_CONN_CFG_TAG);
+                    
                     if (err_code != NRF_SUCCESS)
                     {
                         NRF_LOG_INFO("Connection Request Failed, reason %d", err_code);
                     }
+                    */
                 }
             }
             else
@@ -1289,19 +1444,43 @@ static void services_init(void)
 
 /**@brief Function for initializing the Advertising functionality.
  */
+
+uint8_t     adv_manuf_data_data[3];
+
 static void advertising_init(void)
 {
+
     ret_code_t             err_code;
     ble_advertising_init_t init;
 
+    
+    ble_advdata_manuf_data_t adv_manuf_data;
+    uint8_array_t            adv_manuf_data_array;
+    
     memset(&init, 0, sizeof(init));
 
     init.advdata.name_type               = BLE_ADVDATA_FULL_NAME;
     init.advdata.include_appearance      = true;
     init.advdata.flags                   = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
-    init.advdata.uuids_complete.uuid_cnt = sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
+    init.advdata.uuids_complete.uuid_cnt =  sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
     init.advdata.uuids_complete.p_uuids  = m_adv_uuids;
 
+    // Configuration of manufacturer specific data
+    
+
+    
+    /*
+    adv_manuf_data_array.p_data = adv_manuf_data_data;
+    adv_manuf_data_array.size = 3;
+    
+    adv_manuf_data.company_identifier = 0xFF00;
+    adv_manuf_data.data = adv_manuf_data_array;
+    
+    init.advdata.p_manuf_specific_data = &adv_manuf_data;
+    
+    
+    */
+  
     init.config.ble_adv_fast_enabled  = true;
     init.config.ble_adv_fast_interval = APP_ADV_INTERVAL;
     init.config.ble_adv_fast_timeout  = APP_ADV_TIMEOUT_IN_SECONDS;
@@ -1343,91 +1522,6 @@ static void power_manage(void)
     APP_ERROR_CHECK(err_code);
 }
 
-
-int main(void)
-{
-    bool erase_bonds;
-    vInterruptInit();
-    boUART_Init();
-  
-    timer_init();
-    buttons_leds_init(&erase_bonds);
-    ble_stack_init();
-    gap_params_init();
-    gatt_init();
-    conn_params_init();
-    db_discovery_init();
-    peer_manager_init();
-    hrs_c_init();
-    rscs_c_init();
-    services_init();
-    advertising_init();
-    
-    LEDS_CONFIGURE(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK);
-    LEDS_ON(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK );
-
-
-    reset_DW1000(); 
-    port_set_dw1000_slowrate();			
-  
-    /* Init the DW1000 */
-    if (dwt_initialise(DWT_LOADUCODE) == DWT_ERROR)
-    {
-      //Init of DW1000 Failed
-      while (1) {};   //Here is a wait that occurs if DW1000 init fails
-    }
-
-    // Set SPI to 8MHz clock  
-    port_set_dw1000_fastrate();
-
-    /* Configure DW1000. */
-    dwt_configure(&config);
-    dwt_setcallbacks(&tx_conf_cb, &rx_ok_cb, &rx_to_cb, &rx_err_cb);
-
-    dwt_setinterrupt(DWT_INT_TFRS | DWT_INT_RFCG | DWT_INT_RFTO | DWT_INT_RXPTO | DWT_INT_RPHE | DWT_INT_RFCE | DWT_INT_RFSL | DWT_INT_SFDT, 1);
-
-    /* Apply default antenna delay value. See NOTE 2 below. */
-    dwt_setrxantennadelay(RX_ANT_DLY);
-    dwt_settxantennadelay(TX_ANT_DLY);
-
-    /* Set preamble timeout for expected frames. See NOTE 3 below. */
-    //dwt_setpreambledetecttimeout(0); // PRE_TIMEOUT
-          
-    /* Set expected response's delay and timeout. 
-    * As this example only handles one incoming frame with always the same delay and timeout, those values can be set here once for all. */
-    dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
-    dwt_setrxtimeout(65000); // Maximum value timeout with DW1000 is 65ms
-    printf("HELP\r\n");
-
-
-
-    
-   
-    
-    if (erase_bonds == true)
-    {
-        // Scanning and advertising is done upon PM_EVT_PEERS_DELETE_SUCCEEDED event.
-        delete_bonds();
-        // Scanning and advertising is done by
-    }
-    else
-    {
-        adv_scan_start();
-    }
-
-    NRF_LOG_INFO("Relay example started.");
-    
-    for (;;)
-    {
-        if (NRF_LOG_PROCESS() == false)
-        {
-            // Wait for BLE events.
-            ss_init_run();
-            power_manage();
-        }
-    }
-    
-}
 void vInterruptHandler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
 {
   dwt_isr(); // DW1000 interrupt service routine 
@@ -1454,4 +1548,169 @@ void vInterruptInit (void)
   APP_ERROR_CHECK(err_code);
 
   nrf_drv_gpiote_in_event_enable(DW1000_IRQ, true);
+}
+
+
+APP_TIMER_DEF(m_repeated_timer_id);     /**< Handler for repeated timer used to blink LED 1. */
+APP_TIMER_DEF(m_repeated_timer_id_1);
+
+/**@brief Timeout handler for the repeated timer.
+ */
+static void repeated_timer_handler(void * p_context)
+{
+    //nrf_drv_gpiote_out_toggle(LED_1);
+    print_seen_list();
+    //printf("The beat go off?\r\n");
+    
+}
+
+static void repeated_timer_handler_1(void* p_context)
+{
+    //nrf_drv_gpiote_out_toggle(LED_1);
+    //printf("Here\r\n");
+    
+    
+
+    //ss_init_run();
+
+    LEDS_INVERT(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK );
+    range_flag = 1;
+    //printf("The beat go off?\r\n");
+    
+}
+
+
+static void lfclk_request(void)
+{
+    ret_code_t err_code = nrf_drv_clock_init();
+    APP_ERROR_CHECK(err_code);
+    nrf_drv_clock_lfclk_request(NULL);
+}
+
+
+int main(void)
+{
+
+    /*
+    adv_manuf_data_data[0] = 0x00;
+    adv_manuf_data_data[1] = 0x01;
+    adv_manuf_data_data[2] = 0x02;
+    */
+    mode = INITIATOR;
+    bool erase_bonds;
+    range_flag = 0;
+    memset(seen_list, 8, 8*sizeof(seen_list[0]) );
+    vInterruptInit();
+    boUART_Init();
+    //log_init();
+    timer_init();
+    buttons_leds_init(&erase_bonds);
+    ble_stack_init();
+    gap_params_init();
+    gatt_init();
+    conn_params_init();
+    db_discovery_init();
+    peer_manager_init();
+    hrs_c_init();
+    rscs_c_init();
+    services_init();
+    advertising_init();
+
+
+
+    ret_code_t c1 = app_timer_create(&m_repeated_timer_id, APP_TIMER_MODE_REPEATED, repeated_timer_handler);
+    ret_code_t s1 =  app_timer_start(m_repeated_timer_id,APP_TIMER_TICKS(1000) , NULL);
+  
+    //int (*ss_init)(void) = &ss_init_run; 
+    printf("%u %u %u\r\n",c1,s1, NRF_SUCCESS);
+
+    
+
+    ret_code_t c2 = app_timer_create(&m_repeated_timer_id_1, APP_TIMER_MODE_REPEATED, repeated_timer_handler_1);
+    ret_code_t s2 = app_timer_start(m_repeated_timer_id_1,APP_TIMER_TICKS(1000) ,NULL);
+    printf("%u %u %u\r\n",c2,s2, NRF_SUCCESS);
+
+    LEDS_CONFIGURE(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK);
+    LEDS_ON(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK );
+
+
+    reset_DW1000(); 
+    port_set_dw1000_slowrate();			
+  
+    /* Init the DW1000 */
+    if (dwt_initialise(DWT_LOADUCODE) == DWT_ERROR)
+    {
+      //Init of DW1000 Failed
+      while (1) {};   //Here is a wait that occurs if DW1000 init fails
+    }
+
+    // Set SPI to 8MHz clock  
+    port_set_dw1000_fastrate();
+
+    /* Configure DW1000. */
+    dwt_configure(&config);
+    //dwt_setcallbacks(&tx_conf_cb, &rx_ok_cb, &rx_to_cb, &rx_err_cb);
+
+    //dwt_setinterrupt(DWT_INT_TFRS | DWT_INT_RFCG | DWT_INT_RFTO | DWT_INT_RXPTO | DWT_INT_RPHE | DWT_INT_RFCE | DWT_INT_RFSL | DWT_INT_SFDT, 1);
+
+    /* Apply default antenna delay value. See NOTE 2 below. */
+    dwt_setrxantennadelay(RX_ANT_DLY);
+    dwt_settxantennadelay(TX_ANT_DLY);
+
+    /* Set preamble timeout for expected frames. See NOTE 3 below. */
+    //dwt_setpreambledetecttimeout(0); // PRE_TIMEOUT
+          
+    /* Set expected response's delay and timeout. 
+    * As this example only handles one incoming frame with always the same delay and timeout, those values can be set here once for all. */
+    dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
+    dwt_setrxtimeout(65000); // Maximum value timeout with DW1000 is 65ms
+    printf("HELP\r\n");
+    
+    
+   
+    
+    if (erase_bonds == true)
+    {
+        // Scanning and advertising is done upon PM_EVT_PEERS_DELETE_SUCCEEDED event.
+        delete_bonds();
+        // Scanning and advertising is done by
+    }
+    else
+    {
+        adv_scan_start();
+    }
+    int count = 0;
+    NRF_LOG_INFO("Relay example started.");
+    
+    while(1) 
+    {
+     
+        if (NRF_LOG_PROCESS() == false)
+        {
+
+           
+             if(range_flag == 1)
+             {
+
+              if(mode == RESPONDER)
+              {
+                float range = ds_resp_run();
+               }
+
+              else if(mode == INITIATOR)
+              {
+                ds_init_run();
+              }
+
+
+              range_flag = 0;
+            }
+           
+
+
+            
+            power_manage();
+        }
+    }
+    
 }

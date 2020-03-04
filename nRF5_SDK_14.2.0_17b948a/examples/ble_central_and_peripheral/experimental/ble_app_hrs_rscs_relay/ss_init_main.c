@@ -57,7 +57,7 @@ static uint8 rx_buffer[RX_BUF_LEN];
 static uint32 status_reg = 0;
 
 /* UWB microsecond (uus) to device time unit (dtu, around 15.65 ps) conversion factor.
-* 1 uus = 512 / 499.2 µs and 1 µs = 499.2 * 128 dtu. */
+* 1 uus = 512 / 499.2 ?s and 1 ?s = 499.2 * 128 dtu. */
 #define UUS_TO_DWT_TIME 65536
 
 /* Speed of light in air, in metres per second. */
@@ -94,7 +94,8 @@ SemaphoreHandle_t tx_wait, rx_wait,to_wait,err_wait;
 */
 int ss_init_run(void)
 {
-  printf("Got here\r\n");
+   
+  //printf("Got here\r\n");
   /* Loop forever initiating ranging exchanges. */
 
 
@@ -106,9 +107,9 @@ int ss_init_run(void)
   /* Start transmission, indicating that a response is expected so that reception is enabled automatically after the frame is sent and the delay
   * set by dwt_setrxaftertxdelay() has elapsed. */
   dwt_starttx(DWT_START_TX_IMMEDIATE | DWT_RESPONSE_EXPECTED);
-  printf("Started tx\r\n");
+  //printf("Started tx\r\n");
   /*Waiting for transmission success flag*/
-
+  
   //if (xSemaphoreTake(tx_wait,portMAX_DELAY) == pdTRUE){
 
   
@@ -125,10 +126,6 @@ int ss_init_run(void)
     //xSemaphoreGive(tx_wait);
   }
   
-
-
-   
-
    
   /* Wait for reception, timeout or error interrupt flag*/
 
@@ -138,18 +135,7 @@ int ss_init_run(void)
     while (!(rx_int_flag || to_int_flag || er_int_flag))
     {};  //Here is a wait that occurs when the dw is waiting to recieve a message back after first transmission
     
-    
-   
 
-
-    //int rx_ct = uxQueueMessagesWaiting((QueueHandle_t)rx_wait);
-    //int to_ct = uxQueueMessagesWaiting((QueueHandle_t)to_wait);
-    //int er_ct =  uxQueueMessagesWaiting((QueueHandle_t)err_wait);
-
-    //printf("rx: %d to: %d er: %d \r\n", rx_ct, to_ct, er_ct);
-    //printf("rx: %d to: %d er: %d \r\n", rx_int_flag, to_int_flag, er_int_flag);
-
-  
 
     /* Increment frame sequence number after transmission of the poll message (modulo 256). */
     frame_seq_nb++;
@@ -194,9 +180,14 @@ int ss_init_run(void)
         rtd_resp = resp_tx_ts - poll_rx_ts;
 
         tof = ((rtd_init - rtd_resp * (1.0f - clockOffsetRatio)) / 2.0f) * DWT_TIME_UNITS; // Specifying 1.0f and 2.0f are floats to clear warning 
+        
+        
+        //tof = 2.0f;
         distance = tof * SPEED_OF_LIGHT ;
         printf("Distance : %f\r\n",distance);
+        float ab = 0.5;
 
+        //printf("CLOCK: %f\r\n" ,clockOffsetRatio);
         /*Reseting receive interrupt flag*/
         rx_int_flag = 0;
         //xSemaphoreTake(rx_wait,10);
@@ -214,7 +205,7 @@ int ss_init_run(void)
       /*Reseting interrupt flag*/
       if(to_int_flag) 
         {
-          //printf("giving to\r\n");
+          //printf(l"giving to\r\n");
          //xSemaphoreTake(to_wait,10);
         }
       if(er_int_flag)
@@ -231,8 +222,8 @@ int ss_init_run(void)
     
 
     /* Execute a delay between ranging exchanges. */
-         deca_sleep(RNG_DELAY_MS);
-    //	return(1);
+    deca_sleep(RNG_DELAY_MS);
+    return(1);
 }
 
 /*! ------------------------------------------------------------------------------------------------------------------
