@@ -193,7 +193,7 @@ typedef struct
 } data_t;
 
 
-
+static bool in_seen_list(uint16_t UUID);
 
 
 
@@ -281,7 +281,7 @@ static ble_gap_conn_params_t const m_connection_param =
 
 typedef struct node{
     int UUID;
-    int RSSI;
+    int8_t RSSI;
     int time_stamp;
     float range;
 } node;
@@ -308,7 +308,7 @@ void print_seen_list()
   printf("#######################\r\n");
   for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
   {
-    printf("%d) UUID: %d RSSI: %d Time Stamp: %d \r\n",j, seen_list[j].UUID, seen_list[j].RSSI, seen_list[j].time_stamp);
+    printf("%d) UUID: %x RSSI: %d Time Stamp: %d \r\n",j, seen_list[j].UUID, seen_list[j].RSSI, seen_list[j].time_stamp);
   }
   printf("#######################\r\n");
 }
@@ -904,6 +904,14 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
             }
         } break; // BLE_GAP_EVT_DISCONNECTED
 
+
+        case BLE_GAP_EVT_RSSI_CHANGED:
+        {
+    
+            NRF_LOG_INFO("%d",&p_gap_evt->params.rssi_changed.rssi);
+        } break;
+
+        
         case BLE_GAP_EVT_ADV_REPORT:
         {
             
@@ -912,27 +920,29 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
                 
                 if (find_adv_name(&p_gap_evt->params.adv_report, m_target_periph_name))
                 {
-                    //Node Found
+                     //Node Found
                     /*
                     Add to List
   
                      - Get UUID
                      - Get RSSI
                      - Get Current Timestamp
-
-
                      */
-                     
-                     
-                     if(!in_list( 
-                     printf("found\r\n");
-                     uint16_t indicator = 1800;
-                     seen_list[last_seen_idx].UUID = find_adv_uuid_next(&p_gap_evt->params.adv_report,indicator);
-                     seen_list[last_seen_idx].RSSI = &p_gap_evt->params.rssi_changed.rssi;
-                     seen_list[last_seen_idx].time_stamp = app_timer_cnt_get();
 
-                      last_seen_idx += 1;
-                      last_seen_idx %= MAX_ANCHOR_COUNT;
+                     uint16_t indicator = 0x1801;
+
+                     if(!in_seen_list(find_adv_uuid_next(&p_gap_evt->params.adv_report,indicator))){
+
+                       printf("found\r\n");
+                       
+                       seen_list[last_seen_idx].UUID = find_adv_uuid_next(&p_gap_evt->params.adv_report,indicator);
+                       seen_list[last_seen_idx].RSSI = &p_gap_evt->params.rssi_changed.rssi;
+                       seen_list[last_seen_idx].time_stamp = app_timer_cnt_get();
+
+                       last_seen_idx += 1;
+                       last_seen_idx %= MAX_ANCHOR_COUNT;
+
+                     }
 
 
 
@@ -1587,6 +1597,22 @@ static void lfclk_request(void)
     ret_code_t err_code = nrf_drv_clock_init();
     APP_ERROR_CHECK(err_code);
     nrf_drv_clock_lfclk_request(NULL);
+}
+
+
+bool in_seen_list(uint16_t UUID){
+
+  for(int i = 0; i < MAX_ANCHOR_COUNT; i++){
+
+    if(seen_list[i].UUID == UUID){
+      
+      return true;
+      
+      }
+  }
+
+  return false;
+
 }
 
 

@@ -1,8 +1,8 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/bsp.o: \
- C:\Users\vikra\Downloads\DeviceDownload\nRF5_SDK_14.2.0_17b948a\components\libraries\bsp\bsp.c \
- C:\Users\vikra\Downloads\DeviceDownload\nRF5_SDK_14.2.0_17b948a\components\libraries\bsp\bsp.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\components\libraries\bsp\bsp.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\components\libraries\bsp\bsp.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
  ../../../../../../../components/boards/boards.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_gpio.h \
  ../../../../../../../components/device/nrf.h \
@@ -21,20 +21,20 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/bsp.o: \
  ../../../../../../../components/device/nrf52832_peripherals.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdlib.h \
  ../../../../../../../components/boards/dw1001_dev.h \
  ../../../../../../../components/libraries/button/app_button.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
- C:\Users\vikra\Downloads\DeviceDownload\nRF5_SDK_14.2.0_17b948a\components\libraries\bsp\bsp_config.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\components\libraries\bsp\bsp_config.h \
  ../../../../../../../components/libraries/timer/app_timer.h \
  ../../../../../../../components/libraries/util/app_util.h \
  ../../../../../../../components/device/compiler_abstraction.h

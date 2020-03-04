@@ -1,15 +1,15 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/ds_resp_main.o: \
- C:\Users\vikra\Downloads\dwm1001-examples-master\dwm1001-examples-master\examples\ds_twr\ds_resp_main.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ds_resp_main.c \
  ../config/sdk_config.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
  ../../../../../../../external/freertos/source/include/FreeRTOS.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  ../../../../../../../external/freertos/config/FreeRTOSConfig.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_soc.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/device/nrf.h \
  ../../../../../../../components/device/nrf52.h \
@@ -58,7 +58,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/ds_resp_main.o: \
  ../../../../../../../components/drivers_nrf/hal/nrf_peripherals.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_spim.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_gpio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdlib.h \
  ../../../../../../../components/drivers_nrf/delay/nrf_delay.h \
  ../../../../../../../components/libraries/experimental_log/nrf_log.h \
  ../../../../../../../components/libraries/util/sdk_common.h \

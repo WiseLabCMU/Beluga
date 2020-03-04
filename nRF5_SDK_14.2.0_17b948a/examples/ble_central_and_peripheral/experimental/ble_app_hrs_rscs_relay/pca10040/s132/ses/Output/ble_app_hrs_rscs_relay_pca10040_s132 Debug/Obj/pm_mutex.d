@@ -1,10 +1,10 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/pm_mutex.o: \
- C:\Users\vikra\Downloads\DeviceDownload\nRF5_SDK_14.2.0_17b948a\components\ble\peer_manager\pm_mutex.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\components\ble\peer_manager\pm_mutex.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
  ../config/sdk_config.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/device/compiler_abstraction.h \
@@ -12,7 +12,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/pm_mutex.o: \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/libraries/util/app_util.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
  ../../../../../../../components/device/nrf.h \
  ../../../../../../../components/device/nrf52.h \
  ../../../../../../../components/toolchain/cmsis/include/core_cm4.h \
@@ -26,7 +26,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/pm_mutex.o: \
  ../../../../../../../components/device/nrf52_name_change.h \
  ../../../../../../../components/device/compiler_abstraction.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
- C:\Users\vikra\Downloads\DeviceDownload\nRF5_SDK_14.2.0_17b948a\components\ble\peer_manager\pm_mutex.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\components\ble\peer_manager\pm_mutex.h \
  ../../../../../../../components/libraries/util/app_util_platform.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_soc.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
@@ -35,5 +35,5 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/pm_mutex.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
  ../../../../../../../components/libraries/util/app_error_weak.h

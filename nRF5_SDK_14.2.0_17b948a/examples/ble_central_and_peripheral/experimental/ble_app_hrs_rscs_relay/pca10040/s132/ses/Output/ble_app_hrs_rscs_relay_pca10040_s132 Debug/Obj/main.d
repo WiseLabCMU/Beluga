@@ -1,16 +1,16 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/main.o: \
- C:\Users\vikra\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\main.c \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\main.c \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/softdevice/common/nrf_sdh.h \
  ../config/sdk_config.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/libraries/experimental_section_vars/nrf_section_iter.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
  ../../../../../../../components/libraries/experimental_section_vars/nrf_section.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/device/nrf.h \
@@ -26,7 +26,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/main.o: \
  ../../../../../../../components/device/nrf52_name_change.h \
  ../../../../../../../components/device/compiler_abstraction.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
@@ -70,7 +70,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/main.o: \
  ../../../../../../../components/drivers_nrf/hal/nrf_gpio.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_peripherals.h \
  ../../../../../../../components/device/nrf52832_peripherals.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdlib.h \
  ../../../../../../../components/boards/dw1001_dev.h \
  ../../../../../../../components/libraries/button/app_button.h \
  ../../../../../../../components/ble/common/ble_advdata.h \
@@ -131,4 +131,4 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/main.o: \
  ../../../../../../../UART/uart.h \
  ../../../../../../../components/drivers_nrf/gpiote/nrf_drv_gpiote.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_gpiote.h \
- C:\Users\vikra\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.h
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.h
