@@ -275,8 +275,7 @@ static ble_gap_conn_params_t const m_connection_param =
     SUPERVISION_TIMEOUT
 };
 
-uint16_t seen_list[MAX_ANCHOR_COUNT];
-int last_seen_idx = 0;
+
 
 
 
@@ -287,7 +286,12 @@ typedef struct node{
     float range;
 } node;
 
+node seen_list[MAX_ANCHOR_COUNT];
+int last_seen_idx = 0;
 
+
+
+/*
 bool in_list(int i)
 {
   for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
@@ -296,7 +300,7 @@ bool in_list(int i)
   }
   return false;
 }
-
+*/
 
 void print_seen_list()
 {
@@ -304,7 +308,7 @@ void print_seen_list()
   printf("#######################\r\n");
   for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
   {
-    printf("%d = %d\r\n", j, seen_list[j]);
+    printf("%d) UUID: %d RSSI: %d Time Stamp: %d \r\n",j, seen_list[j].UUID, seen_list[j].RSSI, seen_list[j].time_stamp);
   }
   printf("#######################\r\n");
 }
@@ -767,7 +771,7 @@ static bool find_adv_uuid(ble_gap_evt_adv_report_t const * p_adv_report, uint16_
 }
 
 
-static bool find_adv_uuid_next(ble_gap_evt_adv_report_t const * p_adv_report, uint16_t indicator, uint16_t uuid_to_find)
+static uint16_t find_adv_uuid_next(ble_gap_evt_adv_report_t const * p_adv_report, uint16_t indicator)
 {
     ret_code_t err_code;
     data_t     adv_data;
@@ -791,7 +795,7 @@ static bool find_adv_uuid_next(ble_gap_evt_adv_report_t const * p_adv_report, ui
         if (err_code != NRF_SUCCESS)
         {
             // If we can't parse the data, then exit.
-            return false;
+            return -1;
         }
     }
 
@@ -805,10 +809,11 @@ static bool find_adv_uuid_next(ble_gap_evt_adv_report_t const * p_adv_report, ui
         {
             UUID16_EXTRACT(&extracted_uuid, &type_data.p_data[(i+1) * UUID16_SIZE]);
 
-            if(extracted_uuid == uuid_to_find) return true;
+            return extracted_uuid;
+            //if(extracted_uuid == uuid_to_find) return true;
         }
     }
-    return false;
+    return -1;
 }
 
 
@@ -917,25 +922,22 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
 
 
                      */
+                     
+                     
+                     if(!in_list( 
+                     printf("found\r\n");
+                     uint16_t indicator = 1800;
+                     seen_list[last_seen_idx].UUID = find_adv_uuid_next(&p_gap_evt->params.adv_report,indicator);
+                     seen_list[last_seen_idx].RSSI = &p_gap_evt->params.rssi_changed.rssi;
+                     seen_list[last_seen_idx].time_stamp = app_timer_cnt_get();
+
+                      last_seen_idx += 1;
+                      last_seen_idx %= MAX_ANCHOR_COUNT;
 
 
 
 
-                    for (int i = 0; i < MAX_ANCHOR_COUNT; i++)
-                    {
-                      uint16_t indicator = 0x01;
-                      if(find_adv_uuid_next(&p_gap_evt->params.adv_report,indicator, i) && !in_list(i) )
-                        {
-                          printf("not in list \r\n");
-                          //Add to last seen list
-                          seen_list[last_seen_idx] = i;
-                          last_seen_idx++;
-                          last_seen_idx %= MAX_ANCHOR_COUNT;
-                          //Initiate Ranging
-                          range_flag = 1;
-                          //ss_init_run();
-                        }
-                    }
+                   
                     // Initiate connection.
                     /*
                     err_code = sd_ble_gap_connect(&p_gap_evt->params.adv_report.peer_addr,
@@ -1551,12 +1553,12 @@ void vInterruptInit (void)
 }
 
 
-APP_TIMER_DEF(m_repeated_timer_id);     /**< Handler for repeated timer used to blink LED 1. */
+APP_TIMER_DEF(m_timestamp_keeper);    /**< Handler for repeated timer used to blink LED 1. */
 APP_TIMER_DEF(m_repeated_timer_id_1);
 
 /**@brief Timeout handler for the repeated timer.
  */
-static void repeated_timer_handler(void * p_context)
+static void timestamp_handler(void * p_context)
 {
     //nrf_drv_gpiote_out_toggle(LED_1);
     print_seen_list();
@@ -1591,15 +1593,18 @@ static void lfclk_request(void)
 int main(void)
 {
 
-    /*
-    adv_manuf_data_data[0] = 0x00;
-    adv_manuf_data_data[1] = 0x01;
-    adv_manuf_data_data[2] = 0x02;
-    */
+    for(int i = 0; i < MAX_ANCHOR_COUNT; i++)
+    {
+      seen_list[i].UUID = 0;
+      seen_list[i].RSSI = 0;
+      seen_list[i].time_stamp = 0;
+    }
+
+
     mode = INITIATOR;
     bool erase_bonds;
     range_flag = 0;
-    memset(seen_list, 8, 8*sizeof(seen_list[0]) );
+    
     vInterruptInit();
     boUART_Init();
     //log_init();
@@ -1618,17 +1623,17 @@ int main(void)
 
 
 
-    ret_code_t c1 = app_timer_create(&m_repeated_timer_id, APP_TIMER_MODE_REPEATED, repeated_timer_handler);
-    ret_code_t s1 =  app_timer_start(m_repeated_timer_id,APP_TIMER_TICKS(1000) , NULL);
+    ret_code_t create_timer = app_timer_create(&m_timestamp_keeper, APP_TIMER_MODE_REPEATED, timestamp_handler);
+    ret_code_t start_timer =  app_timer_start(m_timestamp_keeper, APP_TIMER_TICKS(1000) , NULL);
   
-    //int (*ss_init)(void) = &ss_init_run; 
-    printf("%u %u %u\r\n",c1,s1, NRF_SUCCESS);
-
     
-
+    
+    /*
     ret_code_t c2 = app_timer_create(&m_repeated_timer_id_1, APP_TIMER_MODE_REPEATED, repeated_timer_handler_1);
     ret_code_t s2 = app_timer_start(m_repeated_timer_id_1,APP_TIMER_TICKS(1000) ,NULL);
     printf("%u %u %u\r\n",c2,s2, NRF_SUCCESS);
+
+    */
 
     LEDS_CONFIGURE(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK);
     LEDS_ON(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK );
