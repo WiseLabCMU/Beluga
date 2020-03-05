@@ -1,10 +1,10 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_log_backend_uart.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\components\libraries\experimental_log\src\nrf_log_backend_uart.c \
+ C:\Users\vikra\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\components\libraries\experimental_log\src\nrf_log_backend_uart.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
  ../config/sdk_config.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/device/compiler_abstraction.h \
@@ -12,7 +12,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_log_backend_uart.o: \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/libraries/util/app_util.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
  ../../../../../../../components/device/nrf.h \
  ../../../../../../../components/device/nrf52.h \
  ../../../../../../../components/toolchain/cmsis/include/core_cm4.h \

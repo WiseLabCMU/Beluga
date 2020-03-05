@@ -136,7 +136,7 @@ static int mode;
 #define CENTRAL_SCANNING_LED            BSP_BOARD_LED_0
 #define CENTRAL_CONNECTED_LED           BSP_BOARD_LED_1
 
-#define DEVICE_NAME                     "Master"                                     /**< Name of device used for advertising. */
+#define DEVICE_NAME                     "Node"                                     /**< Name of device used for advertising. */
 #define MANUFACTURER_NAME               "NordicSemiconductor"                       /**< Manufacturer. Will be passed to Device Information Service. */
 #define APP_ADV_INTERVAL                300                                         /**< The advertising interval (in units of 0.625 ms). This value corresponds to 187.5 ms. */
 #define APP_ADV_TIMEOUT_IN_SECONDS      180                                         /**< The advertising timeout in units of seconds. */
@@ -220,15 +220,15 @@ static char const m_target_periph_name[] = "Node";
 #define MAX_ANCHOR_COUNT 8
 
 static int range_flag;
-#define BLE_UUID_SYSTEM_ADDED             0x2800
-#define BLE_INDICATOR 0x01 
+#define NODE_ID             0x1000
+#define UUID_INDICATOR 0x1800 
 #define BLE_UWB_RANGE0 0x0000
 #define BLE_UWB_RANGE1 0x0000
 #define BLE_UWB_RANGE2 0x0000
 static ble_uuid_t m_adv_uuids[] =
 {
-    {BLE_INDICATOR              , BLE_UUID_TYPE_BLE},
-    {BLE_UUID_SYSTEM_ADDED      , BLE_UUID_TYPE_BLE}
+    {UUID_INDICATOR              , BLE_UUID_TYPE_BLE},
+    {NODE_ID      , BLE_UUID_TYPE_BLE}
     //{BLE_UWB_RANGE0             , BLE_UUID_TYPE_BLE},
     //{BLE_UWB_RANGE1             , BLE_UUID_TYPE_BLE},
     //{BLE_UWB_RANGE2             , BLE_UUID_TYPE_BLE}
@@ -771,7 +771,7 @@ static bool find_adv_uuid(ble_gap_evt_adv_report_t const * p_adv_report, uint16_
 }
 
 
-static uint16_t find_adv_uuid_next(ble_gap_evt_adv_report_t const * p_adv_report, uint16_t indicator)
+static uint16_t find_adv_uuid_next(ble_gap_evt_adv_report_t const * p_adv_report)
 {
     ret_code_t err_code;
     data_t     adv_data;
@@ -805,7 +805,7 @@ static uint16_t find_adv_uuid_next(ble_gap_evt_adv_report_t const * p_adv_report
         uint16_t extracted_uuid;
         UUID16_EXTRACT(&extracted_uuid, &type_data.p_data[i * UUID16_SIZE]);
 
-        if (extracted_uuid == indicator)
+        if (extracted_uuid == UUID_INDICATOR)
         {
             UUID16_EXTRACT(&extracted_uuid, &type_data.p_data[(i+1) * UUID16_SIZE]);
 
@@ -929,13 +929,13 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
                      - Get Current Timestamp
                      */
 
-                     uint16_t indicator = 0x1801;
-
-                     if(!in_seen_list(find_adv_uuid_next(&p_gap_evt->params.adv_report,indicator))){
+                     
+                     uint16_t found_UUID = find_adv_uuid_next(&p_gap_evt->params.adv_report);
+                     if(found_UUID != NODE_ID && !in_seen_list(found_UUID)){
 
                        printf("found\r\n");
                        
-                       seen_list[last_seen_idx].UUID = find_adv_uuid_next(&p_gap_evt->params.adv_report,indicator);
+                       seen_list[last_seen_idx].UUID = found_UUID;
                        seen_list[last_seen_idx].RSSI = &p_gap_evt->params.rssi_changed.rssi;
                        seen_list[last_seen_idx].time_stamp = app_timer_cnt_get();
 
@@ -1564,7 +1564,7 @@ void vInterruptInit (void)
 
 
 APP_TIMER_DEF(m_timestamp_keeper);    /**< Handler for repeated timer used to blink LED 1. */
-APP_TIMER_DEF(m_repeated_timer_id_1);
+APP_TIMER_DEF(m_ble_switch);
 
 /**@brief Timeout handler for the repeated timer.
  */
@@ -1576,18 +1576,34 @@ static void timestamp_handler(void * p_context)
     
 }
 
-static void repeated_timer_handler_1(void* p_context)
+static int role;
+#define SCANNER 1
+#define ADVERTISER 0
+
+static void switch_ble(void* p_context)
 {
-    //nrf_drv_gpiote_out_toggle(LED_1);
-    //printf("Here\r\n");
     
+    if(role == ADVERTISER)
+    {
+      printf("Switching to SCANNER\r\n");
+      sd_ble_gap_adv_stop();
+      sd_ble_gap_scan_start(&m_scan_params);
+      
+      role = SCANNER;
+    }
     
+    else{
+      printf("Switching to ADVERTISER\r\n");
+      //wait for specified amount of time
+      //Start Advertising again and stop scanning
+      sd_ble_gap_scan_stop();
+      ble_advertising_start(&m_advertising, BLE_ADV_MODE_FAST);
+      //stop scanning
+      
+      role = ADVERTISER;
+    }
 
-    //ss_init_run();
-
-    LEDS_INVERT(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK );
-    range_flag = 1;
-    //printf("The beat go off?\r\n");
+    
     
 }
 
@@ -1618,12 +1634,13 @@ bool in_seen_list(uint16_t UUID){
 
 int main(void)
 {
-
+    role = ADVERTISER;
     for(int i = 0; i < MAX_ANCHOR_COUNT; i++)
     {
       seen_list[i].UUID = 0;
       seen_list[i].RSSI = 0;
       seen_list[i].time_stamp = 0;
+      seen_list[i].range = 0;
     }
 
 
@@ -1654,12 +1671,13 @@ int main(void)
   
     
     
-    /*
-    ret_code_t c2 = app_timer_create(&m_repeated_timer_id_1, APP_TIMER_MODE_REPEATED, repeated_timer_handler_1);
-    ret_code_t s2 = app_timer_start(m_repeated_timer_id_1,APP_TIMER_TICKS(1000) ,NULL);
-    printf("%u %u %u\r\n",c2,s2, NRF_SUCCESS);
+    
+    ret_code_t c2 = app_timer_create(&m_ble_switch, APP_TIMER_MODE_REPEATED, switch_ble);
+    ret_code_t s2 = app_timer_start(m_ble_switch,APP_TIMER_TICKS(5000) ,NULL);
 
-    */
+    
+
+    
 
     LEDS_CONFIGURE(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK);
     LEDS_ON(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK );
@@ -1708,18 +1726,39 @@ int main(void)
     }
     else
     {
-        adv_scan_start();
+        //adv_scan_start();
     }
     int count = 0;
     NRF_LOG_INFO("Relay example started.");
     
+
+    int switching_timer; //Switching Between BLE scanner/broadcaster
+    int x = 1;
     while(1) 
     {
-     
+        
+
+
         if (NRF_LOG_PROCESS() == false)
         {
-
-           
+            power_manage();
+            nrf_delay_ms(1000);
+            //first, stop advertising and continue scanning;
+            if(x == 1)
+            {
+              
+              sd_ble_gap_scan_start(&m_scan_params);
+              sd_ble_gap_adv_stop();
+              nrf_delay_ms(5000);
+              //wait for specified amount of time
+              //Start Advertising again and stop scanning
+              ble_advertising_start(&m_advertising, BLE_ADV_MODE_FAST);
+              //stop scanning
+              sd_ble_gap_scan_stop();
+              
+              x = 0;
+              }
+             /*
              if(range_flag == 1)
              {
 
@@ -1732,15 +1771,10 @@ int main(void)
               {
                 ds_init_run();
               }
-
-
               range_flag = 0;
             }
-           
-
-
+            */
             
-            power_manage();
         }
     }
     

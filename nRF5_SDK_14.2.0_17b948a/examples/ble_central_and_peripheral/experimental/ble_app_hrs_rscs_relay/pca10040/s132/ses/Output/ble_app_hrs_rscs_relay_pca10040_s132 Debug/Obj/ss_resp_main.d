@@ -1,6 +1,7 @@
-Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/queue.o: \
- C:\Users\vikra\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\external\freertos\source\queue.c \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h \
+Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/ss_resp_main.o: \
+ C:\Users\vikra\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_resp_main.c \
+ ../config/sdk_config.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
  ../../../../../../../external/freertos/source/include/FreeRTOS.h \
@@ -29,10 +30,8 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/queue.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
- ../config/sdk_config.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
@@ -45,4 +44,29 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/queue.o: \
  ../../../../../../../external/freertos/source/include/mpu_wrappers.h \
  ../../../../../../../external/freertos/source/include/task.h \
  ../../../../../../../external/freertos/source/include/list.h \
- ../../../../../../../external/freertos/source/include/queue.h
+ ../../../../../../../deca_driver/deca_device_api.h \
+ ../../../../../../../deca_driver/deca_regs.h \
+ ../../../../../../../deca_driver/deca_version.h \
+ ../../../../../../../deca_driver/port/port_platform.h \
+ ../../../../../../../deca_driver/deca_types.h \
+ ../../../../../../../components/drivers_nrf/spi_master/nrf_drv_spi.h \
+ ../../../../../../../components/libraries/util/nordic_common.h \
+ ../../../../../../../components/drivers_nrf/hal/nrf_peripherals.h \
+ ../../../../../../../components/device/nrf52832_peripherals.h \
+ ../../../../../../../components/libraries/util/sdk_errors.h \
+ ../../../../../../../components/drivers_nrf/hal/nrf_spi.h \
+ ../../../../../../../components/drivers_nrf/hal/nrf_peripherals.h \
+ ../../../../../../../components/drivers_nrf/hal/nrf_spim.h \
+ ../../../../../../../components/drivers_nrf/hal/nrf_gpio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h \
+ ../../../../../../../components/drivers_nrf/delay/nrf_delay.h \
+ ../../../../../../../components/libraries/experimental_log/nrf_log.h \
+ ../../../../../../../components/libraries/util/sdk_common.h \
+ ../../../../../../../components/libraries/util/sdk_os.h \
+ ../../../../../../../components/libraries/util/app_util.h \
+ ../../../../../../../components/libraries/util/sdk_macros.h \
+ ../../../../../../../components/libraries/experimental_section_vars/nrf_section.h \
+ ../../../../../../../components/libraries/experimental_log/src/nrf_log_internal.h \
+ ../../../../../../../components/boards/boards.h \
+ ../../../../../../../components/boards/dw1001_dev.h \
+ ../../../../../../../components/libraries/util/app_error.h
