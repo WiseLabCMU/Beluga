@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/ble_rscs.o: \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\ble\ble_services\ble_rscs\ble_rscs.c \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\ble\ble_services\ble_rscs\ble_rscs.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
@@ -26,7 +26,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/ble_rscs.o: \
  ../../../../../../../components/device/nrf52_name_change.h \
  ../../../../../../../components/device/compiler_abstraction.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\ble\ble_services\ble_rscs\ble_rscs.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\ble\ble_services\ble_rscs\ble_rscs.h \
  ../../../../../../../components/ble/common/ble_srv_common.h \
  ../../../../../../../components/softdevice/s132/headers/ble_types.h \
  ../../../../../../../components/libraries/util/app_util.h \

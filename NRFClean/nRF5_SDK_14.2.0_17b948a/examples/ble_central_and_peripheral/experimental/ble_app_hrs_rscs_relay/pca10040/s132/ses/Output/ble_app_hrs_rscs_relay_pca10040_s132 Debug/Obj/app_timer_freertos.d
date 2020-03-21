@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/app_timer_freertos.o: \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\timer\app_timer_freertos.c \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\timer\app_timer_freertos.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
@@ -50,7 +50,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/app_timer_freertos.o: \
  ../../../../../../../external/freertos/source/include/list.h \
  ../../../../../../../external/freertos/source/include/timers.h \
  ../../../../../../../external/freertos/source/include/task.h \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\timer\app_timer.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\timer\app_timer.h \
  ../../../../../../../components/libraries/util/app_error.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h

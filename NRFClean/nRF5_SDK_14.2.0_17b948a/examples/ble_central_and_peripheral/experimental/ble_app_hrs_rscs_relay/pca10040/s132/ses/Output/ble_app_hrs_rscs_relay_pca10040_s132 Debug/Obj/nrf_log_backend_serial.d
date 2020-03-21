@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_log_backend_serial.o: \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\experimental_log\src\nrf_log_backend_serial.c \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\experimental_log\src\nrf_log_backend_serial.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
@@ -26,7 +26,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_log_backend_serial.o:
  ../../../../../../../components/device/nrf52_name_change.h \
  ../../../../../../../components/device/compiler_abstraction.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\experimental_log\src\nrf_log_backend_serial.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\experimental_log\src\nrf_log_backend_serial.h \
  ../../../../../../../components/libraries/experimental_log/nrf_log_backend_interface.h \
  ../../../../../../../components/libraries/experimental_memobj/nrf_memobj.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h \
@@ -48,4 +48,4 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_log_backend_serial.o:
  ../../../../../../../components/libraries/experimental_log/nrf_log_ctrl.h \
  ../../../../../../../components/libraries/experimental_log/src/nrf_log_ctrl_internal.h \
  ../../../../../../../components/libraries/experimental_log/nrf_log_backend_interface.h \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\experimental_log\src\nrf_log_internal.h
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\experimental_log\src\nrf_log_internal.h

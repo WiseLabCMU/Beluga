@@ -1,6 +1,6 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/bsp_btn_ble.o: \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\bsp\bsp_btn_ble.c \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\bsp\bsp_btn_ble.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\bsp\bsp_btn_ble.c \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\bsp\bsp_btn_ble.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  ../../../../../../../components/softdevice/s132/headers/ble.h \
  ../../../../../../../components/softdevice/s132/headers/ble_ranges.h \
@@ -25,7 +25,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/bsp_btn_ble.o: \
  ../../../../../../../components/device/nrf52_name_change.h \
  ../../../../../../../components/device/compiler_abstraction.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gatts.h \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\bsp\bsp.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\bsp\bsp.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
  ../../../../../../../components/boards/boards.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_gpio.h \

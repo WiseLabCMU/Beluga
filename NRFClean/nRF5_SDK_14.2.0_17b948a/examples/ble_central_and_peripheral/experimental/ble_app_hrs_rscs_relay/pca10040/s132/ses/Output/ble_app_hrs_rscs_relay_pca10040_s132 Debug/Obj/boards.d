@@ -1,6 +1,6 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/boards.o: \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\boards\boards.c \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\boards\boards.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\boards\boards.c \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\boards\boards.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_gpio.h \
  ../../../../../../../components/device/nrf.h \
  ../../../../../../../components/device/nrf52.h \
@@ -28,4 +28,4 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/boards.o: \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\boards\pca10040.h
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\boards\pca10040.h

@@ -1,7 +1,7 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_sdh_freertos.o: \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\softdevice\common\nrf_sdh_freertos.c \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\softdevice\common\nrf_sdh_freertos.h \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\softdevice\common\nrf_sdh.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\softdevice\common\nrf_sdh_freertos.c \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\softdevice\common\nrf_sdh_freertos.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\softdevice\common\nrf_sdh.h \
  ../config/sdk_config.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \

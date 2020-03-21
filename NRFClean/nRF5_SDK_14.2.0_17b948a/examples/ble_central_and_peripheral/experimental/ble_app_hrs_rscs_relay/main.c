@@ -1490,7 +1490,7 @@ int main(void)
 
     
     
-    nrf_sdh_freertos_init(scanning_start, &erase_bonds);
+    //nrf_sdh_freertos_init(scanning_start, &erase_bonds);
     
     nrf_sdh_freertos_init(advertising_start, &erase_bonds);
     
@@ -1498,10 +1498,13 @@ int main(void)
 
     //nrf_sdh_freertos_init(advertising_start, &erase_bonds);
     // Start FreeRTOS scheduler.
+    NRF_LOG_INFO("Hello!");
     vTaskStartScheduler();
     while (true)
     {
         APP_ERROR_HANDLER(NRF_ERROR_FORBIDDEN);
+        NRF_LOG_INFO("Hello!");
+        
     }
 
 

@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_drv_gpiote.o: \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\drivers_nrf\gpiote\nrf_drv_gpiote.c \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\drivers_nrf\gpiote\nrf_drv_gpiote.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
@@ -26,7 +26,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_drv_gpiote.o: \
  ../../../../../../../components/device/nrf52_name_change.h \
  ../../../../../../../components/device/compiler_abstraction.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\drivers_nrf\gpiote\nrf_drv_gpiote.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\drivers_nrf\gpiote\nrf_drv_gpiote.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_gpiote.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_peripherals.h \
  ../../../../../../../components/device/nrf52832_peripherals.h \

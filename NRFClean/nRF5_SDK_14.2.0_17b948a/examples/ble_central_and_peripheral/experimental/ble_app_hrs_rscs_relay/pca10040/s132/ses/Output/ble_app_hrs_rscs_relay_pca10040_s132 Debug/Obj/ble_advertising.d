@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/ble_advertising.o: \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\ble\ble_advertising\ble_advertising.c \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\ble\ble_advertising\ble_advertising.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
@@ -39,7 +39,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/ble_advertising.o: \
  ../../../../../../../components/softdevice/s132/headers/ble_gattc.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gatts.h \
  ../../../../../../../components/libraries/util/app_util.h \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\ble\ble_advertising\ble_advertising.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\ble\ble_advertising\ble_advertising.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gattc.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_soc.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \

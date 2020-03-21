@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_atfifo.o: \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\atomic_fifo\nrf_atfifo.c \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\atomic_fifo\nrf_atfifo.c \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
  ../../../../../../../components/libraries/util/app_util.h \
@@ -20,7 +20,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_atfifo.o: \
  ../../../../../../../components/device/nrf51_to_nrf52.h \
  ../../../../../../../components/device/nrf52_name_change.h \
  ../../../../../../../components/device/compiler_abstraction.h \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\atomic_fifo\nrf_atfifo.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\atomic_fifo\nrf_atfifo.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/util/app_error.h \
@@ -29,4 +29,4 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_atfifo.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
- C:\Users\vikra\Downloads\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\atomic_fifo\nrf_atfifo_internal.h
+ C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\atomic_fifo\nrf_atfifo_internal.h
