@@ -25,9 +25,6 @@
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Application"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Board Definition"/>
-  <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Board Support"/>
-  <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Decadriver"/>
-  <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Device"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Freertos"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;nRF_BLE"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;nRF_BLE_Services"/>
@@ -71,7 +68,7 @@
  </Watch4>
  <Files>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="2159" useTextEdit="1" useBinaryEdit="0" left="0" path="../config/sdk_config.h" selected="0" top="2146" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="1943" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="1" top="1885" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="16" y="32" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="1" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="44" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/port/port_platform.h" selected="0" top="24" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="160" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/port/port_platform.c" selected="0" top="149" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="39" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/drivers_nrf/spi_master/nrf_drv_spi.h" selected="0" top="24" codecName="Default"/>
@@ -108,7 +105,6 @@
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="146" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/fprintf/nrf_fprintf_format.c" selected="0" top="118" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/fprintf/nrf_fprintf.c" selected="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="104" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/toolchain/ses/ses_nRF_Startup - Copy.s" selected="0" top="81" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../../components/libraries/fifo/app_fifo.c" selected="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="124" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/util/sdk_mapped_flags.c" selected="0" top="103" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/experimental_log/src/nrf_log_str_formatter.c" selected="0" top="93" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="12" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/deca_types.h" selected="0" top="0" codecName="Default"/>
@@ -127,10 +123,10 @@
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ds_resp_main.c" selected="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="109" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../../../../Downloads/dwm1001-examples-master/dwm1001-examples-master/examples/ss_twr_resp/ss_resp_main.c" selected="0" top="87" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="257" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../../../dwm1001-examples/examples/ss_twr_resp/ss_resp_main.c" selected="0" top="219" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="139" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_resp_main.c" selected="0" top="55" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="139" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_resp_main.c" selected="0" top="146" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="344" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/source/include/task.h" selected="0" top="317" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="202" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/util/nordic_common.h" selected="0" top="175" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="96" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/util/app_error_weak.c" selected="0" top="54" codecName="Default"/>
  </Files>
- <ARMCrossStudioWindow activeProject="ble_app_hrs_rscs_relay_pca10040_s132" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/Users/vikra/Desktop/decawave-ble/nRF5_SDK_14.2.0_17b948a/components/toolchain/cmsis/include" debugSearchPath="" autoConnectCapabilities="3199"/>
+ <ARMCrossStudioWindow activeProject="ble_app_hrs_rscs_relay_pca10040_s132" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/Users/vikra/Desktop/decawave-ble/nRF5_SDK_14.2.0_17b948a/components/toolchain/cmsis/include" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>

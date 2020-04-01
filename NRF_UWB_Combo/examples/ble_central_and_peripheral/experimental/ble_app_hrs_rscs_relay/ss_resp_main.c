@@ -17,7 +17,6 @@
 *
 * @author Decawave
 */
-#include "sdk_config.h" 
 #include <stdio.h>
 #include <string.h>
 #include "FreeRTOS.h"
@@ -25,14 +24,20 @@
 #include "deca_device_api.h"
 #include "deca_regs.h"
 #include "port_platform.h"
+#include "ss_init_main.h"
+#include "semphr.h"
 
-/* Inter-ranging delay period, in milliseconds. See NOTE 1*/
-#define RNG_DELAY_MS 80
+#define APP_NAME "SS TWR INIT v1.3"
+
+/* Inter-ranging delay period, in milliseconds. */
+#define RNG_DELAY_MS 250
+
+/* Frames used in the ranging process. See NOTE 1,2 below. */
 
 /* Frames used in the ranging process. See NOTE 2,3 below. */
 static uint8 rx_poll_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0xE0, 0, 0};
 static uint8 tx_resp_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0xE1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
+/* Length of the common part of the message (up to and including the function code, see NOTE 1 below). */
 /* Length of the common part of the message (up to and including the function code, see NOTE 3 below). */
 #define ALL_MSG_COMMON_LEN 8
 
@@ -83,6 +88,19 @@ typedef unsigned long long uint64;
 static uint64 poll_rx_ts;
 static uint64 resp_tx_ts;
 
+///*Interrupt flag*/
+//static volatile int tx_int_flag = 0 ; // Transmit success interrupt flag
+//static volatile int rx_int_flag = 0 ; // Receive success interrupt flag
+//static volatile int to_int_flag = 0 ; // Timeout interrupt flag
+//static volatile int er_int_flag = 0 ; // Error interrupt flag 
+//SemaphoreHandle_t rxSemaphore, txSemaphore;
+
+
+/*Transactions Counters */
+static volatile int tx_count = 0 ; // Successful transmit counter
+static volatile int rx_count = 0 ; // Successful receive counter 
+
+
 /*! ------------------------------------------------------------------------------------------------------------------
 * @fn main()
 *
@@ -92,16 +110,21 @@ static uint64 resp_tx_ts;
 *
 * @return none
 */
-
 int ss_resp_run(void)
 {
-
+  printf("Entered \r\n");
   /* Activate reception immediately. */
   dwt_rxenable(DWT_START_RX_IMMEDIATE);
 
   /* Poll for reception of a frame or error/timeout. See NOTE 5 below. */
-  while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
-  {};
+  //while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
+  //{};
+
+  //while (!(rx_int_flag || to_int_flag|| er_int_flag))
+  //{};
+  printf("taking sem\r\n");
+  xSemaphoreTake(rxSemaphore, portMAX_DELAY);
+  printf("got sem\r\n");
 
     #if 0	  // Include to determine the type of timeout if required.
     int temp = 0;
@@ -112,13 +135,15 @@ int ss_resp_run(void)
     temp =2;
     #endif
 
-  if (status_reg & SYS_STATUS_RXFCG)
+  //if (status_reg & SYS_STATUS_RXFCG)
+  if(rx_int_flag)
   {
+    printf("good\r\n");
     uint32 frame_len;
 
     /* Clear good RX frame event in the DW1000 status register. */
-    dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG);
-
+    //dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG);
+    rx_int_flag = 0;
     /* A frame has been received, read it into the local buffer. */
     frame_len = dwt_read32bitreg(RX_FINFO_ID) & RX_FINFO_RXFL_MASK_1023;
     if (frame_len <= RX_BUFFER_LEN)
@@ -153,24 +178,29 @@ int ss_resp_run(void)
       dwt_writetxdata(sizeof(tx_resp_msg), tx_resp_msg, 0); /* Zero offset in TX buffer. See Note 5 below.*/
       dwt_writetxfctrl(sizeof(tx_resp_msg), 0, 1); /* Zero offset in TX buffer, ranging. */
       ret = dwt_starttx(DWT_START_TX_DELAYED);
-
+      //
       //ret = dwt_starttx(DWT_START_TX_IMMEDIATE);
 
       /* If dwt_starttx() returns an error, abandon this ranging exchange and proceed to the next one. */
       if (ret == DWT_SUCCESS)
       {
       /* Poll DW1000 until TX frame sent event set. See NOTE 5 below. */
-      while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
-      {};
+      //while(!tx_int_flag)
+      //{};
+      xSemaphoreTake(txSemaphore, portMAX_DELAY);
+
+      //while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
+      //{};
 
       /* Clear TXFRS event. */
       dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
-
+      tx_int_flag = 0;
       /* Increment frame sequence number after transmission of the poll message (modulo 256). */
       frame_seq_nb++;
       }
       else
       {
+
       /* If we end up in here then we have not succeded in transmitting the packet we sent up.
       POLL_RX_TO_RESP_TX_DLY_UUS is a critical value for porting to different processors. 
       For slower platforms where the SPI is at a slower speed or the processor is operating at a lower 
@@ -189,13 +219,16 @@ int ss_resp_run(void)
   {
     /* Clear RX error events in the DW1000 status register. */
     dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
-
+    
     /* Reset RX to properly reinitialise LDE operation. */
     dwt_rxreset();
+    to_int_flag  = 0;
+    er_int_flag = 0;
   }
 
   return(1);		
 }
+
 
 /*! ------------------------------------------------------------------------------------------------------------------
 * @fn get_rx_timestamp_u64()
@@ -242,7 +275,25 @@ static void resp_msg_set_ts(uint8 *ts_field, const uint64 ts)
 }
 
 
+/**@brief SS TWR Initiator task entry function.
+*
+* @param[in] pvParameter   Pointer that will be used as the parameter for the task.
+*/
+void ss_responder_task_function (void * pvParameter)
+{
+  UNUSED_PARAMETER(pvParameter);
+  printf("HERE\r\n");
+  dwt_setleds(DWT_LEDS_ENABLE);
 
+
+  while (true)
+  {
+    ss_resp_run();
+    /* Delay a task for a given number of ticks */
+    vTaskDelay(RNG_DELAY_MS);
+    /* Tasks must be implemented to never return... */
+  }
+}
 /*****************************************************************************************************************************************************
 * NOTES:
 *

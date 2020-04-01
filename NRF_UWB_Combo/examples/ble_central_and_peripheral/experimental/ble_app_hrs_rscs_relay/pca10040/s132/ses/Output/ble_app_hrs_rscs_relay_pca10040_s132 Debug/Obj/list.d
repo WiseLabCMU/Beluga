@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/list.o: \
- C:\Users\vikra\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\external\freertos\source\list.c \
+ C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\external\freertos\source\list.c \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
  ../../../../../../../external/freertos/source/include/FreeRTOS.h \

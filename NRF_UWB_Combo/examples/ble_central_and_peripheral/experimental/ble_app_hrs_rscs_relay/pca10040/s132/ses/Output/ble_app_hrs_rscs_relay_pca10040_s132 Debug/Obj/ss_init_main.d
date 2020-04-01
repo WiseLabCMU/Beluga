@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/ss_init_main.o: \
- C:\Users\vikra\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.c \
+ C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.c \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
@@ -69,4 +69,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/ss_init_main.o: \
  ../../../../../../../components/libraries/experimental_log/src/nrf_log_internal.h \
  ../../../../../../../components/boards/boards.h \
  ../../../../../../../components/boards/dw1001_dev.h \
- ../../../../../../../components/libraries/util/app_error.h
+ ../../../../../../../components/libraries/util/app_error.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.h \
+ ../../../../../../../external/freertos/source/include/semphr.h \
+ ../../../../../../../external/freertos/source/include/queue.h

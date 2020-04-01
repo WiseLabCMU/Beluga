@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/hardfault_implementation.o: \
- C:\Users\vikra\Desktop\decawave-ble\nRF5_SDK_14.2.0_17b948a\components\libraries\hardfault\hardfault_implementation.c \
+ C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\hardfault\hardfault_implementation.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \

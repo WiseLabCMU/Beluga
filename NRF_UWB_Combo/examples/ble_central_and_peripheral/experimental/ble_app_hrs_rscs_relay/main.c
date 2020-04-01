@@ -343,10 +343,17 @@ static dwt_config_t config = {
 #define TX_ANT_DLY 16300
 #define RX_ANT_DLY 16456
 
-extern int ss_init_run();	
-extern int ds_init_run(void);	
-extern float ds_resp_run(void);	
-extern int ss_resp_run(void);
+
+SemaphoreHandle_t rxSemaphore, txSemaphore;
+volatile int tx_int_flag = 0 ; // Transmit success interrupt flag
+volatile int rx_int_flag = 0 ; // Receive success interrupt flag
+volatile int to_int_flag = 0 ; // Timeout interrupt flag
+volatile int er_int_flag = 0 ; // Error interrupt flag 
+
+
+
+
+
 //--------------dw1000---end---------------
 /**@brief Function to handle asserts in the SoftDevice.
  *
@@ -1641,51 +1648,17 @@ static int milliseconds_since_start;
 
 
 
-void ss_responder_task_function (void * pvParameter)
-{
-  UNUSED_PARAMETER(pvParameter);
 
-  dwt_setleds(DWT_LEDS_ENABLE);
-  
-  while (true)
-  {
-    //xSemaphoreTake(uwbSem, portMAX_DELAY);
-    ss_resp_run();
-    //printf("FINISHED\r\n");
-    /* Delay a task for a given number of ticks */
-    //xSemaphoreGive(uwbSem);
-    vTaskDelay(80);
-    /* Tasks must be implemented to never return... */
-
-  }
-}
-
-
-static int init_done = 0;
-
-void ss_initiator_task_function (void * pvParameter)
-{
-  UNUSED_PARAMETER(pvParameter);
-
-  //dwt_setrxtimeout(RESP_RX_TIMEOUT_UUS);
-
-  dwt_setleds(DWT_LEDS_ENABLE);
-
-  ss_init_run();
-    /* Delay a task for a given number of ticks */
-  vTaskDelay(80);
-    /* Tasks must be implemented to never return... */
-  init_done = 1;
-}
-
-
+static int second_timer = 0;
 
 static void switch_uwb(void* p_context)
 {
-   
-    milliseconds_since_start += 1;
-    
+   //printf("Switch called\r\n");
+   second_timer += 1;
 }
+
+
+
 
 
 static void lfclk_request(void)
@@ -1728,12 +1701,16 @@ static void led_toggle_task_function (void * pvParameter)
 }
 
 
+void tx_conf_cb(const dwt_cb_data_t *cb_data);
+void rx_ok_cb(const dwt_cb_data_t *cb_data);
+void rx_to_cb(const dwt_cb_data_t *cb_data);
+void rx_err_cb(const dwt_cb_data_t *cb_data);
 
 
 void resp_config()
 {
 
-    nrf_gpio_cfg_input(DW1000_IRQ, NRF_GPIO_PIN_NOPULL); 		//irq
+    //nrf_gpio_cfg_input(DW1000_IRQ, NRF_GPIO_PIN_NOPULL); 		//irq
 
     /* Reset DW1000 */
     reset_DW1000(); 
@@ -1754,7 +1731,10 @@ void resp_config()
 
     /* Configure DW1000. */
     dwt_configure(&config);
+    dwt_setcallbacks(&tx_conf_cb, &rx_ok_cb, &rx_to_cb, &rx_err_cb);
 
+    /* Enable wanted interrupts (TX confirmation, RX good frames, RX timeouts and RX errors). */
+    dwt_setinterrupt(DWT_INT_TFRS | DWT_INT_RFCG | DWT_INT_RFTO | DWT_INT_RXPTO | DWT_INT_RPHE | DWT_INT_RFCE | DWT_INT_RFSL | DWT_INT_SFDT, 1);
     /* Apply default antenna delay value. Defined in port platform.h */
     dwt_setrxantennadelay(RX_ANT_DLY);
     dwt_settxantennadelay(TX_ANT_DLY);
@@ -1767,53 +1747,48 @@ void resp_config()
 void init_config()
 {
  
-  //-------------dw1000  ini------------------------------------	
+       /* Reset DW1000 */
+    reset_DW1000(); 
 
-  /* Setup DW1000 IRQ pin */  
-
-  printf("IN\r\n");
-  nrf_gpio_cfg_input(DW1000_IRQ, NRF_GPIO_PIN_NOPULL); 		//irq
+    /* Set SPI clock to 2MHz */
+    port_set_dw1000_slowrate();			
   
-  /*Initialization UART*/
-  printf("Singled Sided Two Way Ranging Initiator Example \r\n");
-  
-  printf("0\r\n");
-  /* Reset DW1000 */
-  reset_DW1000(); 
+    /* Init the DW1000 */
+    if (dwt_initialise(DWT_LOADUCODE) == DWT_ERROR)
+    {
+      //Init of DW1000 Failed
+      while (1) {};
+    }
 
-  printf("1\r\n");
+    // Set SPI to 8MHz clock  
+    port_set_dw1000_fastrate();
 
-  /* Set SPI clock to 2MHz */
-  port_set_dw1000_slowrate();			
-  
-  printf("2\r\n");
-  /* Init the DW1000 */
-  if (dwt_initialise(DWT_LOADUCODE) == DWT_ERROR)
-  {
-    //Init of DW1000 Failed
-    while (1) {};
-  }
+    /* Configure DW1000. */
+    dwt_configure(&config);
 
-  printf("3\r\n");
-  // Set SPI to 8MHz clock
-  port_set_dw1000_fastrate();
+    /* Initialization of the DW1000 interrupt*/
+    /* Callback are defined in ss_init_main.c */
+    dwt_setcallbacks(&tx_conf_cb, &rx_ok_cb, &rx_to_cb, &rx_err_cb);
 
-  /* Configure DW1000. */
-  dwt_configure(&config);
+    /* Enable wanted interrupts (TX confirmation, RX good frames, RX timeouts and RX errors). */
+    dwt_setinterrupt(DWT_INT_TFRS | DWT_INT_RFCG | DWT_INT_RFTO | DWT_INT_RXPTO | DWT_INT_RPHE | DWT_INT_RFCE | DWT_INT_RFSL | DWT_INT_SFDT, 1);
 
-  /* Apply default antenna delay value. See NOTE 2 below. */
-  dwt_setrxantennadelay(RX_ANT_DLY);
-  dwt_settxantennadelay(TX_ANT_DLY);
+    /* Apply default antenna delay value. See NOTE 2 below. */
+    dwt_setrxantennadelay(RX_ANT_DLY);
+    dwt_settxantennadelay(TX_ANT_DLY);
 
-  printf("4\r\n");
-
-  /* Set preamble timeout for expected frames. See NOTE 3 below. */
-  //dwt_setpreambledetecttimeout(0); // PRE_TIMEOUT
+    /* Set preamble timeout for expected frames. See NOTE 3 below. */
+    //dwt_setpreambledetecttimeout(0); // PRE_TIMEOUT
           
-  /* Set expected response's delay and timeout. 
-  * As this example only handles one incoming frame with always the same delay and timeout, those values can be set here once for all. */
-  dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
-  dwt_setrxtimeout(65000); // Maximum value timeout with DW1000 is 65ms  
+    /* Set expected response's delay and timeout. 
+    * As this example only handles one incoming frame with always the same delay and timeout, those values can be set here once for all. */
+   //dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
+   
+          
+    /* Set expected response's delay and timeout. 
+    * As this example only handles one incoming frame with always the same delay and timeout, those values can be set here once for all. */
+    dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
+    dwt_setrxtimeout(65000); // Maximum value timeout with DW1000 is 65ms  
 
   //-------------dw1000  ini------end---------------------------	
 }
@@ -1829,6 +1804,29 @@ void resp_reconfig(){
 
   dwt_setrxtimeout(0);
 
+}
+
+void ranging_task_function(void *pvParameter)
+{
+  
+  while(1){
+    if(second_timer % 5 == 0)
+    {
+      vTaskSuspend(ss_responder_task_handle);
+      init_reconfig();
+      int i = 0;
+      while(i < 10)
+      {
+        ss_init_run();
+        vTaskDelay(250);
+        i++;
+      }
+      resp_reconfig();
+      vTaskResume(ss_responder_task_handle);
+    }
+    
+    vTaskDelay(10);
+  }
 }
 
 int main(void)
@@ -1868,14 +1866,53 @@ int main(void)
     services_init();
     advertising_init();
 
+      /* Reset DW1000 */
+    reset_DW1000(); 
 
+    /* Set SPI clock to 2MHz */
+    port_set_dw1000_slowrate();			
+  
+    /* Init the DW1000 */
+    if (dwt_initialise(DWT_LOADUCODE) == DWT_ERROR)
+    {
+      //Init of DW1000 Failed
+      while (1) {};
+    }
+
+    // Set SPI to 8MHz clock  
+    port_set_dw1000_fastrate();
+
+    /* Configure DW1000. */
+    dwt_configure(&config);
+
+    /* Initialization of the DW1000 interrupt*/
+    /* Callback are defined in ss_init_main.c */
+    dwt_setcallbacks(&tx_conf_cb, &rx_ok_cb, &rx_to_cb, &rx_err_cb);
+
+    /* Enable wanted interrupts (TX confirmation, RX good frames, RX timeouts and RX errors). */
+    dwt_setinterrupt(DWT_INT_TFRS | DWT_INT_RFCG | DWT_INT_RFTO | DWT_INT_RXPTO | DWT_INT_RPHE | DWT_INT_RFCE | DWT_INT_RFSL | DWT_INT_SFDT, 1);
+
+    /* Apply default antenna delay value. See NOTE 2 below. */
+    dwt_setrxantennadelay(RX_ANT_DLY);
+    dwt_settxantennadelay(TX_ANT_DLY);
+
+    /* Set preamble timeout for expected frames. See NOTE 3 below. */
+    //dwt_setpreambledetecttimeout(0); // PRE_TIMEOUT
+          
+    /* Set expected response's delay and timeout. 
+    * As this example only handles one incoming frame with always the same delay and timeout, those values can be set here once for all. */
+   //dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
+    dwt_setrxtimeout(0); // Maximum value timeout with DW1000 is 65ms 
+
+    //init_reconfig();
+
+
+   
+    /*
     
     ret_code_t create_timer = app_timer_create(&m_timestamp_keeper, APP_TIMER_MODE_REPEATED, timestamp_handler);
     ret_code_t start_timer =  app_timer_start(m_timestamp_keeper, APP_TIMER_TICKS(1) , NULL);
   
-    
-    
-    
     ret_code_t c2 = app_timer_create(&m_ble_switch, APP_TIMER_MODE_REPEATED, switch_ble);
     ret_code_t s2 = app_timer_start(m_ble_switch,APP_TIMER_TICKS(5000) ,NULL);
 
@@ -1884,11 +1921,12 @@ int main(void)
     ret_code_t s3 = app_timer_start(m_uwb_switch,APP_TIMER_TICKS(1) ,NULL);
 
    
-
     ret_code_t c4 = app_timer_create(&m_list_print, APP_TIMER_MODE_REPEATED, timer_list_print);
     ret_code_t s4 = app_timer_start(m_list_print,APP_TIMER_TICKS(1000) ,NULL);
     
-
+  */
+    ret_code_t c3 = app_timer_create(&m_uwb_switch, APP_TIMER_MODE_REPEATED, switch_uwb);
+    ret_code_t s3 = app_timer_start(m_uwb_switch,APP_TIMER_TICKS(1000) ,NULL);
    
     
 
@@ -1919,15 +1957,27 @@ int main(void)
 
     int switching_timer; //Switching Between BLE scanner/broadcaster
 
-    uwbSem = xSemaphoreCreateBinary();
-    xSemaphoreGive(uwbSem);
+    //uwbSem = xSemaphoreCreateBinary();
+    //xSemaphoreGive(uwbSem);
+
+
+    rxSemaphore = xSemaphoreCreateBinary();
+    txSemaphore = xSemaphoreCreateBinary();
+
     
-    resp_config();
+    
+    //resp_config();
+
+   
+
+
     UNUSED_VARIABLE(xTaskCreate(ss_responder_task_function, "SSTWR_RESP", configMINIMAL_STACK_SIZE + 200, NULL, 2, &ss_responder_task_handle));
-    //UNUSED_VARIABLE(xTaskCreate(ranging_task_function, "RNG", configMINIMAL_STACK_SIZE + 200, NULL, 2, &ranging_task_handle)); 
+
     
+    UNUSED_VARIABLE(xTaskCreate(ranging_task_function, "RNG", configMINIMAL_STACK_SIZE + 200, NULL, 1, &ranging_task_handle)); 
+    //^ Controls switching between initiator and responder
     
-    printf("Here\r\n");
+    //printf("Here\r\n");
     vTaskStartScheduler();
     while(1) 
     {
@@ -1937,3 +1987,89 @@ int main(void)
         
     }
 }
+
+
+
+BaseType_t xHigherPriorityTaskWoken;
+
+/*! ------------------------------------------------------------------------------------------------------------------
+* @fn rx_ok_cb()
+*
+* @brief Callback to process RX good frame events
+*
+* @param  cb_data  callback data
+*
+* @return  none
+*/
+void rx_ok_cb(const dwt_cb_data_t *cb_data)
+{
+  printf("GOT HERE\r\n");
+  
+  xHigherPriorityTaskWoken = pdFALSE;
+  xSemaphoreGiveFromISR(rxSemaphore, &xHigherPriorityTaskWoken);
+  
+  rx_int_flag = 1 ;
+
+  /* TESTING BREAKPOINT LOCATION #1 */
+}
+
+/*! ------------------------------------------------------------------------------------------------------------------
+* @fn rx_to_cb()
+*
+* @brief Callback to process RX timeout events
+*
+* @param  cb_data  callback data
+*
+* @return  none
+*/
+void rx_to_cb(const dwt_cb_data_t *cb_data)
+{
+  printf("given\r\n");
+  xHigherPriorityTaskWoken = pdFALSE;
+  xSemaphoreGiveFromISR(rxSemaphore, &xHigherPriorityTaskWoken);
+  to_int_flag = 1 ;
+  /* TESTING BREAKPOINT LOCATION #2 */
+  printf("TimeOut\r\n");
+}
+
+/*! ------------------------------------------------------------------------------------------------------------------
+* @fn rx_err_cb()
+*
+* @brief Callback to process RX error events
+*
+* @param  cb_data  callback data
+*
+* @return  none
+*/
+void rx_err_cb(const dwt_cb_data_t *cb_data)
+{
+
+  xHigherPriorityTaskWoken = pdFALSE;
+  xSemaphoreGiveFromISR(rxSemaphore, &xHigherPriorityTaskWoken);
+  er_int_flag = 1 ;
+  /* TESTING BREAKPOINT LOCATION #3 */
+  printf("Transmission Error : may receive package from different UWB device\r\n");
+}
+
+/*! ------------------------------------------------------------------------------------------------------------------
+* @fn tx_conf_cb()
+*
+* @brief Callback to process TX confirmation events
+*
+* @param  cb_data  callback data
+*
+* @return  none
+*/
+void tx_conf_cb(const dwt_cb_data_t *cb_data)
+{
+  /* This callback has been defined so that a breakpoint can be put here to check it is correctly called but there is actually nothing specific to
+  * do on transmission confirmation in this example. Typically, we could activate reception for the response here but this is automatically handled
+  * by DW1000 using DWT_RESPONSE_EXPECTED parameter when calling dwt_starttx().
+  * An actual application that would not need this callback could simply not define it and set the corresponding field to NULL when calling
+  * dwt_setcallbacks(). The ISR will not call it which will allow to save some interrupt processing time. */
+  xHigherPriorityTaskWoken = pdFALSE;
+  xSemaphoreGiveFromISR(txSemaphore, &xHigherPriorityTaskWoken);
+  tx_int_flag = 1 ;
+  /* TESTING BREAKPOINT LOCATION #4 */
+}
+
