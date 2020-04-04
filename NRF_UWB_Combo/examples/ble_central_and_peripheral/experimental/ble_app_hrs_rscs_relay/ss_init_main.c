@@ -100,18 +100,19 @@ int ss_init_run(void)
 
   /* Write frame data to DW1000 and prepare transmission. See NOTE 3 below. */
   tx_poll_msg[ALL_MSG_SN_IDX] = frame_seq_nb;
-  dwt_writetxdata(sizeof(tx_poll_msg), tx_poll_msg, 0); /* Zero offset in TX buffer. */
+  int a = dwt_writetxdata(sizeof(tx_poll_msg), tx_poll_msg, 0); /* Zero offset in TX buffer. */
   dwt_writetxfctrl(sizeof(tx_poll_msg), 0, 1); /* Zero offset in TX buffer, ranging. */
 
   /* Start transmission, indicating that a response is expected so that reception is enabled automatically after the frame is sent and the delay
   * set by dwt_setrxaftertxdelay() has elapsed. */
-  dwt_starttx(DWT_START_TX_IMMEDIATE | DWT_RESPONSE_EXPECTED);
-
+  int c = dwt_starttx(DWT_START_TX_IMMEDIATE | DWT_RESPONSE_EXPECTED);
+  //printf("Output: %d %d  \r\n", a , c);
   /*Waiting for transmission success flag*/
   //while (!(tx_int_flag))
   //{};
-
+  printf("Waiting\r\n");
   xSemaphoreTake(txSemaphore, portMAX_DELAY);
+  printf("Waited\r\n");
 
   if (tx_int_flag)
   {

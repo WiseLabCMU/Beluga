@@ -1794,7 +1794,7 @@ void init_config()
 }
 
 void init_reconfig(){
-
+  
   dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
   dwt_setrxtimeout(65000); // Maximum value timeout with DW1000 is 65ms  
 
@@ -1810,24 +1810,32 @@ void ranging_task_function(void *pvParameter)
 {
   
   while(1){
-    if(second_timer % 5 == 0)
-    {
+      vTaskDelay(1000);
+      printf("Suspending\r\n");
       vTaskSuspend(ss_responder_task_handle);
+      //vTaskDelete(ss_responder_task_handle);
+      printf("suspended\r\n");
+      //dwt_softreset();
       init_reconfig();
+      
+      
       int i = 0;
+      dwt_setleds(DWT_LEDS_ENABLE);
       while(i < 10)
       {
+        printf("running\r\n");
         ss_init_run();
         vTaskDelay(250);
         i++;
       }
       resp_reconfig();
-      vTaskResume(ss_responder_task_handle);
-    }
-    
-    vTaskDelay(10);
+      //vTaskResume(ss_responder_task_handle);
+      printf("Resumed\r\n");
+  
+  
+      vTaskDelay(4000);
   }
-}
+ }
 
 int main(void)
 {
@@ -1842,8 +1850,6 @@ int main(void)
     }
 
 
-
-    
     bool erase_bonds;
     range_flag = 0;
     
@@ -1886,7 +1892,7 @@ int main(void)
     dwt_configure(&config);
 
     /* Initialization of the DW1000 interrupt*/
-    /* Callback are defined in ss_init_main.c */
+
     dwt_setcallbacks(&tx_conf_cb, &rx_ok_cb, &rx_to_cb, &rx_err_cb);
 
     /* Enable wanted interrupts (TX confirmation, RX good frames, RX timeouts and RX errors). */
@@ -1971,10 +1977,10 @@ int main(void)
    
 
 
-    UNUSED_VARIABLE(xTaskCreate(ss_responder_task_function, "SSTWR_RESP", configMINIMAL_STACK_SIZE + 200, NULL, 2, &ss_responder_task_handle));
-
     
-    UNUSED_VARIABLE(xTaskCreate(ranging_task_function, "RNG", configMINIMAL_STACK_SIZE + 200, NULL, 1, &ranging_task_handle)); 
+
+    UNUSED_VARIABLE(xTaskCreate(ss_responder_task_function, "SSTWR_RESP", configMINIMAL_STACK_SIZE + 200, NULL,tskIDLE_PRIORITY, &ss_responder_task_handle));
+    UNUSED_VARIABLE(xTaskCreate(ranging_task_function, "RNG", configMINIMAL_STACK_SIZE + 200, NULL, 2, &ranging_task_handle)); 
     //^ Controls switching between initiator and responder
     
     //printf("Here\r\n");
@@ -2003,7 +2009,7 @@ BaseType_t xHigherPriorityTaskWoken;
 */
 void rx_ok_cb(const dwt_cb_data_t *cb_data)
 {
-  printf("GOT HERE\r\n");
+
   
   xHigherPriorityTaskWoken = pdFALSE;
   xSemaphoreGiveFromISR(rxSemaphore, &xHigherPriorityTaskWoken);
@@ -2024,12 +2030,12 @@ void rx_ok_cb(const dwt_cb_data_t *cb_data)
 */
 void rx_to_cb(const dwt_cb_data_t *cb_data)
 {
-  printf("given\r\n");
+  
   xHigherPriorityTaskWoken = pdFALSE;
   xSemaphoreGiveFromISR(rxSemaphore, &xHigherPriorityTaskWoken);
   to_int_flag = 1 ;
   /* TESTING BREAKPOINT LOCATION #2 */
-  printf("TimeOut\r\n");
+  //printf("TimeOut\r\n");
 }
 
 /*! ------------------------------------------------------------------------------------------------------------------
@@ -2048,7 +2054,7 @@ void rx_err_cb(const dwt_cb_data_t *cb_data)
   xSemaphoreGiveFromISR(rxSemaphore, &xHigherPriorityTaskWoken);
   er_int_flag = 1 ;
   /* TESTING BREAKPOINT LOCATION #3 */
-  printf("Transmission Error : may receive package from different UWB device\r\n");
+  //printf("Transmission Error : may receive package from different UWB device\r\n");
 }
 
 /*! ------------------------------------------------------------------------------------------------------------------
@@ -2069,7 +2075,8 @@ void tx_conf_cb(const dwt_cb_data_t *cb_data)
   * dwt_setcallbacks(). The ISR will not call it which will allow to save some interrupt processing time. */
   xHigherPriorityTaskWoken = pdFALSE;
   xSemaphoreGiveFromISR(txSemaphore, &xHigherPriorityTaskWoken);
-  tx_int_flag = 1 ;
+  tx_int_flag = 1;
   /* TESTING BREAKPOINT LOCATION #4 */
 }
+
 
