@@ -18150,23 +18150,22 @@ Linker script and memory map
                 0x000000000002c590        0xc Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
                 0x000000000002c590                resp_reconfig
  .text.ranging_task_function
-                0x000000000002c59c       0x78 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
+                0x000000000002c59c       0x7c Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
                 0x000000000002c59c                ranging_task_function
- .text.main     0x000000000002c614      0x238 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
-                0x000000000002c614                main
+ .text.main     0x000000000002c618      0x238 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
+                0x000000000002c618                main
  .text.rx_ok_cb
-                0x000000000002c84c       0x34 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
-                0x000000000002c84c                rx_ok_cb
+                0x000000000002c850       0x34 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
+                0x000000000002c850                rx_ok_cb
  .text.rx_to_cb
-                0x000000000002c880       0x34 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
-                0x000000000002c880                rx_to_cb
+                0x000000000002c884       0x34 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
+                0x000000000002c884                rx_to_cb
  .text.rx_err_cb
-                0x000000000002c8b4       0x34 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
-                0x000000000002c8b4                rx_err_cb
+                0x000000000002c8b8       0x34 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
+                0x000000000002c8b8                rx_err_cb
  .text.tx_conf_cb
-                0x000000000002c8e8       0x34 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
-                0x000000000002c8e8                tx_conf_cb
- *fill*         0x000000000002c91c        0x4 
+                0x000000000002c8ec       0x34 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
+                0x000000000002c8ec                tx_conf_cb
  .text.ss_init_run
                 0x000000000002c920      0x2cc Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ss_init_main.o
                 0x000000000002c920                ss_init_run
@@ -21016,7 +21015,7 @@ OUTPUT(Output/Debug/Exe/ble_app_hrs_rscs_relay_pca10040_s132.elf elf32-littlearm
  .comment       0x0000000000000043       0x44 C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.22/lib/libvfprintf_v7em_fpv4_sp_d16_hard_t_le_eabi.o
  .comment       0x0000000000000043       0x44 C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 4.22/lib/libm_v7em_fpv4_sp_d16_hard_t_le_eabi.a(libm2.o)
 
-.debug_line     0x0000000000000000    0x37869
+.debug_line     0x0000000000000000    0x3786a
  .debug_line    0x0000000000000000      0x1ed Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/thumb_crt0.o
  .debug_line    0x00000000000001ed      0x3b7 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/app_error.o
  .debug_line    0x00000000000005a4      0xa04 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/app_error_weak.o
@@ -21040,49 +21039,49 @@ OUTPUT(Output/Debug/Exe/ble_app_hrs_rscs_relay_pca10040_s132.elf elf32-littlearm
  .debug_line    0x000000000000d4bc      0xf9f Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/nrf_drv_spi.o
  .debug_line    0x000000000000e45b      0x90d Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/bsp.o
  .debug_line    0x000000000000ed68      0xd46 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/bsp_btn_ble.o
- .debug_line    0x000000000000faae     0x27cc Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
- .debug_line    0x000000000001227a      0xd06 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ss_init_main.o
- .debug_line    0x0000000000012f80      0xcfd Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ss_resp_main.o
- .debug_line    0x0000000000013c7d     0x114a Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_advdata.o
- .debug_line    0x0000000000014dc7     0x1661 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_advertising.o
- .debug_line    0x0000000000016428      0xf6b Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_conn_params.o
- .debug_line    0x0000000000017393      0xe77 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_conn_state.o
- .debug_line    0x000000000001820a     0x1205 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_db_discovery.o
- .debug_line    0x000000000001940f      0xd01 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_srv_common.o
- .debug_line    0x000000000001a110     0x1301 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/gatt_cache_manager.o
- .debug_line    0x000000000001b411     0x1090 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/gatts_cache_manager.o
- .debug_line    0x000000000001c4a1     0x172a Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/id_manager.o
- .debug_line    0x000000000001dbcb      0xe79 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/nrf_ble_gatt.o
- .debug_line    0x000000000001ea44     0x143b Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/peer_data_storage.o
- .debug_line    0x000000000001fe7f     0x1576 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/peer_database.o
- .debug_line    0x00000000000213f5     0x104c Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/peer_id.o
- .debug_line    0x0000000000022441     0x1984 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/peer_manager.o
- .debug_line    0x0000000000023dc5      0x4ad Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/pm_buffer.o
- .debug_line    0x0000000000024272      0x833 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/pm_mutex.o
- .debug_line    0x0000000000024aa5     0x13e8 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/security_manager.o
- .debug_line    0x0000000000025e8d       0xbf Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ses_nrf52_Vectors.o
- .debug_line    0x0000000000025f4c      0x7e7 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/system_nrf52.o
- .debug_line    0x0000000000026733       0xb6 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ses_nRF_Startup.o
- .debug_line    0x00000000000267e9      0xf2c Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_hrs.o
- .debug_line    0x0000000000027715      0xf46 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_hrs_c.o
- .debug_line    0x000000000002865b      0xe4b Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_rscs.o
- .debug_line    0x00000000000294a6      0xf72 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_rscs_c.o
- .debug_line    0x000000000002a418     0x168e Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/security_dispatcher.o
- .debug_line    0x000000000002baa6      0xdc2 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/nrf_sdh.o
- .debug_line    0x000000000002c868      0xcc9 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/nrf_sdh_ble.o
- .debug_line    0x000000000002d531      0x8c3 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/nrf_sdh_soc.o
- .debug_line    0x000000000002ddf4     0x15c2 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/deca_device.o
- .debug_line    0x000000000002f3b6      0x13a Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/deca_params_init.o
- .debug_line    0x000000000002f4f0      0xc88 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/port_platform.o
- .debug_line    0x0000000000030178      0x959 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/list.o
- .debug_line    0x0000000000030ad1     0x12ac Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/queue.o
- .debug_line    0x0000000000031d7d     0x1b65 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/tasks.o
- .debug_line    0x00000000000338e2      0xd0e Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/timers.o
- .debug_line    0x00000000000345f0      0xad9 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/port_cmsis.o
- .debug_line    0x00000000000350c9      0xd15 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/port_cmsis_systick.o
- .debug_line    0x0000000000035dde      0x90c Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/heap_1.o
- .debug_line    0x00000000000366ea      0x896 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/port.o
- .debug_line    0x0000000000036f80      0x8e9 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/UART.o
+ .debug_line    0x000000000000faae     0x27cd Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/main.o
+ .debug_line    0x000000000001227b      0xd06 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ss_init_main.o
+ .debug_line    0x0000000000012f81      0xcfd Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ss_resp_main.o
+ .debug_line    0x0000000000013c7e     0x114a Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_advdata.o
+ .debug_line    0x0000000000014dc8     0x1661 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_advertising.o
+ .debug_line    0x0000000000016429      0xf6b Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_conn_params.o
+ .debug_line    0x0000000000017394      0xe77 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_conn_state.o
+ .debug_line    0x000000000001820b     0x1205 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_db_discovery.o
+ .debug_line    0x0000000000019410      0xd01 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_srv_common.o
+ .debug_line    0x000000000001a111     0x1301 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/gatt_cache_manager.o
+ .debug_line    0x000000000001b412     0x1090 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/gatts_cache_manager.o
+ .debug_line    0x000000000001c4a2     0x172a Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/id_manager.o
+ .debug_line    0x000000000001dbcc      0xe79 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/nrf_ble_gatt.o
+ .debug_line    0x000000000001ea45     0x143b Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/peer_data_storage.o
+ .debug_line    0x000000000001fe80     0x1576 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/peer_database.o
+ .debug_line    0x00000000000213f6     0x104c Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/peer_id.o
+ .debug_line    0x0000000000022442     0x1984 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/peer_manager.o
+ .debug_line    0x0000000000023dc6      0x4ad Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/pm_buffer.o
+ .debug_line    0x0000000000024273      0x833 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/pm_mutex.o
+ .debug_line    0x0000000000024aa6     0x13e8 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/security_manager.o
+ .debug_line    0x0000000000025e8e       0xbf Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ses_nrf52_Vectors.o
+ .debug_line    0x0000000000025f4d      0x7e7 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/system_nrf52.o
+ .debug_line    0x0000000000026734       0xb6 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ses_nRF_Startup.o
+ .debug_line    0x00000000000267ea      0xf2c Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_hrs.o
+ .debug_line    0x0000000000027716      0xf46 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_hrs_c.o
+ .debug_line    0x000000000002865c      0xe4b Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_rscs.o
+ .debug_line    0x00000000000294a7      0xf72 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/ble_rscs_c.o
+ .debug_line    0x000000000002a419     0x168e Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/security_dispatcher.o
+ .debug_line    0x000000000002baa7      0xdc2 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/nrf_sdh.o
+ .debug_line    0x000000000002c869      0xcc9 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/nrf_sdh_ble.o
+ .debug_line    0x000000000002d532      0x8c3 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/nrf_sdh_soc.o
+ .debug_line    0x000000000002ddf5     0x15c2 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/deca_device.o
+ .debug_line    0x000000000002f3b7      0x13a Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/deca_params_init.o
+ .debug_line    0x000000000002f4f1      0xc88 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/port_platform.o
+ .debug_line    0x0000000000030179      0x959 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/list.o
+ .debug_line    0x0000000000030ad2     0x12ac Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/queue.o
+ .debug_line    0x0000000000031d7e     0x1b65 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/tasks.o
+ .debug_line    0x00000000000338e3      0xd0e Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/timers.o
+ .debug_line    0x00000000000345f1      0xad9 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/port_cmsis.o
+ .debug_line    0x00000000000350ca      0xd15 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/port_cmsis_systick.o
+ .debug_line    0x0000000000035ddf      0x90c Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/heap_1.o
+ .debug_line    0x00000000000366eb      0x896 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/port.o
+ .debug_line    0x0000000000036f81      0x8e9 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/UART.o
 
 .debug_info     0x0000000000000000    0xb43f8
  .debug_info    0x0000000000000000       0x22 Output/ble_app_hrs_rscs_relay_pca10040_s132 Debug/Obj/thumb_crt0.o

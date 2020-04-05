@@ -25,6 +25,8 @@
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Application"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Board Definition"/>
+  <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Decadriver"/>
+  <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Device"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;Freertos"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;nRF_BLE"/>
   <ProjectSessionItem path="ble_app_hrs_rscs_relay_pca10040_s132;ble_app_hrs_rscs_relay_pca10040_s132;nRF_BLE_Services"/>
@@ -68,21 +70,21 @@
  </Watch4>
  <Files>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="2159" useTextEdit="1" useBinaryEdit="0" left="0" path="../config/sdk_config.h" selected="0" top="2146" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="16" y="32" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="1" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="24" y="1818" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="0" top="1813" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="44" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/port/port_platform.h" selected="0" top="24" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="160" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/port/port_platform.c" selected="0" top="149" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="284" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/port/port_platform.c" selected="0" top="284" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="39" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/drivers_nrf/spi_master/nrf_drv_spi.h" selected="0" top="24" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="301" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/boards/boards.h" selected="0" top="276" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="224" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_init_main.c" selected="0" top="200" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="47" y="118" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_init_main.c" selected="1" top="109" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="185" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/deca_device_api.h" selected="0" top="181" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="2121" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/deca_device.c" selected="0" top="2106" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="2624" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/deca_device.c" selected="0" top="2643" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="40" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../UART/UART.c" selected="0" top="25" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="219" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/uart/app_uart_fifo.c" selected="0" top="194" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="39" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/boards/boards.c" selected="0" top="12" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="689" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/source/include/FreeRTOS.h" selected="0" top="674" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="16" y="151" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/source/include/FreeRTOS.h" selected="0" top="123" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="36" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/ble/nrf_ble_gatt/nrf_ble_gatt.c" selected="0" top="9" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="190" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/uart/retarget.c" selected="0" top="169" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="17" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_init_main.h" selected="0" top="4" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="6" y="38" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_init_main.h" selected="0" top="13" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="68" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/hardfault/hardfault_implementation.c" selected="0" top="55" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="167" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/toolchain/system_nrf52.c" selected="0" top="154" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="692" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/deca_range_tables.c" selected="0" top="647" codecName="Default"/>
@@ -107,9 +109,9 @@
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="104" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/toolchain/ses/ses_nRF_Startup - Copy.s" selected="0" top="81" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="124" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/util/sdk_mapped_flags.c" selected="0" top="103" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/experimental_log/src/nrf_log_str_formatter.c" selected="0" top="93" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="12" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/deca_types.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="12" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/deca_types.h" selected="0" top="27" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="158" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/bsp/bsp_btn_ble.c" selected="0" top="128" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="368" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/deca_regs.h" selected="0" top="356" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="368" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/deca_regs.h" selected="0" top="405" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1042" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/timer/app_timer.c" selected="0" top="1022" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="104" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/source/event_groups.c" selected="0" top="81" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="683" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/ble/ble_advertising/ble_advertising.c" selected="0" top="655" codecName="Default"/>
@@ -123,10 +125,13 @@
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ds_resp_main.c" selected="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="109" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../../../../Downloads/dwm1001-examples-master/dwm1001-examples-master/examples/ss_twr_resp/ss_resp_main.c" selected="0" top="87" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="257" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../../../dwm1001-examples/examples/ss_twr_resp/ss_resp_main.c" selected="0" top="219" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="139" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_resp_main.c" selected="0" top="146" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="7" y="116" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_resp_main.c" selected="0" top="110" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="344" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/source/include/task.h" selected="0" top="317" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="202" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/util/nordic_common.h" selected="0" top="175" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="96" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/util/app_error_weak.c" selected="0" top="54" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="85" y="100" useTextEdit="1" useBinaryEdit="0" left="2" path="../../../../../../../external/freertos/config/FreeRTOSConfig.h" selected="0" top="97" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="458" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/drivers_nrf/spi_master/nrf_drv_spi.c" selected="0" top="429" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/deca_params_init.c" selected="0" top="51" codecName="Default"/>
  </Files>
  <ARMCrossStudioWindow activeProject="ble_app_hrs_rscs_relay_pca10040_s132" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/Users/vikra/Desktop/decawave-ble/nRF5_SDK_14.2.0_17b948a/components/toolchain/cmsis/include" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>

@@ -110,10 +110,9 @@ int ss_init_run(void)
   /*Waiting for transmission success flag*/
   //while (!(tx_int_flag))
   //{};
-  printf("Waiting\r\n");
+  
   xSemaphoreTake(txSemaphore, portMAX_DELAY);
-  printf("Waited\r\n");
-
+  
   if (tx_int_flag)
   {
     tx_count++;

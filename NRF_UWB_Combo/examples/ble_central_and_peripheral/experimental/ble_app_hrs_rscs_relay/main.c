@@ -1794,6 +1794,7 @@ void init_config()
 }
 
 void init_reconfig(){
+
   
   dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
   dwt_setrxtimeout(65000); // Maximum value timeout with DW1000 is 65ms  
@@ -1815,6 +1816,7 @@ void ranging_task_function(void *pvParameter)
       vTaskSuspend(ss_responder_task_handle);
       //vTaskDelete(ss_responder_task_handle);
       printf("suspended\r\n");
+      dwt_forcetrxoff();
       //dwt_softreset();
       init_reconfig();
       
