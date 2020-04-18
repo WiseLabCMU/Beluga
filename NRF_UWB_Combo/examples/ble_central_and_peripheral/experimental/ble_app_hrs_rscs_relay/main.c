@@ -222,7 +222,7 @@ static char const m_target_periph_name[] = "Node";
 #define MAX_ANCHOR_COUNT 8
 
 static int range_flag;
-#define NODE_UUID             0x1000
+#define NODE_UUID             0x001
 #define UUID_INDICATOR 0x1800 
 #define BLE_UWB_RANGE0 0x0000
 #define BLE_UWB_RANGE1 0x0000
@@ -344,7 +344,7 @@ static dwt_config_t config = {
 #define RX_ANT_DLY 16456
 
 
-SemaphoreHandle_t rxSemaphore, txSemaphore;
+SemaphoreHandle_t rxSemaphore, txSemaphore, sus_resp;
 volatile int tx_int_flag = 0 ; // Transmit success interrupt flag
 volatile int rx_int_flag = 0 ; // Receive success interrupt flag
 volatile int to_int_flag = 0 ; // Timeout interrupt flag
@@ -1803,6 +1803,7 @@ void init_reconfig(){
 
 void resp_reconfig(){
 
+  //dwt_setrxaftertxdelay(0);
   dwt_setrxtimeout(0);
 
 }
@@ -1811,32 +1812,32 @@ void ranging_task_function(void *pvParameter)
 {
   
   while(1){
-      vTaskDelay(1000);
+      //printf("Resumed\r\n");
+      vTaskDelay(7000);
       printf("Suspending\r\n");
-      vTaskSuspend(ss_responder_task_handle);
-      //vTaskDelete(ss_responder_task_handle);
-      printf("suspended\r\n");
+      
+      
+      xSemaphoreTake(sus_resp, portMAX_DELAY); //Suspend Responder Task
+        
       dwt_forcetrxoff();
-      //dwt_softreset();
       init_reconfig();
-      
-      
       int i = 0;
-      dwt_setleds(DWT_LEDS_ENABLE);
-      while(i < 10)
+      printf("Reconfig'd\r\n");
+      
+      while(i < 10) //Do some ranging
       {
-        printf("running\r\n");
-        ss_init_run();
+        //printf("running\r\n");
+        ss_init_run(1);
         vTaskDelay(250);
         i++;
       }
+      
       resp_reconfig();
-      //vTaskResume(ss_responder_task_handle);
-      printf("Resumed\r\n");
-  
-  
-      vTaskDelay(4000);
+      
+      xSemaphoreGive(sus_resp); //Resume Responder Task
+      
   }
+
  }
 
 int main(void)
@@ -1916,25 +1917,25 @@ int main(void)
 
 
    
-    /*
     
-    ret_code_t create_timer = app_timer_create(&m_timestamp_keeper, APP_TIMER_MODE_REPEATED, timestamp_handler);
-    ret_code_t start_timer =  app_timer_start(m_timestamp_keeper, APP_TIMER_TICKS(1) , NULL);
+    
+    //ret_code_t create_timer = app_timer_create(&m_timestamp_keeper, APP_TIMER_MODE_REPEATED, timestamp_handler);
+    //ret_code_t start_timer =  app_timer_start(m_timestamp_keeper, APP_TIMER_TICKS(1) , NULL);
   
-    ret_code_t c2 = app_timer_create(&m_ble_switch, APP_TIMER_MODE_REPEATED, switch_ble);
-    ret_code_t s2 = app_timer_start(m_ble_switch,APP_TIMER_TICKS(5000) ,NULL);
+    //ret_code_t c2 = app_timer_create(&m_ble_switch, APP_TIMER_MODE_REPEATED, switch_ble);
+    //ret_code_t s2 = app_timer_start(m_ble_switch,APP_TIMER_TICKS(5000) ,NULL);
 
 
-    ret_code_t c3 = app_timer_create(&m_uwb_switch, APP_TIMER_MODE_REPEATED, switch_uwb);
-    ret_code_t s3 = app_timer_start(m_uwb_switch,APP_TIMER_TICKS(1) ,NULL);
+    //ret_code_t c3 = app_timer_create(&m_uwb_switch, APP_TIMER_MODE_REPEATED, switch_uwb);
+    //ret_code_t s3 = app_timer_start(m_uwb_switch,APP_TIMER_TICKS(1) ,NULL);
 
    
-    ret_code_t c4 = app_timer_create(&m_list_print, APP_TIMER_MODE_REPEATED, timer_list_print);
-    ret_code_t s4 = app_timer_start(m_list_print,APP_TIMER_TICKS(1000) ,NULL);
+    //ret_code_t c4 = app_timer_create(&m_list_print, APP_TIMER_MODE_REPEATED, timer_list_print);
+    //ret_code_t s4 = app_timer_start(m_list_print,APP_TIMER_TICKS(1000) ,NULL);
     
-  */
-    ret_code_t c3 = app_timer_create(&m_uwb_switch, APP_TIMER_MODE_REPEATED, switch_uwb);
-    ret_code_t s3 = app_timer_start(m_uwb_switch,APP_TIMER_TICKS(1000) ,NULL);
+  
+    //ret_code_t c3 = app_timer_create(&m_uwb_switch, APP_TIMER_MODE_REPEATED, switch_uwb);
+    //ret_code_t s3 = app_timer_start(m_uwb_switch,APP_TIMER_TICKS(1000) ,NULL);
    
     
 
@@ -1957,7 +1958,7 @@ int main(void)
     }
     else
     {
-        //adv_scan_start();
+        adv_scan_start();
     }
     int count = 0;
     NRF_LOG_INFO("Relay example started.");
@@ -1971,6 +1972,8 @@ int main(void)
 
     rxSemaphore = xSemaphoreCreateBinary();
     txSemaphore = xSemaphoreCreateBinary();
+    sus_resp = xSemaphoreCreateBinary();
+    xSemaphoreGive(sus_resp);
 
     
     
@@ -1981,8 +1984,8 @@ int main(void)
 
     
 
-    UNUSED_VARIABLE(xTaskCreate(ss_responder_task_function, "SSTWR_RESP", configMINIMAL_STACK_SIZE + 200, NULL,tskIDLE_PRIORITY, &ss_responder_task_handle));
-    UNUSED_VARIABLE(xTaskCreate(ranging_task_function, "RNG", configMINIMAL_STACK_SIZE + 200, NULL, 2, &ranging_task_handle)); 
+    UNUSED_VARIABLE(xTaskCreate(ss_responder_task_function, "SSTWR_RESP", configMINIMAL_STACK_SIZE+1200, NULL,1, &ss_responder_task_handle));
+    UNUSED_VARIABLE(xTaskCreate(ranging_task_function, "RNG", configMINIMAL_STACK_SIZE+200, NULL, 2, &ranging_task_handle)); 
     //^ Controls switching between initiator and responder
     
     //printf("Here\r\n");

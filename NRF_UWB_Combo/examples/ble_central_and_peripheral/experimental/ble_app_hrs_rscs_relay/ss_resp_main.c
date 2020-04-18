@@ -110,9 +110,15 @@ static volatile int rx_count = 0 ; // Successful receive counter
 *
 * @return none
 */
+#define my_id 1
+
 int ss_resp_run(void)
 {
-  printf("Entered \r\n");
+  //printf("Waiting for suspend\r\n");
+  xSemaphoreTake(sus_resp, portMAX_DELAY);
+  xSemaphoreGive(sus_resp);
+  //printf("Gave suspend\r\n");
+  //printf("Entered \r\n");
   /* Activate reception immediately. */
   dwt_rxenable(DWT_START_RX_IMMEDIATE);
 
@@ -122,9 +128,22 @@ int ss_resp_run(void)
 
   //while (!(rx_int_flag || to_int_flag|| er_int_flag))
   //{};
-  printf("taking sem\r\n");
-  xSemaphoreTake(rxSemaphore, portMAX_DELAY);
-  printf("got sem\r\n");
+  //printf("taking sem\r\n");
+  int rxSem = xSemaphoreTake(rxSemaphore, 1);
+  while(rxSem == pdFALSE)
+  {
+    rxSem = xSemaphoreTake(rxSemaphore, 1);
+    int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
+    if(suspend == 0) return 1;
+    //printf("%d \r\n", suspend);
+  }
+
+
+
+  //printf("got sem\r\n");
+
+  //if(xSemaphoreTake(sus_resp,1) == pdFALSE) return 1;
+  
 
     #if 0	  // Include to determine the type of timeout if required.
     int temp = 0;
@@ -138,7 +157,7 @@ int ss_resp_run(void)
   //if (status_reg & SYS_STATUS_RXFCG)
   if(rx_int_flag)
   {
-    printf("good\r\n");
+    //printf("good\r\n");
     uint32 frame_len;
 
     /* Clear good RX frame event in the DW1000 status register. */
@@ -154,7 +173,7 @@ int ss_resp_run(void)
     /* Check that the frame is a poll sent by "SS TWR initiator" example.
     * As the sequence number field of the frame is not relevant, it is cleared to simplify the validation of the frame. */
     rx_buffer[ALL_MSG_SN_IDX] = 0;
-    if (memcmp(rx_buffer, rx_poll_msg, ALL_MSG_COMMON_LEN) == 0)
+    if ((memcmp(rx_buffer, rx_poll_msg, ALL_MSG_COMMON_LEN) == 0) && (rx_buffer[10] == my_id))
     {
       uint32 resp_tx_time;
       int ret;
@@ -226,7 +245,8 @@ int ss_resp_run(void)
     er_int_flag = 0;
   }
 
-  return(1);		
+  return(1);	
+  //xSemaphoreGive(sus_resp);
 }
 
 

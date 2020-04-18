@@ -16,7 +16,7 @@
 
 /* Declaration of static functions. */
 
-extern SemaphoreHandle_t rxSemaphore, txSemaphore;
+extern SemaphoreHandle_t rxSemaphore, txSemaphore, sus_resp;
 extern volatile int tx_int_flag; // Transmit success interrupt flag
 extern volatile int rx_int_flag; // Receive success interrupt flag
 extern volatile int to_int_flag; // Timeout interrupt flag
@@ -25,7 +25,7 @@ extern volatile int er_int_flag; // Error interrupt flag
 
 static void resp_msg_get_ts(uint8 *ts_field, uint32 *ts);
 
-int ss_init_run(void);
+int ss_init_run(int id);
 int ss_resp_run(void);
 
 
