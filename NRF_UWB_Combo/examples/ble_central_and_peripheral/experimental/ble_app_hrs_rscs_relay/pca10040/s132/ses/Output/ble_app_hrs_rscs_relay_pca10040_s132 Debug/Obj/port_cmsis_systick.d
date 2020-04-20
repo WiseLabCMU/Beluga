@@ -1,12 +1,12 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/port_cmsis_systick.o: \
- C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\external\freertos\portable\CMSIS\nrf52\port_cmsis_systick.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\external\freertos\portable\CMSIS\nrf52\port_cmsis_systick.c \
  ../../../../../../../external/freertos/source/include/FreeRTOS.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  ../../../../../../../external/freertos/config/FreeRTOSConfig.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_soc.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/device/nrf.h \
  ../../../../../../../components/device/nrf52.h \
@@ -27,7 +27,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/port_cmsis_systick.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \
@@ -45,7 +45,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/port_cmsis_systick.o: \
  ../../../../../../../external/freertos/source/include/list.h \
  ../../../../../../../components/libraries/experimental_log/nrf_log.h \
  ../../../../../../../components/libraries/util/sdk_common.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
  ../../../../../../../components/libraries/util/sdk_os.h \
  ../../../../../../../components/libraries/util/app_util.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \

@@ -93,6 +93,7 @@
 #include "ble_rscs.h"
 #include "ble_hrs_c.h"
 #include "ble_rscs_c.h"
+#include "ble_nus.h"
 #include "ble_conn_state.h"
 #include "nrf_fstorage.h"
 #include "fds.h"
@@ -116,6 +117,7 @@
 #include "nrf_delay.h"
 #include "nrf.h"
 #include "app_error.h"
+#include "app_uart.h"
 #include "port_platform.h"
 #include "deca_types.h"
 #include "deca_param_types.h"
@@ -131,7 +133,18 @@
 #define RESPONDER 0
 #define INITIATOR 1
 
+#if defined (UART_PRESENT)
+#include "nrf_uart.h"
+#endif
+#if defined (UARTE_PRESENT)
+#include "nrf_uarte.h"
+#endif
+
+
 static int mode;
+
+#define UART_TX_BUF_SIZE                256                                         /**< UART TX buffer size. */
+#define UART_RX_BUF_SIZE                256                                         /**< UART RX buffer size. */
 
 #define PERIPHERAL_ADVERTISING_LED      BSP_BOARD_LED_2
 #define PERIPHERAL_CONNECTED_LED        BSP_BOARD_LED_3
@@ -227,6 +240,10 @@ static int range_flag;
 #define BLE_UWB_RANGE0 0x0000
 #define BLE_UWB_RANGE1 0x0000
 #define BLE_UWB_RANGE2 0x0000
+
+void send_AT_command(char *command);
+
+
 static ble_uuid_t m_adv_uuids[] =
 {
     {UUID_INDICATOR              , BLE_UUID_TYPE_BLE},
@@ -288,6 +305,15 @@ typedef struct node{
     float range;
 } node;
 
+
+
+typedef struct message
+{
+   char data[35];
+} message;
+
+
+
 node seen_list[MAX_ANCHOR_COUNT];
 int last_seen_idx = 0;
 
@@ -345,6 +371,7 @@ static dwt_config_t config = {
 
 
 SemaphoreHandle_t rxSemaphore, txSemaphore, sus_resp;
+QueueHandle_t uart_queue;
 volatile int tx_int_flag = 0 ; // Transmit success interrupt flag
 volatile int rx_int_flag = 0 ; // Receive success interrupt flag
 volatile int to_int_flag = 0 ; // Timeout interrupt flag
@@ -1633,6 +1660,7 @@ static void switch_ble(void* p_context)
 TaskHandle_t  ss_responder_task_handle; 
 TaskHandle_t ranging_task_handle;
 TaskHandle_t  ss_initiator_task_handle; 
+TaskHandle_t uart_task_handle;
 
 SemaphoreHandle_t uwbSem;
 
@@ -1823,6 +1851,9 @@ void ranging_task_function(void *pvParameter)
       init_reconfig();
       int i = 0;
       printf("Reconfig'd\r\n");
+
+      int s = eTaskGetState(uart_task_handle);
+      printf("Status: %d\r\n", s);
       
       while(i < 10) //Do some ranging
       {
@@ -1839,6 +1870,137 @@ void ranging_task_function(void *pvParameter)
   }
 
  }
+
+static void parse_command(uint8_t *);
+
+static void parse_command(uint8_t *data_array){
+
+  //Handle valid AT command begining with AT+
+  if(0 == strncmp((const char *)data_array, (const char *)"AT+", (size_t)3)){
+  
+    //Handle specific AT commands
+    if(0 == strncmp((const char *)data_array, (const char *)"AT+STARTUWB", (size_t)11)){
+
+        send_AT_command("START command recieved\r\n");
+
+    }
+
+    else if(0 == strncmp((const char *)data_array, (const char *)"AT+STOPUWB", (size_t)10)){
+
+        send_AT_command("STOP command recieved\r\n");
+
+    }
+
+    else send_AT_command("Invalid AT Command");
+  }
+
+  else{
+
+    send_AT_command("Not an AT command\r\n");
+
+  }
+  return; 
+}
+
+
+static uint16_t   m_ble_nus_max_data_len = BLE_GATT_ATT_MTU_DEFAULT - 3; 
+
+
+
+void uart_task(void * pvParameter){
+
+  UNUSED_PARAMETER(pvParameter);
+
+  message incoming_message = {0};
+
+  while(1){
+    
+    vTaskDelay(100);
+    if(xQueueReceive(uart_queue, &incoming_message, 0) == pdPASS){  
+    
+      printf("%s",incoming_message.data);
+     
+    }
+
+  }
+
+
+}
+
+void send_AT_command(char *command){
+
+    BaseType_t xHigherPriorityTaskWoken;
+    message new_message = {0};
+
+    strcpy(new_message.data, command);
+
+    xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
+
+    return;
+}
+
+void uart_event_handle(app_uart_evt_t * p_event)
+{
+    static uint8_t data_array[BLE_NUS_MAX_DATA_LEN];
+    static uint8_t index = 0;
+    uint32_t       err_code;
+
+    switch (p_event->evt_type)
+    {
+        case APP_UART_DATA_READY:
+            UNUSED_VARIABLE(app_uart_get(&data_array[index]));
+            index++;
+            if ((data_array[index - 1] == '\n') || (index >= (m_ble_nus_max_data_len)))
+            {
+              
+                parse_command(data_array);
+
+                index = 0;
+            }
+            break;
+
+        case APP_UART_COMMUNICATION_ERROR:
+            APP_ERROR_HANDLER(p_event->data.error_communication);
+            break;
+
+        case APP_UART_FIFO_ERROR:
+            APP_ERROR_HANDLER(p_event->data.error_code);
+            break;
+
+        default:
+            break;
+    }
+}
+/**@snippet [Handling the data received over UART] */
+
+static void uart_init(void)
+{
+  
+    uint32_t                     err_code;
+    app_uart_comm_params_t const comm_params =
+    {
+        .rx_pin_no    = RX_PIN_NUMBER,
+        .tx_pin_no    = TX_PIN_NUMBER,
+        .rts_pin_no   = RTS_PIN_NUMBER,
+        .cts_pin_no   = CTS_PIN_NUMBER,
+        .flow_control = APP_UART_FLOW_CONTROL_DISABLED,
+        .use_parity   = false,
+        .baud_rate    = NRF_UART_BAUDRATE_115200
+    };
+
+    APP_UART_FIFO_INIT(&comm_params,
+                       UART_RX_BUF_SIZE,
+                       UART_TX_BUF_SIZE,
+                       uart_event_handle,
+                       APP_IRQ_PRIORITY_LOWEST,
+                       err_code);
+
+    APP_ERROR_CHECK(err_code);
+    
+}
+/**@snippet [UART Initialization] */
+
+
 
 int main(void)
 {
@@ -1860,7 +2022,8 @@ int main(void)
 
 
     vInterruptInit();
-    boUART_Init();
+    //boUART_Init();
+    uart_init();
     //log_init();
     timer_init();
     buttons_leds_init(&erase_bonds);
@@ -1942,12 +2105,6 @@ int main(void)
     LEDS_CONFIGURE(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK);
     LEDS_ON(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK );
 
-
-   
-
-   
-    printf("HELP\r\n");
-    
  
     
     if (erase_bonds == true)
@@ -1961,7 +2118,7 @@ int main(void)
         adv_scan_start();
     }
     int count = 0;
-    NRF_LOG_INFO("Relay example started.");
+    //NRF_LOG_INFO("Relay example started.");
     
 
     int switching_timer; //Switching Between BLE scanner/broadcaster
@@ -1981,14 +2138,15 @@ int main(void)
 
    
 
+    uart_queue = xQueueCreate(25, sizeof(struct message));
 
+    UNUSED_VARIABLE(xTaskCreate(ss_responder_task_function, "SSTWR_RESP", configMINIMAL_STACK_SIZE+600, NULL,1, &ss_responder_task_handle));
+    UNUSED_VARIABLE(xTaskCreate(ranging_task_function, "RNG", configMINIMAL_STACK_SIZE+200, NULL, 2, &ranging_task_handle));
+    UNUSED_VARIABLE(xTaskCreate(uart_task, "UART", configMINIMAL_STACK_SIZE+1200, NULL, 2, &uart_task_handle));
     
-
-    UNUSED_VARIABLE(xTaskCreate(ss_responder_task_function, "SSTWR_RESP", configMINIMAL_STACK_SIZE+1200, NULL,1, &ss_responder_task_handle));
-    UNUSED_VARIABLE(xTaskCreate(ranging_task_function, "RNG", configMINIMAL_STACK_SIZE+200, NULL, 2, &ranging_task_handle)); 
+    
     //^ Controls switching between initiator and responder
     
-    //printf("Here\r\n");
     vTaskStartScheduler();
     while(1) 
     {

@@ -23,7 +23,7 @@ SECTIONS
   {
     __reserved_ram_start__ = .;
     *(.reserved_ram .reserved_ram.*)
-    . = MAX(__reserved_ram_start__ + 0x20002c50-0x20000000 , .);
+    . = MAX(__reserved_ram_start__ + 0x20002a68-0x20000000 , .);
   }
   __reserved_ram_end__ = __reserved_ram_start__ + SIZEOF(.reserved_ram);
   __reserved_ram_size__ = SIZEOF(.reserved_ram);
@@ -31,8 +31,8 @@ SECTIONS
 
   . = ASSERT(__reserved_ram_start__ == __reserved_ram_end__ || (__reserved_ram_end__ - __RAM_segment_start__) <= __RAM_segment_size__ , "error: .reserved_ram is too large to fit in RAM memory segment");
 
-  __vectors_ram_load_start__ = 0x20002c50;
-  .vectors_ram 0x20002c50 (NOLOAD) : AT(0x20002c50)
+  __vectors_ram_load_start__ = 0x20002a68;
+  .vectors_ram 0x20002a68 (NOLOAD) : AT(0x20002a68)
   {
     __vectors_ram_start__ = .;
     __app_ram_start__ =   __vectors_ram_start__;
@@ -134,22 +134,8 @@ SECTIONS
 
   . = ASSERT(__sdh_soc_observers_start__ == __sdh_soc_observers_end__ || (__sdh_soc_observers_end__ - __FLASH_segment_start__) <= __FLASH_segment_size__ , "error: .sdh_soc_observers is too large to fit in FLASH memory segment");
 
-  __pwr_mgmt_data_load_start__ = ALIGN(__sdh_soc_observers_end__ , 4);
-  .pwr_mgmt_data ALIGN(__sdh_soc_observers_end__ , 4) : AT(ALIGN(__sdh_soc_observers_end__ , 4))
-  {
-    __pwr_mgmt_data_start__ = .;
-    __start_pwr_mgmt_data =   __pwr_mgmt_data_start__;
-    KEEP(*(SORT(.pwr_mgmt_data*)))
-  }
-  __pwr_mgmt_data_end__ = __pwr_mgmt_data_start__ + SIZEOF(.pwr_mgmt_data);
-  __pwr_mgmt_data_size__ = SIZEOF(.pwr_mgmt_data);
-  __stop_pwr_mgmt_data =   __pwr_mgmt_data_end__;
-  __pwr_mgmt_data_load_end__ = __pwr_mgmt_data_end__;
-
-  . = ASSERT(__pwr_mgmt_data_start__ == __pwr_mgmt_data_end__ || (__pwr_mgmt_data_end__ - __FLASH_segment_start__) <= __FLASH_segment_size__ , "error: .pwr_mgmt_data is too large to fit in FLASH memory segment");
-
-  __sdh_ble_observers_load_start__ = ALIGN(__pwr_mgmt_data_end__ , 4);
-  .sdh_ble_observers ALIGN(__pwr_mgmt_data_end__ , 4) : AT(ALIGN(__pwr_mgmt_data_end__ , 4))
+  __sdh_ble_observers_load_start__ = ALIGN(__sdh_soc_observers_end__ , 4);
+  .sdh_ble_observers ALIGN(__sdh_soc_observers_end__ , 4) : AT(ALIGN(__sdh_soc_observers_end__ , 4))
   {
     __sdh_ble_observers_start__ = .;
     __start_sdh_ble_observers =   __sdh_ble_observers_start__;
@@ -162,8 +148,22 @@ SECTIONS
 
   . = ASSERT(__sdh_ble_observers_start__ == __sdh_ble_observers_end__ || (__sdh_ble_observers_end__ - __FLASH_segment_start__) <= __FLASH_segment_size__ , "error: .sdh_ble_observers is too large to fit in FLASH memory segment");
 
-  __log_const_data_load_start__ = ALIGN(__sdh_ble_observers_end__ , 4);
-  .log_const_data ALIGN(__sdh_ble_observers_end__ , 4) : AT(ALIGN(__sdh_ble_observers_end__ , 4))
+  __pwr_mgmt_data_load_start__ = ALIGN(__sdh_ble_observers_end__ , 4);
+  .pwr_mgmt_data ALIGN(__sdh_ble_observers_end__ , 4) : AT(ALIGN(__sdh_ble_observers_end__ , 4))
+  {
+    __pwr_mgmt_data_start__ = .;
+    __start_pwr_mgmt_data =   __pwr_mgmt_data_start__;
+    KEEP(*(SORT(.pwr_mgmt_data*)))
+  }
+  __pwr_mgmt_data_end__ = __pwr_mgmt_data_start__ + SIZEOF(.pwr_mgmt_data);
+  __pwr_mgmt_data_size__ = SIZEOF(.pwr_mgmt_data);
+  __stop_pwr_mgmt_data =   __pwr_mgmt_data_end__;
+  __pwr_mgmt_data_load_end__ = __pwr_mgmt_data_end__;
+
+  . = ASSERT(__pwr_mgmt_data_start__ == __pwr_mgmt_data_end__ || (__pwr_mgmt_data_end__ - __FLASH_segment_start__) <= __FLASH_segment_size__ , "error: .pwr_mgmt_data is too large to fit in FLASH memory segment");
+
+  __log_const_data_load_start__ = ALIGN(__pwr_mgmt_data_end__ , 4);
+  .log_const_data ALIGN(__pwr_mgmt_data_end__ , 4) : AT(ALIGN(__pwr_mgmt_data_end__ , 4))
   {
     __log_const_data_start__ = .;
     __start_log_const_data =   __log_const_data_start__;

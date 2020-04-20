@@ -438,7 +438,7 @@ uint32_t ble_advertising_init(ble_advertising_t            * const p_advertising
         }
 #endif
     ret = ble_advdata_set(&(p_advertising->advdata), &(p_init->srdata));
-    printf("ret: %d", ret);
+
     return ret;
 }
 

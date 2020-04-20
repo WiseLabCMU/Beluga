@@ -1,9 +1,9 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/UART.o: \
- C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\UART\UART.c \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\UART\UART.c \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
  ../../../../../../../components/libraries/uart/app_uart.h \
  ../../../../../../../components/libraries/util/app_util_platform.h \
  ../../../../../../../components/device/compiler_abstraction.h \
@@ -36,12 +36,12 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/UART.o: \
  ../../../../../../../components/drivers_nrf/hal/nrf_uart.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_peripherals.h \
  ../../../../../../../components/device/nrf52832_peripherals.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
- C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\UART\UART.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\UART\UART.h \
  ../../../../../../../components/libraries/bsp/bsp.h \
  ../../../../../../../components/boards/boards.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_gpio.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdlib.h \
  ../../../../../../../components/boards/dw1001_dev.h \
  ../../../../../../../components/libraries/button/app_button.h

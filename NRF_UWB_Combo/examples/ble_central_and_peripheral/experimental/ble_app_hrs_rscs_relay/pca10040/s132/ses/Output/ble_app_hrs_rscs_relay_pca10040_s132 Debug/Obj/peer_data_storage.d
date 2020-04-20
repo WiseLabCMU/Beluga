@@ -1,10 +1,10 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/peer_data_storage.o: \
- C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\components\ble\peer_manager\peer_data_storage.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\ble\peer_manager\peer_data_storage.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
  ../config/sdk_config.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/device/compiler_abstraction.h \
@@ -12,7 +12,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/peer_data_storage.o: \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/libraries/util/app_util.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
  ../../../../../../../components/device/nrf.h \
  ../../../../../../../components/device/nrf52.h \
  ../../../../../../../components/toolchain/cmsis/include/core_cm4.h \
@@ -26,13 +26,13 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/peer_data_storage.o: \
  ../../../../../../../components/device/nrf52_name_change.h \
  ../../../../../../../components/device/compiler_abstraction.h \
  ../../../../../../../components/libraries/util/sdk_macros.h \
- C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\components\ble\peer_manager\peer_data_storage.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\ble\peer_manager\peer_data_storage.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gap.h \
  ../../../../../../../components/softdevice/s132/headers/ble_types.h \
  ../../../../../../../components/softdevice/s132/headers/ble_ranges.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
- C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\components\ble\peer_manager\peer_manager_types.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\ble\peer_manager\peer_manager_types.h \
  ../../../../../../../components/softdevice/s132/headers/ble_hci.h \
  ../../../../../../../components/ble/common/ble_gatt_db.h \
  ../../../../../../../components/softdevice/s132/headers/ble.h \
@@ -51,8 +51,8 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/peer_data_storage.o: \
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
- C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\components\ble\peer_manager\peer_manager_internal.h \
- C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\components\ble\peer_manager\peer_id.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\ble\peer_manager\peer_manager_internal.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\ble\peer_manager\peer_id.h \
  ../../../../../../../components/libraries/fds/fds.h
