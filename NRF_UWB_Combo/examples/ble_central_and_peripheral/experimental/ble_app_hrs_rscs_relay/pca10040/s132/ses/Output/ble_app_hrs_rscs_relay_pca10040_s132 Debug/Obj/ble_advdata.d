@@ -1,10 +1,10 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/ble_advdata.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\ble\common\ble_advdata.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\ble\common\ble_advdata.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
+ C:\Users\vikra\Downloads\decawave-ble\NRF_UWB_Combo\components\ble\common\ble_advdata.c \
+ C:\Users\vikra\Downloads\decawave-ble\NRF_UWB_Combo\components\ble\common\ble_advdata.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
  ../../../../../../../components/softdevice/s132/headers/ble.h \
  ../../../../../../../components/softdevice/s132/headers/ble_ranges.h \
  ../../../../../../../components/softdevice/s132/headers/ble_types.h \
@@ -29,11 +29,11 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/ble_advdata.o: \
  ../../../../../../../components/device/compiler_abstraction.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gatts.h \
  ../../../../../../../components/libraries/util/app_util.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
  ../../../../../../../components/device/compiler_abstraction.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gap.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\ble\common\ble_srv_common.h \
+ C:\Users\vikra\Downloads\decawave-ble\NRF_UWB_Combo\components\ble\common\ble_srv_common.h \
  ../../../../../../../components/softdevice/s132/headers/ble_types.h \
  ../../../../../../../components/softdevice/s132/headers/ble_gatt.h \
  ../../../../../../../components/libraries/util/sdk_common.h \

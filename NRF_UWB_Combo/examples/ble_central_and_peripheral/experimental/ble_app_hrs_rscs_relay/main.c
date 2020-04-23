@@ -235,7 +235,7 @@ static char const m_target_periph_name[] = "Node";
 #define MAX_ANCHOR_COUNT 8
 
 static int range_flag;
-#define NODE_UUID             0x001
+#define NODE_UUID             0x002
 #define UUID_INDICATOR 0x1800 
 #define BLE_UWB_RANGE0 0x0000
 #define BLE_UWB_RANGE1 0x0000
@@ -370,7 +370,7 @@ static dwt_config_t config = {
 #define RX_ANT_DLY 16456
 
 
-SemaphoreHandle_t rxSemaphore, txSemaphore, sus_resp;
+SemaphoreHandle_t rxSemaphore, txSemaphore, sus_resp, sus_init;
 QueueHandle_t uart_queue;
 volatile int tx_int_flag = 0 ; // Transmit success interrupt flag
 volatile int rx_int_flag = 0 ; // Receive success interrupt flag
@@ -1842,11 +1842,14 @@ void ranging_task_function(void *pvParameter)
   while(1){
       //printf("Resumed\r\n");
       vTaskDelay(7000);
-      printf("Suspending\r\n");
       
       
-      xSemaphoreTake(sus_resp, portMAX_DELAY); //Suspend Responder Task
+      
+      xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
         
+      xSemaphoreTake(sus_init, portMAX_DELAY);
+
+      printf("Suspending\r\n");
       dwt_forcetrxoff();
       init_reconfig();
       int i = 0;
@@ -1864,7 +1867,7 @@ void ranging_task_function(void *pvParameter)
       }
       
       resp_reconfig();
-      
+      xSemaphoreGive(sus_init);
       xSemaphoreGive(sus_resp); //Resume Responder Task
       
   }
@@ -1875,6 +1878,8 @@ static void parse_command(uint8_t *);
 
 static void parse_command(uint8_t *data_array){
 
+  send_AT_command(data_array);
+  /*
   //Handle valid AT command begining with AT+
   if(0 == strncmp((const char *)data_array, (const char *)"AT+", (size_t)3)){
   
@@ -1882,12 +1887,14 @@ static void parse_command(uint8_t *data_array){
     if(0 == strncmp((const char *)data_array, (const char *)"AT+STARTUWB", (size_t)11)){
 
         send_AT_command("START command recieved\r\n");
-
+        //xSemaphoreGive(sus_resp); // Give the suspension semaphore so UWB can continue
     }
 
     else if(0 == strncmp((const char *)data_array, (const char *)"AT+STOPUWB", (size_t)10)){
-
+        xSemaphoreTake(sus_resp, portMAX_DELAY);
         send_AT_command("STOP command recieved\r\n");
+        
+        //Take UWB suspension semaphore
 
     }
 
@@ -1899,6 +1906,7 @@ static void parse_command(uint8_t *data_array){
     send_AT_command("Not an AT command\r\n");
 
   }
+  */
   return; 
 }
 
@@ -1917,8 +1925,32 @@ void uart_task(void * pvParameter){
     
     vTaskDelay(100);
     if(xQueueReceive(uart_queue, &incoming_message, 0) == pdPASS){  
+      //Handle valid AT command begining with AT+
+      if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+", (size_t)3)){
+        //Handle specific AT commands
+        if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STARTUWB", (size_t)11)){
+            printf("START command recieved\r\n");
+            xSemaphoreGive(sus_resp);
+            xSemaphoreGive(sus_init);
+            //xSemaphoreGive(sus_resp); // Give the suspension semaphore so UWB can continue
+        }
+        else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STOPUWB", (size_t)10)){
+            xSemaphoreTake(sus_resp, portMAX_DELAY);
+            xSemaphoreTake(sus_init, portMAX_DELAY);
+            printf("STOP command recieved\r\n");
+            //Take UWB suspension semaphore
+        }
+        else printf("Invalid AT Command");
+      }
+      else{
+        printf("Not an AT command\r\n");
+      }
+
+
+
+
     
-      printf("%s",incoming_message.data);
+      
      
     }
 
@@ -2130,7 +2162,8 @@ int main(void)
     rxSemaphore = xSemaphoreCreateBinary();
     txSemaphore = xSemaphoreCreateBinary();
     sus_resp = xSemaphoreCreateBinary();
-    xSemaphoreGive(sus_resp);
+    sus_init = xSemaphoreCreateBinary();
+    //xSemaphoreGive(sus_resp);
 
     
     

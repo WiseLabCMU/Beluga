@@ -129,10 +129,10 @@ int ss_resp_run(void)
   //while (!(rx_int_flag || to_int_flag|| er_int_flag))
   //{};
   //printf("taking sem\r\n");
-  int rxSem = xSemaphoreTake(rxSemaphore, 1);
+  int rxSem = xSemaphoreTake(rxSemaphore, 0);
   while(rxSem == pdFALSE)
   {
-    rxSem = xSemaphoreTake(rxSemaphore, 1);
+    rxSem = xSemaphoreTake(rxSemaphore, 0);
     int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
     if(suspend == 0) return 1;
     //printf("%d \r\n", suspend);
@@ -310,7 +310,7 @@ void ss_responder_task_function (void * pvParameter)
   {
     ss_resp_run();
     /* Delay a task for a given number of ticks */
-    vTaskDelay(RNG_DELAY_MS);
+    vTaskDelay(10);
     /* Tasks must be implemented to never return... */
   }
 }
