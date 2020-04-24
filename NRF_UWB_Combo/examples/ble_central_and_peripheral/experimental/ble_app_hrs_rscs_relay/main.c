@@ -237,7 +237,7 @@ static char const m_target_periph_name[] = "Node";
 static int range_flag;
 //static uint16_t NODE_UUID = 2;
 uint16_t NODE_UUID = 1;
-#define NODE_UUID_START     0x0001
+#define NODE_UUID_START     0x00FF
 #define UUID_INDICATOR 0x1800 
 #define BLE_UWB_RANGE0 0x0000
 #define BLE_UWB_RANGE1 0x0000
@@ -1941,6 +1941,21 @@ void uart_task(void * pvParameter){
             xSemaphoreTake(sus_init, portMAX_DELAY);
             printf("STOP command recieved\r\n");
             //Take UWB suspension semaphore
+        }
+
+
+        else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+ID", (size_t)5)){
+            char buf[100];
+            strcpy(buf, incoming_message.data);
+            char *uuid_char = strtok(buf, " ");
+            uuid_char = strtok(NULL, " ");
+            uint16_t rec_uuid = atoi(uuid_char);
+            
+            NODE_UUID = rec_uuid;
+            m_adv_uuids[1].uuid = NODE_UUID; 
+            advertising_init();
+            printf("Set UUID command recieved: %d\r\n", rec_uuid );
+            
         }
         else printf("Invalid AT Command");
       }
