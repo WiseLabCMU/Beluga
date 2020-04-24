@@ -235,7 +235,9 @@ static char const m_target_periph_name[] = "Node";
 #define MAX_ANCHOR_COUNT 8
 
 static int range_flag;
-#define NODE_UUID             0x002
+//static uint16_t NODE_UUID = 2;
+uint16_t NODE_UUID = 1;
+#define NODE_UUID_START     0x0001
 #define UUID_INDICATOR 0x1800 
 #define BLE_UWB_RANGE0 0x0000
 #define BLE_UWB_RANGE1 0x0000
@@ -247,7 +249,7 @@ void send_AT_command(char *command);
 static ble_uuid_t m_adv_uuids[] =
 {
     {UUID_INDICATOR              , BLE_UUID_TYPE_BLE},
-    {NODE_UUID      , BLE_UUID_TYPE_BLE}
+    {NODE_UUID_START      , BLE_UUID_TYPE_BLE}
     //{BLE_UWB_RANGE0             , BLE_UUID_TYPE_BLE},
     //{BLE_UWB_RANGE1             , BLE_UUID_TYPE_BLE},
     //{BLE_UWB_RANGE2             , BLE_UUID_TYPE_BLE}

@@ -22,6 +22,7 @@ extern volatile int rx_int_flag; // Receive success interrupt flag
 extern volatile int to_int_flag; // Timeout interrupt flag
 extern volatile int er_int_flag; // Error interrupt flag 
 
+extern uint16_t NODE_UUID;
 
 static void resp_msg_get_ts(uint8 *ts_field, uint32 *ts);
 

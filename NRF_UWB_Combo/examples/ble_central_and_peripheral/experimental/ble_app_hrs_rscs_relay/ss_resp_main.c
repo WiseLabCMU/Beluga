@@ -110,7 +110,7 @@ static volatile int rx_count = 0 ; // Successful receive counter
 *
 * @return none
 */
-#define my_id 1
+
 
 int ss_resp_run(void)
 {
@@ -173,7 +173,7 @@ int ss_resp_run(void)
     /* Check that the frame is a poll sent by "SS TWR initiator" example.
     * As the sequence number field of the frame is not relevant, it is cleared to simplify the validation of the frame. */
     rx_buffer[ALL_MSG_SN_IDX] = 0;
-    if ((memcmp(rx_buffer, rx_poll_msg, ALL_MSG_COMMON_LEN) == 0) && (rx_buffer[10] == my_id))
+    if ((memcmp(rx_buffer, rx_poll_msg, ALL_MSG_COMMON_LEN) == 0) && (rx_buffer[10] == NODE_UUID))
     {
       uint32 resp_tx_time;
       int ret;
