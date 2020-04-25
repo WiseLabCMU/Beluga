@@ -1,10 +1,10 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_log_default_backends.o: \
- C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\experimental_log\src\nrf_log_default_backends.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\experimental_log\src\nrf_log_default_backends.c \
  ../../../../../../../components/libraries/util/sdk_common.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/string.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/string.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
  ../config/sdk_config.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/device/compiler_abstraction.h \
@@ -12,7 +12,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_log_default_backends.
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/libraries/util/app_util.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stddef.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stddef.h \
  ../../../../../../../components/device/nrf.h \
  ../../../../../../../components/device/nrf52.h \
  ../../../../../../../components/toolchain/cmsis/include/core_cm4.h \
@@ -32,7 +32,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_log_default_backends.
  ../../../../../../../components/libraries/experimental_log/src/nrf_log_ctrl_internal.h \
  ../../../../../../../components/libraries/experimental_log/nrf_log_backend_interface.h \
  ../../../../../../../components/libraries/experimental_memobj/nrf_memobj.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdlib.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdlib.h \
  ../../../../../../../components/libraries/balloc/nrf_balloc.h \
  ../../../../../../../components/libraries/util/app_util_platform.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_soc.h \
@@ -42,9 +42,9 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/nrf_log_default_backends.
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
  ../../../../../../../components/libraries/util/app_util.h \
- C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\experimental_log\src\nrf_log_internal.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\components\libraries\experimental_log\src\nrf_log_internal.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/experimental_log/nrf_log_backend_uart.h

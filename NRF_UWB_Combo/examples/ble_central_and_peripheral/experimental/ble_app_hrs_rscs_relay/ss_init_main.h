@@ -26,7 +26,7 @@ extern uint16_t NODE_UUID;
 
 static void resp_msg_get_ts(uint8 *ts_field, uint32 *ts);
 
-int ss_init_run(int id);
+double ss_init_run(int id);
 int ss_resp_run(void);
 
 

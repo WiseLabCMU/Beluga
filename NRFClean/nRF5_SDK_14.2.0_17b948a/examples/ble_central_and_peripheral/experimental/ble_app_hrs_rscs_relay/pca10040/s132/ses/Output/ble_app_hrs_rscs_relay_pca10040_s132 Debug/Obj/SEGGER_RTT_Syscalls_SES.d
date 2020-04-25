@@ -1,11 +1,11 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/SEGGER_RTT_Syscalls_SES.o: \
- C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\external\segger_rtt\SEGGER_RTT_Syscalls_SES.c \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\external\segger_rtt\SEGGER_RTT_Syscalls_SES.c \
  ../config/sdk_config.h \
- C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\external\segger_rtt\SEGGER_RTT.h \
- C:\Users\vikra\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\external\segger_rtt\SEGGER_RTT_Conf.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\external\segger_rtt\SEGGER_RTT.h \
+ C:\Users\danie\OneDrive\Desktop\decawave-ble\NRFClean\nRF5_SDK_14.2.0_17b948a\external\segger_rtt\SEGGER_RTT_Conf.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/libraries/util/app_util_platform.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
  ../../../../../../../components/device/compiler_abstraction.h \
  ../../../../../../../components/device/nrf.h \
  ../../../../../../../components/device/nrf52.h \
@@ -20,21 +20,21 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/SEGGER_RTT_Syscalls_SES.o
  ../../../../../../../components/device/nrf52_name_change.h \
  ../../../../../../../components/device/compiler_abstraction.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_soc.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
  ../../../../../../../components/libraries/util/nrf_assert.h \
  ../../../../../../../components/libraries/util/app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
  ../../../../../../../components/libraries/util/sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/libraries/util/nordic_common.h \
  ../../../../../../../components/libraries/util/app_error_weak.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdarg.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/limits.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__libc.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__vfprintf.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__argtype.h
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdarg.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/limits.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__libc.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__vfprintf.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__argtype.h

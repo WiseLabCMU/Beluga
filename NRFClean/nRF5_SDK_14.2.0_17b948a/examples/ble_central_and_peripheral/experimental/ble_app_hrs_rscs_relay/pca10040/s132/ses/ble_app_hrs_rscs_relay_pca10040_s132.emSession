@@ -50,26 +50,11 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="27" y="1492" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="1" top="1301" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="100" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/timer/app_timer.h" selected="0" top="71" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="62" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/softdevice/common/nrf_sdh_freertos.c" selected="0" top="57" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="21" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/timer/app_timer.c" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="384" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/softdevice/common/nrf_sdh.c" selected="0" top="379" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="3122" useTextEdit="1" useBinaryEdit="0" left="0" path="../config/sdk_config.h" selected="0" top="3113" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/softdevice/common/nrf_sdh_freertos.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="188" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/source/include/FreeRTOS.h" selected="0" top="157" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="338" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/ble/common/ble_conn_state.c" selected="0" top="311" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="944" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/ble/ble_db_discovery/ble_db_discovery.c" selected="0" top="876" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="212" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/drivers_nrf/clock/nrf_drv_clock.c" selected="0" top="176" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="109" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../config/FreeRTOSConfig.h" selected="0" top="91" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="9" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/source/portable/MemMang/heap_1.c" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="127" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/timer/app_timer_freertos.c" selected="0" top="102" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="169" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/portable/CMSIS/nrf52/port_cmsis_systick.c" selected="0" top="160" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="86" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/softdevice/s132/headers/nrf_error.h" selected="0" top="38" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1089" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/source/tasks.c" selected="0" top="1062" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="2040" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/softdevice/s132/headers/ble_gap.h" selected="0" top="2013" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="667" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/source/event_groups.c" selected="0" top="655" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="23" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/portable/CMSIS/nrf52/port_cmsis.c" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="16" y="1476" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="1" top="1455" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="22" y="60" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/softdevice/common/nrf_sdh_freertos.c" selected="0" top="51" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="382" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/softdevice/common/nrf_sdh.c" selected="0" top="372" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="65" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/softdevice/common/nrf_sdh.h" selected="0" top="53" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="5626" useTextEdit="1" useBinaryEdit="0" left="0" path="../config/sdk_config.h" selected="0" top="5614" codecName="Default"/>
  </Files>
  <ARMCrossStudioWindow activeProject="ble_app_hrs_rscs_relay_pca10040_s132" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

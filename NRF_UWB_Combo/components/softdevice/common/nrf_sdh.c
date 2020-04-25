@@ -387,6 +387,7 @@ void SD_EVT_IRQHandler(void)
     nrf_sdh_evts_poll();
 }
 
+
 #elif (NRF_SDH_DISPATCH_MODEL == NRF_SDH_DISPATCH_MODEL_APPSH)
 
 /**@brief   Function for polling SoftDevice events.

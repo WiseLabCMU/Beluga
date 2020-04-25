@@ -92,7 +92,7 @@ static volatile int rx_count = 0 ; // Successful receive counter
 *
 * @return none
 */
-int ss_init_run(int id)
+double ss_init_run(int id)
 {
 
   /* Loop forever initiating ranging exchanges. */
@@ -111,13 +111,11 @@ int ss_init_run(int id)
   /*Waiting for transmission success flag*/
   //while (!(tx_int_flag))
   //{};
-  printf("waiting\r\n");
   xSemaphoreTake(txSemaphore, portMAX_DELAY);
-  printf("waited\r\n");
   if (tx_int_flag)
   {
     tx_count++;
-    printf("Transmission # : %d\r\n",tx_count);
+    //printf("Transmission # : %d\r\n",tx_count);
     /*Reseting tx interrupt flag*/
     tx_int_flag = 0;
   }
@@ -127,7 +125,7 @@ int ss_init_run(int id)
   //{};
    
   bool rx_recieved = xSemaphoreTake(rxSemaphore, portMAX_DELAY);
-  printf("rx: %d - %d %d %d\r\n", rx_recieved, rx_int_flag, to_int_flag, er_int_flag);
+  //printf("rx: %d - %d %d %d\r\n", rx_recieved, rx_int_flag, to_int_flag, er_int_flag);
 
   if( rx_recieved == pdTRUE )
   {
@@ -153,9 +151,9 @@ int ss_init_run(int id)
       if (memcmp(rx_buffer, rx_resp_msg, ALL_MSG_COMMON_LEN) == 0)
       {	
         rx_count++;
-        printf("Reception # : %d\r\n",rx_count);
+        //printf("Reception # : %d\r\n",rx_count);
         float reception_rate = (float) rx_count / (float) tx_count * 100;
-        printf("Reception rate # : %f\r\n",reception_rate);
+        //printf("Reception rate # : %f\r\n",reception_rate);
         uint32 poll_tx_ts, resp_rx_ts, poll_rx_ts, resp_tx_ts;
         int32 rtd_init, rtd_resp;
         float clockOffsetRatio ;
@@ -181,6 +179,8 @@ int ss_init_run(int id)
 
         /*Reseting receive interrupt flag*/
         rx_int_flag = 0; 
+
+        return distance;
         
       }
       //xSemaphoreGive(rxSemaphore);
@@ -201,7 +201,8 @@ int ss_init_run(int id)
 
     /* Execute a delay between ranging exchanges. */
     //deca_sleep(RNG_DELAY_MS);
-    //	return(1);
+
+    return -1;
 }
 
 ///*! ------------------------------------------------------------------------------------------------------------------

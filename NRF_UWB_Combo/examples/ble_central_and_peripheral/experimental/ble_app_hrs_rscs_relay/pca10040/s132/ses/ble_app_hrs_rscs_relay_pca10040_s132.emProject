@@ -157,7 +157,9 @@
       <file file_name="../../../../../../../components/ble/peer_manager/security_dispatcher.c" />
     </folder>
     <folder Name="nRF_SoftDevice">
-      <file file_name="../../../../../../../components/softdevice/common/nrf_sdh.c" />
+      <file file_name="../../../../../../../components/softdevice/common/nrf_sdh.c">
+        <configuration Name="Debug" build_exclude_from_build="No" />
+      </file>
       <file file_name="../../../../../../../components/softdevice/common/nrf_sdh_ble.c" />
       <file file_name="../../../../../../../components/softdevice/common/nrf_sdh_soc.c" />
       <file file_name="../../../../../../../components/softdevice/common/nrf_sdh_freertos.c">

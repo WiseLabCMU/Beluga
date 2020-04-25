@@ -1448,17 +1448,6 @@ int main(void)
 
 
     bsp_board_leds_init();
-  
-
-    ble_version_t sd = {0,0,0};
-    ble_version_t *p_version = &sd;
-    uint32_t a;
-    a = sd_ble_version_get(p_version);
-    NRF_LOG_INFO("%d", a); 
-    ble_stack_init();
-    a = sd_ble_version_get(p_version);
-    NRF_LOG_INFO("%d", a); 
-
     gap_params_init();
     gatt_init();
     conn_params_init();
@@ -1469,11 +1458,7 @@ int main(void)
     services_init();
     advertising_init();
     
-
-    while(a != 0) {};
-    
-    
-
+   
 
 
     UNUSED_VARIABLE(xTaskCreate(led_toggle_task_function, "LED0", configMINIMAL_STACK_SIZE + 200, NULL, 2, &led_toggle_task_handle));
@@ -1482,28 +1467,16 @@ int main(void)
     led_toggle_timer_handle = xTimerCreate( "LED1", TIMER_PERIOD, pdTRUE, NULL, led_toggle_timer_callback);
     UNUSED_VARIABLE(xTimerStart(led_toggle_timer_handle, 0));
 
-
     
-    //nrf_delay_ms(100);
-
-
-
+    nrf_sdh_freertos_init(adv_scan_start, &erase_bonds);
     
     
-    //nrf_sdh_freertos_init(scanning_start, &erase_bonds);
-    
-    nrf_sdh_freertos_init(advertising_start, &erase_bonds);
-    
-    
-
-    //nrf_sdh_freertos_init(advertising_start, &erase_bonds);
     // Start FreeRTOS scheduler.
-    NRF_LOG_INFO("Hello!");
+    printf("Hello!");
     vTaskStartScheduler();
     while (true)
     {
         APP_ERROR_HANDLER(NRF_ERROR_FORBIDDEN);
-        NRF_LOG_INFO("Hello!");
         
     }
 

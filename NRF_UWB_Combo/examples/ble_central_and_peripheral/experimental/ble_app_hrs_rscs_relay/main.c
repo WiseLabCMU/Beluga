@@ -177,6 +177,7 @@ static int mode;
 #define SCAN_WINDOW                     0x0050                                      /**< Determines scan window in units of 0.625 millisecond. */
 #define SCAN_TIMEOUT                    0
 
+
 #define MIN_CONNECTION_INTERVAL         (uint16_t) MSEC_TO_UNITS(7.5, UNIT_1_25_MS) /**< Determines minimum connection interval in milliseconds. */
 #define MAX_CONNECTION_INTERVAL         (uint16_t) MSEC_TO_UNITS(30, UNIT_1_25_MS)  /**< Determines maximum connection interval in milliseconds. */
 #define SLAVE_LATENCY                   0                                           /**< Determines slave latency in terms of connection events. */
@@ -235,15 +236,17 @@ static char const m_target_periph_name[] = "Node";
 #define MAX_ANCHOR_COUNT 8
 
 static int range_flag;
-//static uint16_t NODE_UUID = 2;
 uint16_t NODE_UUID = 1;
 #define NODE_UUID_START     0x00FF
 #define UUID_INDICATOR 0x1800 
 #define BLE_UWB_RANGE0 0x0000
 #define BLE_UWB_RANGE1 0x0000
 #define BLE_UWB_RANGE2 0x0000
+#define NCNT 8
 
 void send_AT_command(char *command);
+
+QueueHandle_t uart_queue;
 
 
 static ble_uuid_t m_adv_uuids[] =
@@ -304,14 +307,14 @@ typedef struct node{
     int UUID;
     int8_t RSSI;
     int time_stamp;
-    float range;
+    double range;
 } node;
 
 
 
 typedef struct message
 {
-   char data[35];
+   char data[50];
 } message;
 
 
@@ -332,15 +335,59 @@ bool in_list(int i)
 }
 */
 
-void print_seen_list()
+void list_task_function()
 {
 
-  printf("#######################\r\n");
-  for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
-  {
-    printf("%d) UUID: %x RSSI: %d Time Stamp: %d \r\n",j, seen_list[j].UUID, seen_list[j].RSSI, seen_list[j].time_stamp);
-  }
-  printf("#######################\r\n");
+  BaseType_t xHigherPriorityTaskWoken;
+
+  while(1){
+
+      vTaskDelay(5000);
+
+      message new_message = {0};
+
+      strcpy(new_message.data, "########################\r\n");
+
+      xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
+
+      for(int j = 0; j < NCNT; j++)
+      {
+      
+        char list_item[50] ;
+
+        char UUID_str[4] ;
+        char range_str[8];
+        char RSSI_str[4] ;
+        char time_str[8];
+        char idx_str[4];
+
+        snprintf(UUID_str, 4, "%d", seen_list[j].UUID);
+        snprintf(range_str, 8, "%f", seen_list[j].range);
+        snprintf(RSSI_str, 4, "%d", seen_list[j].RSSI);
+        snprintf(time_str, 8, "%d", seen_list[j].time_stamp);
+        snprintf(idx_str, 4, "%d", j);
+
+        strcpy(list_item, idx_str);
+        strcat(list_item, ") ID: ");
+        strcat(list_item, UUID_str);
+        strcat(list_item, " range: ");
+        strcat(list_item, range_str);
+        strcat(list_item, " RSSI: ");
+        strcat(list_item, RSSI_str);
+        strcat(list_item, " Time: ");
+        strcat(list_item, time_str);
+        strcat(list_item, "\r\n");
+        strcpy(new_message.data, list_item);
+    
+
+        xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
+
+      }
+
+      strcpy(new_message.data, "########################\r\n");
+
+      xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
+   }
 }
 
 
@@ -373,7 +420,7 @@ static dwt_config_t config = {
 
 
 SemaphoreHandle_t rxSemaphore, txSemaphore, sus_resp, sus_init;
-QueueHandle_t uart_queue;
+
 volatile int tx_int_flag = 0 ; // Transmit success interrupt flag
 volatile int rx_int_flag = 0 ; // Receive success interrupt flag
 volatile int to_int_flag = 0 ; // Timeout interrupt flag
@@ -971,8 +1018,6 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
                      
                      uint16_t found_UUID = find_adv_uuid_next(&p_gap_evt->params.adv_report);
                      if(found_UUID != NODE_UUID && !in_seen_list(found_UUID)){
-
-                       printf("found\r\n");
                        
                        seen_list[last_seen_idx].UUID = found_UUID;
                        seen_list[last_seen_idx].RSSI = &p_gap_evt->params.rssi_changed.rssi;
@@ -1611,14 +1656,6 @@ APP_TIMER_DEF(m_list_print);
 
 
 
-static void timer_list_print(void * p_context)
-{
-    //nrf_drv_gpiote_out_toggle(LED_1);
-    print_seen_list();
-    //printf("The beat go off?\r\n");
-    
-}
-
 /**@brief Timeout handler for the repeated timer.
  */
 static void timestamp_handler(void * p_context)
@@ -1663,6 +1700,7 @@ TaskHandle_t  ss_responder_task_handle;
 TaskHandle_t ranging_task_handle;
 TaskHandle_t  ss_initiator_task_handle; 
 TaskHandle_t uart_task_handle;
+TaskHandle_t list_task_handle;
 
 SemaphoreHandle_t uwbSem;
 
@@ -1838,83 +1876,46 @@ void resp_reconfig(){
 
 }
 
+
 void ranging_task_function(void *pvParameter)
 {
   
   while(1){
-      //printf("Resumed\r\n");
       vTaskDelay(7000);
-      
-      
       
       xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
         
       xSemaphoreTake(sus_init, portMAX_DELAY);
 
-      printf("Suspending\r\n");
       dwt_forcetrxoff();
-      init_reconfig();
-      int i = 0;
-      printf("Reconfig'd\r\n");
 
-      int s = eTaskGetState(uart_task_handle);
-      printf("Status: %d\r\n", s);
-      
-      while(i < 10) //Do some ranging
-      {
-        //printf("running\r\n");
-        ss_init_run(1);
+      init_reconfig();
+
+      int i = 0;
+     
+      while(i < MAX_ANCHOR_COUNT){
+        float range1 = ss_init_run(seen_list[i].UUID);
+        vTaskDelay(20);
+        float range2 = ss_init_run(seen_list[i].UUID);
+        vTaskDelay(20);
+        float range3 = ss_init_run(seen_list[i].UUID);
+        vTaskDelay(20);
+        printf("R: %f \r\n", (range1 + range2 + range3)/3);
+        seen_list[i].range = (range1 + range2 + range3)/3;
         vTaskDelay(250);
         i++;
       }
       
       resp_reconfig();
+
       xSemaphoreGive(sus_init);
       xSemaphoreGive(sus_resp); //Resume Responder Task
-      
   }
 
  }
 
-static void parse_command(uint8_t *);
-
-static void parse_command(uint8_t *data_array){
-
-  send_AT_command(data_array);
-  /*
-  //Handle valid AT command begining with AT+
-  if(0 == strncmp((const char *)data_array, (const char *)"AT+", (size_t)3)){
-  
-    //Handle specific AT commands
-    if(0 == strncmp((const char *)data_array, (const char *)"AT+STARTUWB", (size_t)11)){
-
-        send_AT_command("START command recieved\r\n");
-        //xSemaphoreGive(sus_resp); // Give the suspension semaphore so UWB can continue
-    }
-
-    else if(0 == strncmp((const char *)data_array, (const char *)"AT+STOPUWB", (size_t)10)){
-        xSemaphoreTake(sus_resp, portMAX_DELAY);
-        send_AT_command("STOP command recieved\r\n");
-        
-        //Take UWB suspension semaphore
-
-    }
-
-    else send_AT_command("Invalid AT Command");
-  }
-
-  else{
-
-    send_AT_command("Not an AT command\r\n");
-
-  }
-  */
-  return; 
-}
-
 
 static uint16_t   m_ble_nus_max_data_len = BLE_GATT_ATT_MTU_DEFAULT - 3; 
-
 
 
 void uart_task(void * pvParameter){
@@ -1937,9 +1938,9 @@ void uart_task(void * pvParameter){
             //xSemaphoreGive(sus_resp); // Give the suspension semaphore so UWB can continue
         }
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STOPUWB", (size_t)10)){
+            printf("STOP command recieved\r\n");
             xSemaphoreTake(sus_resp, portMAX_DELAY);
             xSemaphoreTake(sus_init, portMAX_DELAY);
-            printf("STOP command recieved\r\n");
             //Take UWB suspension semaphore
         }
 
@@ -1957,23 +1958,17 @@ void uart_task(void * pvParameter){
             printf("Set UUID command recieved: %d\r\n", rec_uuid );
             
         }
-        else printf("Invalid AT Command");
+        else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+LIST", (size_t)7)){
+            //print_seen_list();
+        }
+        else printf("Invalid AT Command\r\n");
       }
       else{
-        printf("Not an AT command\r\n");
-      }
-
-
-
-
-    
-      
-     
+        //printf("Not an AT command\r\n");
+        printf("%s",(const char *)incoming_message.data);
+      }  
     }
-
   }
-
-
 }
 
 void send_AT_command(char *command){
@@ -2002,7 +1997,7 @@ void uart_event_handle(app_uart_evt_t * p_event)
             if ((data_array[index - 1] == '\n') || (index >= (m_ble_nus_max_data_len)))
             {
               
-                parse_command(data_array);
+                send_AT_command(data_array);
 
                 index = 0;
             }
@@ -2131,8 +2126,8 @@ int main(void)
    
     
     
-    //ret_code_t create_timer = app_timer_create(&m_timestamp_keeper, APP_TIMER_MODE_REPEATED, timestamp_handler);
-    //ret_code_t start_timer =  app_timer_start(m_timestamp_keeper, APP_TIMER_TICKS(1) , NULL);
+    ret_code_t create_timer = app_timer_create(&m_timestamp_keeper, APP_TIMER_MODE_REPEATED, timestamp_handler);
+    ret_code_t start_timer =  app_timer_start(m_timestamp_keeper, APP_TIMER_TICKS(1) , NULL);
   
     //ret_code_t c2 = app_timer_create(&m_ble_switch, APP_TIMER_MODE_REPEATED, switch_ble);
     //ret_code_t s2 = app_timer_start(m_ble_switch,APP_TIMER_TICKS(5000) ,NULL);
@@ -2143,7 +2138,7 @@ int main(void)
 
    
     //ret_code_t c4 = app_timer_create(&m_list_print, APP_TIMER_MODE_REPEATED, timer_list_print);
-    //ret_code_t s4 = app_timer_start(m_list_print,APP_TIMER_TICKS(1000) ,NULL);
+    //ret_code_t s4 = app_timer_start(m_list_print,APP_TIMER_TICKS(3000) ,NULL);
     
   
     //ret_code_t c3 = app_timer_create(&m_uwb_switch, APP_TIMER_MODE_REPEATED, switch_uwb);
@@ -2193,6 +2188,7 @@ int main(void)
     UNUSED_VARIABLE(xTaskCreate(ss_responder_task_function, "SSTWR_RESP", configMINIMAL_STACK_SIZE+600, NULL,1, &ss_responder_task_handle));
     UNUSED_VARIABLE(xTaskCreate(ranging_task_function, "RNG", configMINIMAL_STACK_SIZE+200, NULL, 2, &ranging_task_handle));
     UNUSED_VARIABLE(xTaskCreate(uart_task, "UART", configMINIMAL_STACK_SIZE+1200, NULL, 2, &uart_task_handle));
+    UNUSED_VARIABLE(xTaskCreate(list_task_function, "LIST", configMINIMAL_STACK_SIZE+600, NULL, 2, &list_task_handle));
     
     
     //^ Controls switching between initiator and responder
