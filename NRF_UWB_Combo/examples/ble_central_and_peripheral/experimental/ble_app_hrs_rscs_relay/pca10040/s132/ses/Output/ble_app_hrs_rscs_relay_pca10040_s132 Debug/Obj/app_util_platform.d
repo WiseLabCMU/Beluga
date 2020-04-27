@@ -1,7 +1,7 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/app_util_platform.o: \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\util\app_util_platform.c \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\util\app_util_platform.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdint.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\util\app_util_platform.c \
+ C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\util\app_util_platform.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  ../../../../../../../components/device/compiler_abstraction.h \
  ../../../../../../../components/device/nrf.h \
  ../../../../../../../components/device/nrf52.h \
@@ -16,17 +16,17 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/app_util_platform.o: \
  ../../../../../../../components/device/nrf52_name_change.h \
  ../../../../../../../components/device/compiler_abstraction.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_soc.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdbool.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdbool.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_svc.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error_soc.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_nvic.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\util\nrf_assert.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\util\app_error.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/stdio.h \
- C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.30c/include/__crossworks.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\util\sdk_errors.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\util\nrf_assert.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\util\app_error.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
+ C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\util\sdk_errors.h \
  ../../../../../../../components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\util\nordic_common.h \
- C:\Users\danie\OneDrive\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\util\app_error_weak.h
+ C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\util\nordic_common.h \
+ C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\components\libraries\util\app_error_weak.h

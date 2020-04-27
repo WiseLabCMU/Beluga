@@ -69,11 +69,14 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="26" y="358" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="1" top="386" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="1919" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="1" top="1906" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="155" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_init_main.c" selected="0" top="137" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="175" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_resp_main.c" selected="0" top="161" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="25" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_init_main.h" selected="0" top="7" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="102" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/config/FreeRTOSConfig.h" selected="0" top="95" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="417" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/ble/ble_services/ble_rscs/ble_rscs.c" selected="0" top="417" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="310" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/ble/peer_manager/peer_manager.c" selected="0" top="296" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="242" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/ble/peer_manager/peer_manager_types.h" selected="0" top="225" codecName="Default"/>
  </Files>
  <ARMCrossStudioWindow activeProject="ble_app_hrs_rscs_relay_pca10040_s132" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/Users/vikra/Desktop/decawave-ble/nRF5_SDK_14.2.0_17b948a/components/toolchain/cmsis/include" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>

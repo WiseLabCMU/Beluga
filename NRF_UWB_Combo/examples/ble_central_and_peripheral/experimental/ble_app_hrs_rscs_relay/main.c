@@ -511,6 +511,7 @@ static void scan_start(void)
 
 /**@brief Function for initiating advertising and scanning.
  */
+ static int ble_started;
 static void adv_scan_start(void)
 {
     ret_code_t err_code;
@@ -520,14 +521,17 @@ static void adv_scan_start(void)
     {
         // Start scanning for peripherals and initiate connection to devices which
         // advertise Heart Rate or Running speed and cadence UUIDs.
-        scan_start();
+        if(ble_started == 1) 
+        {
+          scan_start();
 
-        // Turn on the LED to signal scanning.
-        bsp_board_led_on(CENTRAL_SCANNING_LED);
+          // Turn on the LED to signal scanning.
+          bsp_board_led_on(CENTRAL_SCANNING_LED);
 
-        // Start advertising.
-        err_code = ble_advertising_start(&m_advertising, BLE_ADV_MODE_FAST);
-        APP_ERROR_CHECK(err_code);
+          // Start advertising.
+          err_code = ble_advertising_start(&m_advertising, BLE_ADV_MODE_FAST);
+          APP_ERROR_CHECK(err_code);
+        }
     }
 }
 
@@ -1904,8 +1908,28 @@ void ranging_task_function(void *pvParameter)
         seen_list[i].range = (range1 + range2 + range3)/3;
         vTaskDelay(250);
         i++;
+        
+        
       }
-      
+      //Now sort neighbor list
+      (void) sd_ble_gap_scan_stop();
+
+      for (int j = 0; j < MAX_ANCHOR_COUNT; j++)
+      {
+        for( int k = j+1; k < MAX_ANCHOR_COUNT; k++)
+        {
+          if(seen_list[j].RSSI < seen_list[k].RSSI)
+          {
+              //printf("j : %d k: %d \r\n", seen_list[j].RSSI, seen_list[k].RSSI);
+              node A = seen_list[j];
+              seen_list[j] = seen_list[k];
+              seen_list[k] = A;
+         
+          }
+        }
+      }
+      scan_start(); //Resume scanning/building up neighbor list
+
       resp_reconfig();
 
       xSemaphoreGive(sus_init);
@@ -1932,17 +1956,31 @@ void uart_task(void * pvParameter){
       if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+", (size_t)3)){
         //Handle specific AT commands
         if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STARTUWB", (size_t)11)){
-            printf("START command recieved\r\n");
+            printf("START UWB command recieved\r\n");
             xSemaphoreGive(sus_resp);
             xSemaphoreGive(sus_init);
             //xSemaphoreGive(sus_resp); // Give the suspension semaphore so UWB can continue
         }
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STOPUWB", (size_t)10)){
-            printf("STOP command recieved\r\n");
+            printf("STOP UWB command recieved\r\n");
             xSemaphoreTake(sus_resp, portMAX_DELAY);
             xSemaphoreTake(sus_init, portMAX_DELAY);
             //Take UWB suspension semaphore
         }
+        else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STARTBLE", (size_t)11)){
+            printf("START BLE command recieved\r\n");
+            ble_started = 1;
+            adv_scan_start();
+                    //Start BLE
+        }
+        else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STOPBLE", (size_t)10)){
+            printf("STOP BLE command recieved\r\n");
+            ble_started = 0;
+            sd_ble_gap_adv_stop();
+            sd_ble_gap_scan_stop();
+                    //Stop BLE
+        }
+        
 
 
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+ID", (size_t)5)){
@@ -2159,7 +2197,9 @@ int main(void)
     }
     else
     {
-        adv_scan_start();
+        //adv_scan_start();
+        //sd_ble_gap_adv_stop();
+        //sd_ble_gap_scan_stop();
     }
     int count = 0;
     //NRF_LOG_INFO("Relay example started.");
