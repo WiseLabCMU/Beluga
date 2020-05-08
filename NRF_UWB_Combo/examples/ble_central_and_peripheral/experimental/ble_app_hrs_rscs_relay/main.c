@@ -123,7 +123,7 @@
 #include "deca_param_types.h"
 #include "deca_regs.h"
 #include "deca_device_api.h"
-#include "uart.h"
+#include "UART.h"
 #include "nrf_drv_gpiote.h"
 #include "ss_init_main.h"
 #include "port_platform.h"
@@ -235,6 +235,8 @@ static char const m_target_periph_name[] = "Node";
  */
 #define MAX_ANCHOR_COUNT 8
 
+SemaphoreHandle_t rxSemaphore, txSemaphore, sus_resp, sus_init, print_list_sem;
+
 static int range_flag;
 uint16_t NODE_UUID = 1;
 #define NODE_UUID_START     0x00FF
@@ -339,9 +341,9 @@ void list_task_function()
 {
 
   BaseType_t xHigherPriorityTaskWoken;
-
+  xSemaphoreTake(print_list_sem, portMAX_DELAY);
   while(1){
-
+      
       vTaskDelay(5000);
 
       message new_message = {0};
@@ -419,7 +421,7 @@ static dwt_config_t config = {
 #define RX_ANT_DLY 16456
 
 
-SemaphoreHandle_t rxSemaphore, txSemaphore, sus_resp, sus_init;
+
 
 volatile int tx_int_flag = 0 ; // Transmit success interrupt flag
 volatile int rx_int_flag = 0 ; // Receive success interrupt flag
@@ -1904,11 +1906,27 @@ void ranging_task_function(void *pvParameter)
         vTaskDelay(20);
         float range3 = ss_init_run(seen_list[i].UUID);
         vTaskDelay(20);
-        printf("R: %f \r\n", (range1 + range2 + range3)/3);
-        seen_list[i].range = (range1 + range2 + range3)/3;
+        int numThru = 3;
+        if (range1 == -1)
+        {
+          range1 = 0;
+          numThru -= 1;
+        }
+        if (range2 == -1)
+        {
+          range2 = 0;
+          numThru -= 1;
+        }
+        if(range3 == -1)
+        {
+          range3 = 0;
+          numThru -= 1;
+        }
+        
+        printf("R: %f \r\n", (range1 + range2 + range3)/numThru);
+        seen_list[i].range = (range1 + range2 + range3)/numThru;
         vTaskDelay(250);
         i++;
-        
         
       }
       //Now sort neighbor list
@@ -1970,6 +1988,7 @@ void uart_task(void * pvParameter){
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STARTBLE", (size_t)11)){
             printf("START BLE command recieved\r\n");
             ble_started = 1;
+            xSemaphoreGive(print_list_sem);
             adv_scan_start();
                     //Start BLE
         }
@@ -2215,6 +2234,7 @@ int main(void)
     txSemaphore = xSemaphoreCreateBinary();
     sus_resp = xSemaphoreCreateBinary();
     sus_init = xSemaphoreCreateBinary();
+    print_list_sem = xSemaphoreCreateBinary();
     //xSemaphoreGive(sus_resp);
 
     

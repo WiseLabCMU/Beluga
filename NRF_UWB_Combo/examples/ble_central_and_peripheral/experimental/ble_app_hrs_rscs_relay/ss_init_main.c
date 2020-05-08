@@ -129,7 +129,7 @@ double ss_init_run(int id)
 
   if( rx_recieved == pdTRUE )
   {
-    printf("inside \r\n");
+    //printf("inside \r\n");
 
     /* Increment frame sequence number after transmission of the poll message (modulo 256). */
     frame_seq_nb++;
@@ -175,7 +175,7 @@ double ss_init_run(int id)
 
         tof = ((rtd_init - rtd_resp * (1.0f - clockOffsetRatio)) / 2.0f) * DWT_TIME_UNITS; // Specifying 1.0f and 2.0f are floats to clear warning 
         distance = tof * SPEED_OF_LIGHT;
-        printf("Distance : %f\r\n",distance);
+        //printf("Distance : %f\r\n",distance);
 
         /*Reseting receive interrupt flag*/
         rx_int_flag = 0; 
@@ -308,7 +308,7 @@ static void resp_msg_get_ts(uint8 *ts_field, uint32 *ts)
 void ss_initiator_task_function (void * pvParameter)
 {
   UNUSED_PARAMETER(pvParameter);
-  printf("Starting again\r\n");
+  //printf("Starting again\r\n");
   dwt_setleds(DWT_LEDS_ENABLE);
   /*
   rxSemaphore = xSemaphoreCreateBinary();

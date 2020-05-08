@@ -69,7 +69,7 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="1919" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="1" top="1906" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="20" y="113" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="1" top="99" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="155" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_init_main.c" selected="0" top="137" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="175" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_resp_main.c" selected="0" top="161" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="25" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_init_main.h" selected="0" top="7" codecName="Default"/>

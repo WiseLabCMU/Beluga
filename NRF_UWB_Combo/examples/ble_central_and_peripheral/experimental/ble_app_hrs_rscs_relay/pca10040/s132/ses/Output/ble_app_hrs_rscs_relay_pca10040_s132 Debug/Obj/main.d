@@ -130,7 +130,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/main.o: \
  ../../../../../../../deca_driver/deca_types.h \
  ../../../../../../../deca_driver/deca_regs.h \
  ../../../../../../../deca_driver/deca_version.h \
- ../../../../../../../UART/uart.h \
+ ../../../../../../../UART/UART.h \
  ../../../../../../../components/drivers_nrf/gpiote/nrf_drv_gpiote.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_gpiote.h \
  C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.h \
