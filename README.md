@@ -43,7 +43,7 @@ Running the Code
 
 
   
-  NOTES: 
+  ADDITIONAL NOTES: 
   
     1.) Neighbor List Eviction not in Place yet, if a node is removed from system, it's place on the list will remain
     2.) 
