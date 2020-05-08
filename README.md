@@ -4,38 +4,44 @@ Decawave controller for nRF52 that uses BLE for discovery
 
 
 Main Project Directory:
+
   Use Main Project Directory Shortcut:
-  decawave-ble/main_Project_Shortcut
+  
+    decawave-ble/main_Project_Shortcut
 OR
   Full Directory Path:
-  decawave-ble/NRF_UWB_COMBO/examples/ble_central_and_peripheral/experimental/ble_app_hrs_rscs_relay/
+  
+    decawave-ble/NRF_UWB_COMBO/examples/ble_central_and_peripheral/experimental/ble_app_hrs_rscs_relay/
 
 How to Open Project in Segger:
-  1.) Go to Project Directory mentioned above
-  2.) Navigate to pca10040/s132/ses/
-  3.) Open the segger embedded studio project file (the one labeled EMPROJECT File)
-  
+
+    1.) Go to Project Directory mentioned above
+    2.) Navigate to pca10040/s132/ses/
+    3.) Open the segger embedded studio project file (the one labeled EMPROJECT File)
+
 To Test Code:
-  1.) Open up segger project
-  2.) Go to toolbar -> build -> first option (F7) (build ble_hrs_....)
-  3.) Go to toolbar -> target -> download ble_app_hrs... (ctrl+T, L)
-  
-  4.) Open up serial monitor that allows you to send data (We like the Aduino IDE's Serial Monitor (Tested on Arduino IDE 1.8.12)
+
+    1.) Open up segger project
+    2.) Go to toolbar -> build -> first option (F7) (build ble_hrs_....)
+    3.) Go to toolbar -> target -> download ble_app_hrs... (ctrl+T, L)
+    4.) Open up serial monitor that allows you to send data (We like the Aduino IDE's Serial Monitor (Tested on Arduino IDE 1.8.12)
   
 Running the Code
-  After downloading and opening Arduino, follow these instructions 
-  NOTE: This must be done every time the decawave module is restarted/plugged in, flash memory not supported yet
-  Run the Following Commands in this Order, other orders may lead to undefined behaiviour
+
+  After downloading and opening Arduino, follow these instructions
   
-  1.) AT+ID <number> 
-  2.) AT+STARTBLE
-    This start BLE broadcasting/recieving scheme, now the node is visible and can see other nodes with ble on as well
-    Neighbor List Will Start Printing and Start to be populated with nearby nodes
-  3.) AT+STARTUWB
-    This starts UWB initiating/responding, now the node can be ranged with, and range to other nodes
-    Neighbor List will now populate range fields
+    NOTE: This must be done every time the decawave module is restarted/plugged in, flash memory not supported yet
+    Run the Following Commands in this Order, other orders may lead to undefined behaiviour
   
-  
+      1.) AT+ID <number> 
+      2.) AT+STARTBLE
+        This start BLE broadcasting/recieving scheme, now the node is visible and can see other nodes with ble on as well
+        Neighbor List Will Start Printing and Start to be populated with nearby nodes
+      3.) AT+STARTUWB
+        This starts UWB initiating/responding, now the node can be ranged with, and range to other nodes
+        Neighbor List will now populate range fields
+
+
   
   NOTES: 
   
