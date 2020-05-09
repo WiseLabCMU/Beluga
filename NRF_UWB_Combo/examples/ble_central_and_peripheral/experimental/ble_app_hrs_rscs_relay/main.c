@@ -130,6 +130,7 @@
 
 #include "semphr.h"
 
+
 #define RESPONDER 0
 #define INITIATOR 1
 
@@ -309,7 +310,7 @@ typedef struct node{
     int UUID;
     int8_t RSSI;
     int time_stamp;
-    double range;
+    float range;
 } node;
 
 
@@ -1702,6 +1703,32 @@ static void switch_ble(void* p_context)
     
     
 }
+
+uint16_t get_rand_num()
+{
+      uint8_t num_rand_bytes_available;
+      int err_code = sd_rand_application_bytes_available_get(&num_rand_bytes_available);
+      APP_ERROR_CHECK(err_code);
+      uint8_t rand_number;
+      if (num_rand_bytes_available > 0)
+      {
+          err_code = sd_rand_application_vector_get(&rand_number, 1);
+          APP_ERROR_CHECK(err_code);
+      }
+
+
+      float rand = rand_number * 1.0;
+
+      float r =  (rand - 0) * (2000 - 700) / (255 - 0) + 700;
+      uint16_t ret = (uint16_t) r;
+      //printf("%d \r\n", ret);
+
+
+      return ret;
+}
+
+
+
 TaskHandle_t  ss_responder_task_handle; 
 TaskHandle_t ranging_task_handle;
 TaskHandle_t  ss_initiator_task_handle; 
@@ -1887,7 +1914,10 @@ void ranging_task_function(void *pvParameter)
 {
   
   while(1){
-      vTaskDelay(7000);
+      uint16_t rand = get_rand_num();
+      printf("%d\r\n", rand);
+
+      vTaskDelay(rand);
       
       xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
         
@@ -1900,35 +1930,39 @@ void ranging_task_function(void *pvParameter)
       int i = 0;
      
       while(i < MAX_ANCHOR_COUNT){
-        float range1 = ss_init_run(seen_list[i].UUID);
-        vTaskDelay(20);
-        float range2 = ss_init_run(seen_list[i].UUID);
-        vTaskDelay(20);
-        float range3 = ss_init_run(seen_list[i].UUID);
-        vTaskDelay(20);
-        int numThru = 3;
-        if (range1 == -1)
+        if(seen_list[i].UUID != 0)
         {
-          range1 = 0;
-          numThru -= 1;
-        }
-        if (range2 == -1)
-        {
-          range2 = 0;
-          numThru -= 1;
-        }
-        if(range3 == -1)
-        {
-          range3 = 0;
-          numThru -= 1;
-        }
+          float range1 = ss_init_run(seen_list[i].UUID);
+          vTaskDelay(50);
+          float range2 = ss_init_run(seen_list[i].UUID);
+          vTaskDelay(50);
+          float range3 = ss_init_run(seen_list[i].UUID);
+          vTaskDelay(50);
+          int numThru = 3;
+          if (range1 == -1)
+          {
+            range1 = 0;
+            numThru -= 1;
+          }
+          if (range2 == -1)
+          {
+            range2 = 0;
+            numThru -= 1;
+          }
+          if(range3 == -1)
+          {
+            range3 = 0;
+            numThru -= 1;
+          }
         
-        printf("R: %f \r\n", (range1 + range2 + range3)/numThru);
-        seen_list[i].range = (range1 + range2 + range3)/numThru;
-        vTaskDelay(250);
-        i++;
+          printf("R: %f \r\n", (range1 + range2 + range3)/numThru);
+          if(numThru != 0) seen_list[i].range = (range1 + range2 + range3)/numThru;
+          //vTaskDelay(250);
+         }
+          i++;
         
       }
+      /*
       //Now sort neighbor list
       (void) sd_ble_gap_scan_stop();
 
@@ -1947,7 +1981,7 @@ void ranging_task_function(void *pvParameter)
         }
       }
       scan_start(); //Resume scanning/building up neighbor list
-
+      */
       resp_reconfig();
 
       xSemaphoreGive(sus_init);
@@ -2138,7 +2172,9 @@ int main(void)
     rscs_c_init();
     services_init();
     advertising_init();
-
+    
+    
+    
       /* Reset DW1000 */
     reset_DW1000(); 
 
@@ -2240,7 +2276,8 @@ int main(void)
     
     
     //resp_config();
-
+    
+      
    
 
     uart_queue = xQueueCreate(25, sizeof(struct message));

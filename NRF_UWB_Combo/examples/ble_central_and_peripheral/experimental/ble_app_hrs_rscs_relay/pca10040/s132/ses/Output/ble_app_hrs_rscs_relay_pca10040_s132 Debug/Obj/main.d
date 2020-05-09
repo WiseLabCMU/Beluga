@@ -1,5 +1,5 @@
 Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/main.o: \
- C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\main.c \
+ C:\Users\vikra\Downloads\decawave-ble\NRF_UWB_Combo\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\main.c \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdint.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/stdio.h \
  C:/Program\ Files/SEGGER/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.22/include/__crossworks.h \
@@ -133,7 +133,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/main.o: \
  ../../../../../../../UART/UART.h \
  ../../../../../../../components/drivers_nrf/gpiote/nrf_drv_gpiote.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_gpiote.h \
- C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.h \
+ C:\Users\vikra\Downloads\decawave-ble\NRF_UWB_Combo\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.h \
  ../../../../../../../external/freertos/source/include/semphr.h \
  ../../../../../../../external/freertos/source/include/queue.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_uarte.h
