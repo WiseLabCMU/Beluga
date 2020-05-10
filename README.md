@@ -50,7 +50,7 @@ OR
 # ADDITIONAL NOTES: 
   
     1.) Neighbor List Eviction not in Place yet, if a node is removed from system, it's place on the list will remain
-    2.) Right now frequency of switching between UWB initiator and responder is static, to get proper results, this will have to be randomized  
+    2.) Right now frequency of switching between UWB initiator and responder is not fixed, its currently a random number of ms between 700 and 2000, which we can see isn't the best method, as there are a lot of times where ranges dont get updated and some nodes aren't seen. 
   
   
 
