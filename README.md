@@ -24,7 +24,7 @@ OR
     3.) Open the segger embedded studio project file (the one labeled EMPROJECT File)
 
 ## To Test Code:
-
+    0.) Plug in Decawave Module
     1.) Open up segger project
     2.) Go to toolbar -> build -> first option (F7) (build ble_hrs_....)
     3.) Go to toolbar -> target -> download ble_app_hrs... (ctrl+T, L)
@@ -37,7 +37,7 @@ OR
     NOTE: This must be done every time the decawave module is restarted/plugged in, flash memory not supported yet
     Run the Following Commands in this Order, other orders may lead to undefined behaiviour
   
-      1.) AT+ID <number> 
+      1.) AT+ID <number>  (for now use id greater than 0)
       2.) AT+STARTBLE
         This start BLE broadcasting/recieving scheme, now the node is visible and can see other nodes with ble on as well
         Neighbor List Will Start Printing and Start to be populated with nearby nodes
