@@ -35,9 +35,10 @@
 /* Inter-ranging delay period, in milliseconds. */
 #define RNG_DELAY_MS 250
 
-/* Frames used in the ranging process. See NOTE 1,2 below. */                //  \/this is id   
-static uint8 tx_poll_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0xE0,0, 0, 0};
+/* Frames used in the ranging process. See NOTE 1,2 below. */                //  After E0,  
+static uint8 tx_poll_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0xE0, 0, 0};
 static uint8 rx_resp_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0xE1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
 /* Length of the common part of the message (up to and including the function code, see NOTE 1 below). */
 #define ALL_MSG_COMMON_LEN 10
 /* Indexes to access some of the fields in the frames defined above. */
@@ -99,8 +100,9 @@ double ss_init_run(int id)
 
 
   /* Write frame data to DW1000 and prepare transmission. See NOTE 3 below. */
-  tx_poll_msg[ALL_MSG_SN_IDX] = frame_seq_nb;
-  tx_poll_msg[10] = id;
+  tx_poll_msg[ALL_MSG_SN_IDX] = id;
+  //tx_poll_msg[3] = id;  //Encode ID of reciever to accept message
+  //tx_poll_msg[11] = NODE_UUID; //Encode Sender ID into message
   int a = dwt_writetxdata(sizeof(tx_poll_msg), tx_poll_msg, 0); /* Zero offset in TX buffer. */
   dwt_writetxfctrl(sizeof(tx_poll_msg), 0, 1); /* Zero offset in TX buffer, ranging. */
 
@@ -123,19 +125,16 @@ double ss_init_run(int id)
   /* Wait for reception, timeout or error interrupt flag*/
   //while (!(rx_int_flag || to_int_flag|| er_int_flag))
   //{};
-   
-  bool rx_recieved = xSemaphoreTake(rxSemaphore, portMAX_DELAY);
-  //printf("rx: %d - %d %d %d\r\n", rx_recieved, rx_int_flag, to_int_flag, er_int_flag);
-
-  if( rx_recieved == pdTRUE )
-  {
-    //printf("inside \r\n");
+  
+  
+    xSemaphoreTake(rxSemaphore, portMAX_DELAY);
+  
 
     /* Increment frame sequence number after transmission of the poll message (modulo 256). */
     frame_seq_nb++;
 
     if (rx_int_flag)
-    {		
+    {   
       uint32 frame_len;
 
       /* A frame has been received, read it into the local buffer. */
@@ -145,59 +144,70 @@ double ss_init_run(int id)
         dwt_readrxdata(rx_buffer, frame_len, 0);
       }
 
-      /* Check that the frame is the expected response from the companion "SS TWR responder" example.
-      * As the sequence number field of the frame is not relevant, it is cleared to simplify the validation of the frame. */
-      rx_buffer[ALL_MSG_SN_IDX] = 0;
-      if (memcmp(rx_buffer, rx_resp_msg, ALL_MSG_COMMON_LEN) == 0)
-      {	
-        rx_count++;
-        //printf("Reception # : %d\r\n",rx_count);
-        float reception_rate = (float) rx_count / (float) tx_count * 100;
-        //printf("Reception rate # : %f\r\n",reception_rate);
-        uint32 poll_tx_ts, resp_rx_ts, poll_rx_ts, resp_tx_ts;
-        int32 rtd_init, rtd_resp;
-        float clockOffsetRatio ;
 
-        /* Retrieve poll transmission and response reception timestamps. See NOTE 4 below. */
-        poll_tx_ts = dwt_readtxtimestamplo32();
-        resp_rx_ts = dwt_readrxtimestamplo32();
+    
+    
+    
 
-        /* Read carrier integrator value and calculate clock offset ratio. See NOTE 6 below. */
-        clockOffsetRatio = dwt_readcarrierintegrator() * (FREQ_OFFSET_MULTIPLIER * HERTZ_TO_PPM_MULTIPLIER_CHAN_5 / 1.0e6) ;
 
-        /* Get timestamps embedded in response message. */
-        resp_msg_get_ts(&rx_buffer[RESP_MSG_POLL_RX_TS_IDX], &poll_rx_ts);
-        resp_msg_get_ts(&rx_buffer[RESP_MSG_RESP_TX_TS_IDX], &resp_tx_ts);
+    /* Check that the frame is the expected response from the companion "SS TWR responder" example.
+    * As the sequence number field of the frame is not relevant, it is cleared to simplify the validation of the frame. */
+    //
+    
+    
+    int got = rx_buffer[ALL_MSG_SN_IDX];
+    rx_buffer[ALL_MSG_SN_IDX] = 0;
+    if ( (got == id) && memcmp(rx_buffer, rx_resp_msg, ALL_MSG_COMMON_LEN) == 0)
+    { 
+      rx_count++;
+      //printf("Reception # : %d\r\n",rx_count);
+      float reception_rate = (float) rx_count / (float) tx_count * 100;
+      //printf("Reception rate # : %f\r\n",reception_rate);
+      uint32 poll_tx_ts, resp_rx_ts, poll_rx_ts, resp_tx_ts;
+      int32 rtd_init, rtd_resp;
+      float clockOffsetRatio ;
 
-        /* Compute time of flight and distance, using clock offset ratio to correct for differing local and remote clock rates */
-        rtd_init = resp_rx_ts - poll_tx_ts;
-        rtd_resp = resp_tx_ts - poll_rx_ts;
+      /* Retrieve poll transmission and response reception timestamps. See NOTE 4 below. */
+      poll_tx_ts = dwt_readtxtimestamplo32();
+      resp_rx_ts = dwt_readrxtimestamplo32();
 
-        tof = ((rtd_init - rtd_resp * (1.0f - clockOffsetRatio)) / 2.0f) * DWT_TIME_UNITS; // Specifying 1.0f and 2.0f are floats to clear warning 
-        distance = tof * SPEED_OF_LIGHT;
-        //printf("Distance : %f\r\n",distance);
+      /* Read carrier integrator value and calculate clock offset ratio. See NOTE 6 below. */
+      clockOffsetRatio = dwt_readcarrierintegrator() * (FREQ_OFFSET_MULTIPLIER * HERTZ_TO_PPM_MULTIPLIER_CHAN_5 / 1.0e6) ;
 
-        /*Reseting receive interrupt flag*/
-        rx_int_flag = 0; 
+      /* Get timestamps embedded in response message. */
+      resp_msg_get_ts(&rx_buffer[RESP_MSG_POLL_RX_TS_IDX], &poll_rx_ts);
+      resp_msg_get_ts(&rx_buffer[RESP_MSG_RESP_TX_TS_IDX], &resp_tx_ts);
 
-        return distance;
-        
-      }
-      //xSemaphoreGive(rxSemaphore);
-     }
+      /* Compute time of flight and distance, using clock offset ratio to correct for differing local and remote clock rates */
+      rtd_init = resp_rx_ts - poll_tx_ts;
+      rtd_resp = resp_tx_ts - poll_rx_ts;
 
-    if (to_int_flag || er_int_flag)
-    {
-      /* Reset RX to properly reinitialise LDE operation. */
-      dwt_rxreset();
+      tof = ((rtd_init - rtd_resp * (1.0f - clockOffsetRatio)) / 2.0f) * DWT_TIME_UNITS; // Specifying 1.0f and 2.0f are floats to clear warning 
+      distance = tof * SPEED_OF_LIGHT;
+      //printf("Distance : %f\r\n",distance);
 
-      /*Reseting interrupt flag*/
-      to_int_flag = 0 ;
-      er_int_flag = 0 ;
-      //xSemaphoreGive(rxSemaphore);
+      /*Reseting receive interrupt flag*/
+      rx_int_flag = 0; 
+      printf("%f \r\n", distance);
+
+      return distance;
+      
     }
+    //xSemaphoreGive(rxSemaphore);
+   }
 
+  if (to_int_flag || er_int_flag)
+  {
+    /* Reset RX to properly reinitialise LDE operation. */
+    dwt_rxreset();
+
+    /*Reseting interrupt flag*/
+    to_int_flag = 0 ;
+    er_int_flag = 0 ;
+    //xSemaphoreGive(rxSemaphore);
   }
+
+  
 
     /* Execute a delay between ranging exchanges. */
     //deca_sleep(RNG_DELAY_MS);

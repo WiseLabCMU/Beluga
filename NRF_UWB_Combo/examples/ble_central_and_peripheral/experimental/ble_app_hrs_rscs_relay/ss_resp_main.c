@@ -37,6 +37,7 @@
 /* Frames used in the ranging process. See NOTE 2,3 below. */
 static uint8 rx_poll_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0xE0, 0, 0};
 static uint8 tx_resp_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0xE1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
 /* Length of the common part of the message (up to and including the function code, see NOTE 1 below). */
 /* Length of the common part of the message (up to and including the function code, see NOTE 3 below). */
 #define ALL_MSG_COMMON_LEN 8
@@ -163,6 +164,9 @@ int ss_resp_run(void)
     /* Clear good RX frame event in the DW1000 status register. */
     //dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG);
     rx_int_flag = 0;
+
+
+
     /* A frame has been received, read it into the local buffer. */
     frame_len = dwt_read32bitreg(RX_FINFO_ID) & RX_FINFO_RXFL_MASK_1023;
     if (frame_len <= RX_BUFFER_LEN)
@@ -172,9 +176,14 @@ int ss_resp_run(void)
 
     /* Check that the frame is a poll sent by "SS TWR initiator" example.
     * As the sequence number field of the frame is not relevant, it is cleared to simplify the validation of the frame. */
+    int id = rx_buffer[ALL_MSG_SN_IDX];
     rx_buffer[ALL_MSG_SN_IDX] = 0;
-    if ((memcmp(rx_buffer, rx_poll_msg, ALL_MSG_COMMON_LEN) == 0) && (rx_buffer[10] == NODE_UUID))
+    
+   
+    if ((memcmp(rx_buffer, rx_poll_msg, ALL_MSG_COMMON_LEN) == 0) && (id == NODE_UUID))
     {
+
+      
       uint32 resp_tx_time;
       int ret;
 
@@ -193,7 +202,7 @@ int ss_resp_run(void)
       resp_msg_set_ts(&tx_resp_msg[RESP_MSG_RESP_TX_TS_IDX], resp_tx_ts);
 
       /* Write and send the response message. See NOTE 9 below. */
-      tx_resp_msg[ALL_MSG_SN_IDX] = frame_seq_nb;
+      tx_resp_msg[ALL_MSG_SN_IDX] = NODE_UUID;
       dwt_writetxdata(sizeof(tx_resp_msg), tx_resp_msg, 0); /* Zero offset in TX buffer. See Note 5 below.*/
       dwt_writetxfctrl(sizeof(tx_resp_msg), 0, 1); /* Zero offset in TX buffer, ranging. */
       ret = dwt_starttx(DWT_START_TX_DELAYED);
