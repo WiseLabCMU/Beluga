@@ -9,13 +9,9 @@
 
 ## Main Project Directory:
 
-  Use Main Project Directory Shortcut:
-  
-    decawave-ble/main_Project_Shortcut
-OR
-  Full Directory Path:
-  
-    decawave-ble/NRF_UWB_COMBO/examples/ble_central_and_peripheral/experimental/ble_app_hrs_rscs_relay/
+  Run the Following CD command once inside cloned repo:
+ 
+    cd NRF_UWB_COMBO/examples/ble_central_and_peripheral/experimental/ble_app_hrs_rscs_relay/
 
 ## How to Open Project in Segger:
 
