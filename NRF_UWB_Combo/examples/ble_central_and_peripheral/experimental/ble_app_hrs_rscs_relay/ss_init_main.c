@@ -28,6 +28,9 @@
 #include "port_platform.h"
 #include "ss_init_main.h"
 
+#include "app_timer.h"
+
+#include "timers.h"
 #include "semphr.h"
 
 #define APP_NAME "SS TWR INIT v1.3"
@@ -83,6 +86,12 @@ static void resp_msg_get_ts(uint8 *ts_field, uint32 *ts);
 static volatile int tx_count = 0 ; // Successful transmit counter
 static volatile int rx_count = 0 ; // Successful receive counter 
 
+APP_TIMER_DEF(tx_timekeeper);
+static int tx_time;
+static void tx_timer_function(void* p_context)
+{
+    tx_time = 1;   
+}
 
 /*! ------------------------------------------------------------------------------------------------------------------
 * @fn main()
@@ -113,7 +122,29 @@ double ss_init_run(int id)
   /*Waiting for transmission success flag*/
   //while (!(tx_int_flag))
   //{};
-  xSemaphoreTake(txSemaphore, portMAX_DELAY);
+  if (debug_print) printf("Waiting for tx\r\n");
+  //xSemaphoreTake(txSemaphore, portMAX_DELAY);
+  tx_time = 0;
+
+  ret_code_t c2 = app_timer_create(&tx_timekeeper, APP_TIMER_MODE_SINGLE_SHOT, tx_timer_function);
+  ret_code_t s2 = app_timer_start(tx_timekeeper,APP_TIMER_TICKS(100) ,NULL);
+  int txSem = xSemaphoreTake(txSemaphore, 0);
+  while(txSem == pdFALSE)
+  {
+    
+    txSem = xSemaphoreTake(txSemaphore, 0);
+    
+    if( tx_time == 1)
+    {
+     
+      printf("TXFAIL\r\n");
+      dwt_forcetrxoff();
+      return -1;
+     }
+    //printf("%d \r\n", suspend);
+  }
+
+
   if (tx_int_flag)
   {
     tx_count++;
@@ -126,7 +157,7 @@ double ss_init_run(int id)
   //while (!(rx_int_flag || to_int_flag|| er_int_flag))
   //{};
   
-  
+    if (debug_print) printf("Waiting for rx\r\n");
     xSemaphoreTake(rxSemaphore, portMAX_DELAY);
   
 
@@ -147,7 +178,7 @@ double ss_init_run(int id)
 
     
     
-    
+    rx_int_flag = 0; 
 
 
     /* Check that the frame is the expected response from the companion "SS TWR responder" example.
@@ -157,8 +188,9 @@ double ss_init_run(int id)
     
     int got = rx_buffer[ALL_MSG_SN_IDX];
     rx_buffer[ALL_MSG_SN_IDX] = 0;
-    if ( (got == id) && memcmp(rx_buffer, rx_resp_msg, ALL_MSG_COMMON_LEN) == 0)
+    if ((got == id) && memcmp(rx_buffer, rx_resp_msg, ALL_MSG_COMMON_LEN) == 0)
     { 
+      if (debug_print) printf("init rx succ\r\n");
       rx_count++;
       //printf("Reception # : %d\r\n",rx_count);
       float reception_rate = (float) rx_count / (float) tx_count * 100;
@@ -187,12 +219,18 @@ double ss_init_run(int id)
       //printf("Distance : %f\r\n",distance);
 
       /*Reseting receive interrupt flag*/
-      rx_int_flag = 0; 
-      printf("%f \r\n", distance);
+      
+      //printf("%f \r\n", distance);
 
       return distance;
       
     }
+    else{
+      if (debug_print) printf("init rx fail\r\n");
+      dwt_rxreset();
+    }
+    
+    
     //xSemaphoreGive(rxSemaphore);
    }
 

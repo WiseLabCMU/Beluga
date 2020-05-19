@@ -21,6 +21,7 @@ extern volatile int tx_int_flag; // Transmit success interrupt flag
 extern volatile int rx_int_flag; // Receive success interrupt flag
 extern volatile int to_int_flag; // Timeout interrupt flag
 extern volatile int er_int_flag; // Error interrupt flag 
+extern int debug_print;
 
 extern uint16_t NODE_UUID;
 

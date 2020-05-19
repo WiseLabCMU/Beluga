@@ -345,7 +345,7 @@ void list_task_function()
   xSemaphoreTake(print_list_sem, portMAX_DELAY);
   while(1){
       
-      vTaskDelay(5000);
+      vTaskDelay(3000);
 
       message new_message = {0};
 
@@ -909,7 +909,7 @@ static uint16_t find_adv_uuid_next(ble_gap_evt_adv_report_t const * p_adv_report
     return -1;
 }
 
-static int time_keeper;
+int time_keeper;
 /**@brief   Function for handling BLE events from central applications.
  *
  * @details This function parses scanning reports and initiates a connection to peripherals when a
@@ -1657,7 +1657,7 @@ void vInterruptInit (void)
 
 
 APP_TIMER_DEF(m_timestamp_keeper);    /**< Handler for repeated timer used to blink LED 1. */
-APP_TIMER_DEF(m_ble_switch);
+
 APP_TIMER_DEF(m_uwb_switch);
 APP_TIMER_DEF(m_list_print);
 
@@ -1676,33 +1676,9 @@ static void timestamp_handler(void * p_context)
 static int role;
 #define SCANNER 1
 #define ADVERTISER 0
+int tx_time;
 
-static void switch_ble(void* p_context)
-{
-    
-    if(role == ADVERTISER)
-    {
-      printf("Switching to SCANNER\r\n");
-      sd_ble_gap_adv_stop();
-      sd_ble_gap_scan_start(&m_scan_params);
-      
-      role = SCANNER;
-    }
-    
-    else{
-      printf("Switching to ADVERTISER\r\n");
-      //wait for specified amount of time
-      //Start Advertising again and stop scanning
-      sd_ble_gap_scan_stop();
-      ble_advertising_start(&m_advertising, BLE_ADV_MODE_FAST);
-      //stop scanning
-      
-      role = ADVERTISER;
-    }
 
-    
-    
-}
 
 uint16_t get_rand_num()
 {
@@ -1910,34 +1886,43 @@ void resp_reconfig(){
 }
 
 
+int debug_print;
+
 void ranging_task_function(void *pvParameter)
 {
   
   while(1){
       uint16_t rand = get_rand_num();
-      printf("%d\r\n", rand);
+      //printf("%d\r\n", rand);
 
       vTaskDelay(rand);
+      //vTaskDelay(5000);
       
       xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
-        
+      int state = eTaskGetState(ss_responder_task_handle );
+      //printf("SS STATE: %d \r\n" , state);
+      //vTaskSuspend(ss_responder_task_handle);
       xSemaphoreTake(sus_init, portMAX_DELAY);
-
+      vTaskDelay(10);
       dwt_forcetrxoff();
 
       init_reconfig();
 
       int i = 0;
+      state = eTaskGetState(ss_responder_task_handle );
+      //printf("SS STATE: %d \r\n" , state);
      
       while(i < MAX_ANCHOR_COUNT){
         if(seen_list[i].UUID != 0)
         {
+          if (debug_print)printf("IN\r\n");
           float range1 = ss_init_run(seen_list[i].UUID);
           vTaskDelay(50);
           float range2 = ss_init_run(seen_list[i].UUID);
           vTaskDelay(50);
           float range3 = ss_init_run(seen_list[i].UUID);
           vTaskDelay(50);
+          if (debug_print)printf("OUT\r\n");
           int numThru = 3;
           if (range1 == -1)
           {
@@ -1955,7 +1940,7 @@ void ranging_task_function(void *pvParameter)
             numThru -= 1;
           }
         
-          printf("R: %f \r\n", (range1 + range2 + range3)/numThru);
+          //printf("R: %f \r\n", (range1 + range2 + range3)/numThru);
           if(numThru != 0) seen_list[i].range = (range1 + range2 + range3)/numThru;
           //vTaskDelay(250);
          }
@@ -1983,7 +1968,8 @@ void ranging_task_function(void *pvParameter)
       scan_start(); //Resume scanning/building up neighbor list
       */
       resp_reconfig();
-
+      dwt_forcetrxoff();
+      //vTaskResume(ss_responder_task_handle);
       xSemaphoreGive(sus_init);
       xSemaphoreGive(sus_resp); //Resume Responder Task
   }
@@ -2014,9 +2000,10 @@ void uart_task(void * pvParameter){
             //xSemaphoreGive(sus_resp); // Give the suspension semaphore so UWB can continue
         }
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STOPUWB", (size_t)10)){
-            printf("STOP UWB command recieved\r\n");
+            
             xSemaphoreTake(sus_resp, portMAX_DELAY);
             xSemaphoreTake(sus_init, portMAX_DELAY);
+            printf("STOP UWB command recieved\r\n");
             //Take UWB suspension semaphore
         }
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STARTBLE", (size_t)11)){
@@ -2139,6 +2126,7 @@ static void uart_init(void)
 
 int main(void)
 {
+    debug_print = 0;
     role = ADVERTISER;
     mode = RESPONDER;
     for(int i = 0; i < MAX_ANCHOR_COUNT; i++)
@@ -2212,6 +2200,7 @@ int main(void)
     * As this example only handles one incoming frame with always the same delay and timeout, those values can be set here once for all. */
    //dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
     dwt_setrxtimeout(0); // Maximum value timeout with DW1000 is 65ms 
+    //dwt_write8bitoffsetreg(PMSC_ID, PMSC_CTRL0_OFFSET, 0x20);
 
     //init_reconfig();
 
@@ -2222,7 +2211,7 @@ int main(void)
     ret_code_t create_timer = app_timer_create(&m_timestamp_keeper, APP_TIMER_MODE_REPEATED, timestamp_handler);
     ret_code_t start_timer =  app_timer_start(m_timestamp_keeper, APP_TIMER_TICKS(1) , NULL);
   
-    //ret_code_t c2 = app_timer_create(&m_ble_switch, APP_TIMER_MODE_REPEATED, switch_ble);
+    
     //ret_code_t s2 = app_timer_start(m_ble_switch,APP_TIMER_TICKS(5000) ,NULL);
 
 

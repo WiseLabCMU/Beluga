@@ -116,9 +116,12 @@ static volatile int rx_count = 0 ; // Successful receive counter
 int ss_resp_run(void)
 {
   //printf("Waiting for suspend\r\n");
-  xSemaphoreTake(sus_resp, portMAX_DELAY);
-  xSemaphoreGive(sus_resp);
-  //printf("Gave suspend\r\n");
+  int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); //Check if responding is suspended
+  if(suspend_start == 0) return 1;
+
+  //xSemaphoreTake(sus_resp, portMAX_DELAY);
+  //xSemaphoreGive(sus_resp);
+  //printf("Thru\r\n");
   //printf("Entered \r\n");
   /* Activate reception immediately. */
   dwt_rxenable(DWT_START_RX_IMMEDIATE);
@@ -135,13 +138,21 @@ int ss_resp_run(void)
   {
     rxSem = xSemaphoreTake(rxSemaphore, 0);
     int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
-    if(suspend == 0) return 1;
+    if(suspend == 0) 
+    {
+      if (debug_print) printf("stopped from loop \r\n");
+      dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
+    
+      /* Reset RX to properly reinitialise LDE operation. */
+      dwt_rxreset();
+      return 1;
+    }
     //printf("%d \r\n", suspend);
   }
 
 
 
-  //printf("got sem\r\n");
+   if (debug_print) printf("gotrx sem\r\n");
 
   //if(xSemaphoreTake(sus_resp,1) == pdFALSE) return 1;
   
@@ -158,6 +169,7 @@ int ss_resp_run(void)
   //if (status_reg & SYS_STATUS_RXFCG)
   if(rx_int_flag)
   {
+    if(debug_print) printf("rx good \r\n");
     //printf("good\r\n");
     uint32 frame_len;
 
@@ -183,7 +195,7 @@ int ss_resp_run(void)
     if ((memcmp(rx_buffer, rx_poll_msg, ALL_MSG_COMMON_LEN) == 0) && (id == NODE_UUID))
     {
 
-      
+      if(debug_print) printf("match\r\n");
       uint32 resp_tx_time;
       int ret;
 
@@ -205,6 +217,7 @@ int ss_resp_run(void)
       tx_resp_msg[ALL_MSG_SN_IDX] = NODE_UUID;
       dwt_writetxdata(sizeof(tx_resp_msg), tx_resp_msg, 0); /* Zero offset in TX buffer. See Note 5 below.*/
       dwt_writetxfctrl(sizeof(tx_resp_msg), 0, 1); /* Zero offset in TX buffer, ranging. */
+
       ret = dwt_starttx(DWT_START_TX_DELAYED);
       //
       //ret = dwt_starttx(DWT_START_TX_IMMEDIATE);
@@ -212,10 +225,28 @@ int ss_resp_run(void)
       /* If dwt_starttx() returns an error, abandon this ranging exchange and proceed to the next one. */
       if (ret == DWT_SUCCESS)
       {
+       if (debug_print) printf("succ\r\n");
       /* Poll DW1000 until TX frame sent event set. See NOTE 5 below. */
       //while(!tx_int_flag)
       //{};
-      xSemaphoreTake(txSemaphore, portMAX_DELAY);
+      //xSemaphoreTake(txSemaphore, portMAX_DELAY);
+
+
+      int txSem = xSemaphoreTake(txSemaphore, 0);
+      while(txSem == pdFALSE)
+      {
+        txSem = xSemaphoreTake(txSemaphore, 0);
+        int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
+        if(suspend == 0) 
+        {
+          printf("Left while waiting\r\n");
+          return 1;
+         }
+        //printf("%d \r\n", suspend);
+      }
+      if (debug_print) printf("sent tx \r\n");
+
+
 
       //while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
       //{};
@@ -228,6 +259,7 @@ int ss_resp_run(void)
       }
       else
       {
+        if (debug_print) printf("fail\r\n");
 
       /* If we end up in here then we have not succeded in transmitting the packet we sent up.
       POLL_RX_TO_RESP_TX_DLY_UUS is a critical value for porting to different processors. 
@@ -242,9 +274,16 @@ int ss_resp_run(void)
       dwt_rxreset();
       }
     }
+    else
+    {
+      if(debug_print) printf("no match\r\n");
+      dwt_rxreset();
+    }
+    
   }
   else
   {
+    if(debug_print) printf("rx err/to \r\n");
     /* Clear RX error events in the DW1000 status register. */
     dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
     
@@ -254,6 +293,8 @@ int ss_resp_run(void)
     er_int_flag = 0;
   }
 
+  //xSemaphoreGive(sus_resp);
+  //printf("gave\r\n");
   return(1);	
   //xSemaphoreGive(sus_resp);
 }
@@ -317,9 +358,16 @@ void ss_responder_task_function (void * pvParameter)
 
   while (true)
   {
-    ss_resp_run();
+
+     int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); //Check if responding is suspended
+    if(suspend_start != 0) 
+    {
+    //xSemaphoreTake(sus_resp, portMAX_DELAY);
+      ss_resp_run();
+    }
     /* Delay a task for a given number of ticks */
     vTaskDelay(10);
+    
     /* Tasks must be implemented to never return... */
   }
 }

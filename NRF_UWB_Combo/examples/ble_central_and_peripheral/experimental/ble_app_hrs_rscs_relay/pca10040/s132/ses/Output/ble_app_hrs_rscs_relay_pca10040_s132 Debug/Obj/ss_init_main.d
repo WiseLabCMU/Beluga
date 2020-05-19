@@ -72,4 +72,7 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/ss_init_main.o: \
  ../../../../../../../components/libraries/util/app_error.h \
  C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.h \
  ../../../../../../../external/freertos/source/include/semphr.h \
- ../../../../../../../external/freertos/source/include/queue.h
+ ../../../../../../../external/freertos/source/include/queue.h \
+ ../../../../../../../components/libraries/timer/app_timer.h \
+ ../../../../../../../external/freertos/source/include/timers.h \
+ ../../../../../../../external/freertos/source/include/task.h
