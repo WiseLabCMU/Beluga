@@ -288,6 +288,8 @@ static ble_uuid_t m_adv_uuids[] =
 #define FILE_ID         0x0015  /* The ID of the file to write the records into. */
 #define RECORD_KEY_1    0x1111  /* A key for the first record. */
 #define RECORD_KEY_2    0x2222  /* A key for the second record. */
+#define RECORD_KEY_3    0x3333  /* A key for the third record. */
+
 
 static void fds_evt_handler(fds_evt_t const * p_fds_evt)
 {
@@ -390,7 +392,7 @@ void list_task_function()
   while(1){
       //printf("%f\r\n", portTICK_PERIOD_MS);
       //float del = 3000/1024;
-      vTaskDelay(2000);
+      vTaskDelay(100);
 
       xSemaphoreTake(print_list_sem, portMAX_DELAY);
 
@@ -400,18 +402,21 @@ void list_task_function()
       else if ((uwb_started+ble_started) == 2) mode = "BLE+UWB";
       else mode = "NONE";
       char msg [50];
-      sprintf(msg, " ID: %d MODE: %s ", NODE_UUID, mode);
+      //sprintf(msg, "My ID: %d MODE: %s ", NODE_UUID, mode);
       
-      strcpy(new_message.data, "PL #####");
-      strcat(new_message.data, msg);
-      strcat(new_message.data, "#####\r\n");
+      //strcpy(new_message.data, "# ID, RANGE, RSSI, TIMESTAMP   ");
+      //strcat(new_message.data, msg);
+      //strcat(new_message.data, "#####\r\n");
       
+      printf("# ID, RANGE, RSSI, TIMESTAMP\r\n");
 
-      xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
-
-      for(int j = 0; j < NCNT; j++)
+      //xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
+      printf("%s", new_message.data);
+      for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
       {
-      
+
+        if(seen_list[j].UUID != 0) printf("%d, %f, %d, %d \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp); 
+        /*
         char list_item[50] ;
 
         char UUID_str[4] ;
@@ -426,7 +431,7 @@ void list_task_function()
         snprintf(time_str, 8, "%d", seen_list[j].time_stamp);
         snprintf(idx_str, 4, "%d", j);
 
-        strcpy(list_item, "PL ");
+        strcpy(list_item, "");
 
         strcat(list_item, idx_str);
         strcat(list_item, ") ID: ");
@@ -441,13 +446,16 @@ void list_task_function()
         strcpy(new_message.data, list_item);
     
 
-        xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
+        //xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
+        printf("%s", list_item);
+        */
 
       }
 
-      strcpy(new_message.data, "PL ############################\r\n");
+      //strcpy(new_message.data, "############################\r\n");
 
-      xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
+      //xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
+      //printf("%s", new_message.data);
       xSemaphoreGive(print_list_sem);
    }
 }
@@ -481,6 +489,8 @@ static dwt_config_t config = {
 #define RX_ANT_DLY 16456
 
 
+
+static int initiator_freq = 1000;
 
 
 volatile int tx_int_flag = 0 ; // Transmit success interrupt flag
@@ -1440,7 +1450,7 @@ static void delete_bonds(void)
 {
     ret_code_t err_code;
 
-    NRF_LOG_INFO("Erase bonds!");
+    //NRF_LOG_INFO("Erase bonds!");
 
     err_code = pm_peers_delete();
     APP_ERROR_CHECK(err_code);
@@ -1783,8 +1793,6 @@ void init_reconfig();
 void resp_reconfig();
 
 static int milliseconds_since_start;
-#define INITIATOR_FREQ 2000
-
 
 
 
@@ -1942,7 +1950,7 @@ void init_reconfig(){
 
 void resp_reconfig(){
 
-  //dwt_setrxaftertxdelay(0);
+  dwt_setrxaftertxdelay(0);
   dwt_setrxtimeout(0);
 
 }
@@ -1957,7 +1965,7 @@ void ranging_task_function(void *pvParameter)
       uint16_t rand = get_rand_num();
       
 
-      vTaskDelay(rand);
+      vTaskDelay(initiator_freq);
       //vTaskDelay(5000);
       
       xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
@@ -1978,11 +1986,11 @@ void ranging_task_function(void *pvParameter)
         {
           if (debug_print)printf("IN\r\n");
           float range1 = ss_init_run(seen_list[i].UUID);
-          vTaskDelay(50);
+          vTaskDelay(25);
           float range2 = ss_init_run(seen_list[i].UUID);
-          vTaskDelay(50);
+          vTaskDelay(25);
           float range3 = ss_init_run(seen_list[i].UUID);
-          vTaskDelay(50);
+          vTaskDelay(25);
           if (debug_print)printf("OUT\r\n");
           int numThru = 3;
           if (range1 == -1)
@@ -2044,7 +2052,8 @@ void ranging_task_function(void *pvParameter)
     uint32_t record_key;
     if(record == 1) record_key = RECORD_KEY_1;
     if(record == 2) record_key = RECORD_KEY_2;
-    
+    if(record == 3) record_key = RECORD_KEY_3;
+
     static char str[(sizeof("1") + 3) / 4];
     sprintf(str, "%d", id);
 
@@ -2217,6 +2226,22 @@ void uart_task(void * pvParameter){
             //printf("%d ", mode);
             printf("OK \r\n");
         }
+        else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+RATE", (size_t)7)){
+            char buf[100];
+            strcpy(buf, incoming_message.data);
+            char *uuid_char = strtok(buf, " ");
+            uuid_char = strtok(NULL, " ");
+            uint32_t rate = atoi(uuid_char);
+          
+            writeFlashID(rate, 3);
+            initiator_freq = rate;
+            
+            printf("%d ", rate);
+            printf("OK \r\n");
+        }
+
+
+
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+LIST", (size_t)7)){
             //print_seen_list();
         }
@@ -2224,6 +2249,7 @@ void uart_task(void * pvParameter){
       }
       else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT", (size_t)2))
       {
+        
         printf("OK\r\n");
       }
       else{
@@ -2314,6 +2340,7 @@ uint32_t getFlashID(uint32_t record_key)
   uint32_t rec;
   if (record_key == 1) rec = RECORD_KEY_1;
   else if (record_key == 2) rec = RECORD_KEY_2;
+  else if (record_key == 3) rec = RECORD_KEY_3;
   uint32_t ret_val;
   fds_flash_record_t  flash_record;
   fds_record_desc_t   record_desc_1;
@@ -2350,7 +2377,7 @@ int main(void)
 
 
 
-    debug_print = 0;
+    debug_print = 1;
     role = ADVERTISER;
     mode = RESPONDER;
     for(int i = 0; i < MAX_ANCHOR_COUNT; i++)
@@ -2517,7 +2544,16 @@ int main(void)
         //printf("%d %d\r\n", id, state);
 
     }
+    fds_record_desc_t   record_desc_3;
+    fds_find_token_t    ftok_3;
+    memset(&ftok_3, 0x00, sizeof(fds_find_token_t));
+    if (fds_record_find(FILE_ID, RECORD_KEY_3, &record_desc_3, &ftok_3) == FDS_SUCCESS) //If there is a stored rate
+    {
+      uint32_t rate = getFlashID(3);
 
+      initiator_freq = rate;
+      printf("%d\r\n", rate);
+    }
 
 
    

@@ -95,9 +95,6 @@
     <folder Name="Application">
       <file file_name="../config/sdk_config.h" />
       <file file_name="../../../ss_init_main.h" />
-      <file file_name="../../../ds_init_main.c">
-        <configuration Name="Debug" build_exclude_from_build="Yes" />
-      </file>
       <file file_name="../../../ds_resp_main.c">
         <configuration Name="Debug" build_exclude_from_build="Yes" />
       </file>
@@ -111,6 +108,9 @@
         <configuration Name="Debug" build_exclude_from_build="Yes" />
       </file>
       <file file_name="../../../main.c" />
+      <file file_name="../../../ds_init_main.c">
+        <configuration Name="Debug" build_exclude_from_build="Yes" />
+      </file>
     </folder>
     <folder Name="nRF_Segger_RTT">
       <file file_name="../../../../../../../external/segger_rtt/SEGGER_RTT.c" />

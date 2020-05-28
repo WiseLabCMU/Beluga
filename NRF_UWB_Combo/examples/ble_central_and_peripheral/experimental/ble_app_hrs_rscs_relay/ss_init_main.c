@@ -129,17 +129,13 @@ double ss_init_run(int id)
   int txSem = xSemaphoreTake(txSemaphore, 0);
   while(txSem == pdFALSE)
   {
-    
     txSem = xSemaphoreTake(txSemaphore, 0);
-    
     if( tx_time == 1)
     {
-     
       printf("TXFAIL\r\n");
       dwt_forcetrxoff();
       return -1;
      }
-    
   }
 
 
