@@ -40,6 +40,16 @@
       3.) AT+STARTUWB
         This starts UWB initiating/responding, now the node can be ranged with, and range to other nodes
         Neighbor List will now populate range fields
+       
+       
+#### The AT+BOOTMODE command
+    
+    AT+BOOTMODE <mode>  Determines how the node should behave when reset/powered on
+    <mode> = 0  -  Do nothing on startup, by default BLE and UWB off.
+    <mode> = 1  -  Start BLE broadcasting/recieving on startup
+    <mode> = 2  -  Start BOTH BLE and UWB on startup, full functionality.
+    
+    NOTE: For BOOTMODEs 1 and 2, The AT+ID command must have been previously run, the last set ID will be used on startup. 
 
 
   
