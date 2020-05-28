@@ -1011,12 +1011,12 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
             bsp_board_led_on(CENTRAL_CONNECTED_LED);
             if (ble_conn_state_n_centrals() == NRF_SDH_BLE_CENTRAL_LINK_COUNT)
             {
-                bsp_board_led_off(CENTRAL_SCANNING_LED);
+                //sp_board_led_off(CENTRAL_SCANNING_LED);
             }
             else
             {
                 // Resume scanning.
-                bsp_board_led_on(CENTRAL_SCANNING_LED);
+                //bsp_board_led_on(CENTRAL_SCANNING_LED);
                 scan_start();
             }
         } break; // BLE_GAP_EVT_CONNECTED
@@ -1047,12 +1047,12 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
                 scan_start();
 
                 // Update LEDs status.
-                bsp_board_led_on(CENTRAL_SCANNING_LED);
+                //bsp_board_led_on(CENTRAL_SCANNING_LED);
             }
 
             if (ble_conn_state_n_centrals() == 0)
             {
-                bsp_board_led_off(CENTRAL_CONNECTED_LED);
+                //bsp_board_led_off(CENTRAL_CONNECTED_LED);
             }
         } break; // BLE_GAP_EVT_DISCONNECTED
 
@@ -1204,7 +1204,7 @@ static void on_ble_peripheral_evt(ble_evt_t const * p_ble_evt)
         case BLE_GAP_EVT_CONNECTED:
             NRF_LOG_INFO("Peripheral connected");
             bsp_board_led_off(PERIPHERAL_ADVERTISING_LED);
-            bsp_board_led_on(PERIPHERAL_CONNECTED_LED);
+            //bsp_board_led_on(PERIPHERAL_CONNECTED_LED);
             break;
 
         case BLE_GAP_EVT_DISCONNECTED:
@@ -1294,7 +1294,7 @@ static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
         case BLE_ADV_EVT_FAST:
         {
             NRF_LOG_INFO("Fast advertising.");
-            bsp_board_led_on(PERIPHERAL_ADVERTISING_LED);
+            //bsp_board_led_on(PERIPHERAL_ADVERTISING_LED);
         } break;
 
         case BLE_ADV_EVT_IDLE:
@@ -2143,6 +2143,7 @@ void uart_task(void * pvParameter){
             uwb_started = 1;
             xSemaphoreGive(sus_resp);
             xSemaphoreGive(sus_init);
+            bsp_board_led_on(BSP_BOARD_LED_2);
             printf("OK\r\n");
             //xSemaphoreGive(sus_resp); // Give the suspension semaphore so UWB can continue
         }
@@ -2151,6 +2152,7 @@ void uart_task(void * pvParameter){
             xSemaphoreTake(sus_resp, portMAX_DELAY);
             xSemaphoreTake(sus_init, portMAX_DELAY);
             //printf("STOP UWB command recieved\r\n");
+            bsp_board_led_off(BSP_BOARD_LED_2);
             printf("OK\r\n");
             //Take UWB suspension semaphore
         }
@@ -2159,6 +2161,7 @@ void uart_task(void * pvParameter){
             ble_started = 1;
             xSemaphoreGive(print_list_sem);
             adv_scan_start();
+            bsp_board_led_on(BSP_BOARD_LED_1);
             printf("OK\r\n");
                     //Start BLE
         }
@@ -2169,6 +2172,7 @@ void uart_task(void * pvParameter){
             sd_ble_gap_scan_stop();
             xSemaphoreTake(print_list_sem, portMAX_DELAY);
                     //Stop BLE
+            bsp_board_led_off(BSP_BOARD_LED_1);
             printf("OK\r\n");
         }
         
@@ -2442,8 +2446,10 @@ int main(void)
     
     printf("Node On: Firmware version %s\r\n", FIRMWARE_VERSION);
 
-    LEDS_CONFIGURE(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK);
-    LEDS_ON(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK );
+    //LEDS_CONFIGURE(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK);
+
+    bsp_board_led_on(BSP_BOARD_LED_0);
+    //LEDS_ON(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK );
 
  
     
@@ -2609,6 +2615,7 @@ int main(void)
           ble_started = 1;
           xSemaphoreGive(print_list_sem);
           adv_scan_start();
+          bsp_board_led_on(BSP_BOARD_LED_1);
         }
 
         if (state == 2) //Start UWB
@@ -2616,6 +2623,7 @@ int main(void)
           uwb_started = 1;
           xSemaphoreGive(sus_resp);
           xSemaphoreGive(sus_init);
+          bsp_board_led_on(BSP_BOARD_LED_2);
         }
 
         //printf("%d %d\r\n", id, state);
