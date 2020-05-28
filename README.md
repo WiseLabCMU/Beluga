@@ -53,10 +53,12 @@
 
 
   
-# ADDITIONAL NOTES: 
+# ADDITIONAL NOTES/ To be Added: 
   
     1.) Neighbor List Eviction not in Place yet, if a node is removed from system, it's place on the list will remain
     2.) Right now frequency of switching between UWB initiator and responder is not fixed, its currently a random number of ms between 700 and 2000, which we can see isn't the best method, as there are a lot of times where ranges dont get updated and some nodes aren't seen. 
+    3.) Currently RSSI and last seen timestamp only written once, when node is initially found. This should be updated periodically, everytime node is found over BLE.
+    
   
   
 
