@@ -50,8 +50,9 @@
     <mode> = 2  -  Start BOTH BLE and UWB on startup, full functionality.
     
     NOTE: For BOOTMODEs 1 and 2, The AT+ID command must have been previously run, the last set ID will be used on startup. 
+#### LED Layout: 
 
-
+   ![LED Layout](https://github.com/WiseLabCMU/decawave-ble/blob/master/images/decawaveLED.png?raw=true)
   
 # ADDITIONAL NOTES/ To be Added: 
   
