@@ -1087,7 +1087,7 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
                        
                        seen_list[last_seen_idx].UUID = found_UUID;
                        seen_list[last_seen_idx].RSSI = p_ble_evt->evt.gap_evt.params.adv_report.rssi;
-                       printf("%d \r\n",p_ble_evt->evt.gap_evt.params.adv_report.rssi); 
+                       //printf("%d \r\n",p_ble_evt->evt.gap_evt.params.adv_report.rssi); 
                        seen_list[last_seen_idx].time_stamp = time_keeper;
 
                        last_seen_idx += 1;
@@ -1727,9 +1727,9 @@ APP_TIMER_DEF(m_list_print);
  */
 static void timestamp_handler(void * p_context)
 {
-    //nrf_drv_gpiote_out_toggle(LED_1);
+   
     time_keeper += 1;
-    //printf("The beat go off?\r\n");
+    
     
 }
 
@@ -2466,111 +2466,6 @@ int main(void)
         //sd_ble_gap_scan_stop();
     }
     int count = 0;
-    //NRF_LOG_INFO("Relay example started.");
-
-//
-//    
-//    fds_record_desc_t   record_desc_2;
-//    fds_find_token_t    ftok_2;
-//    memset(&ftok_2, 0x00, sizeof(fds_find_token_t));
-//    if (fds_record_find(FILE_ID, RECORD_KEY_1, &record_desc_2, &ftok_2) != FDS_SUCCESS)
-//    {
-//      printf("writing\r\n");
-//     
-//      static char   const m_deadbeef[]  = "1";
-//      static char       const m_hello[]  = "Hello, world!";
-//      fds_record_t        record;
-//      fds_record_desc_t   record_desc;
-//      // Set up record.
-//      record.file_id           = FILE_ID;
-//      record.key               = RECORD_KEY_1;
-//      record.data.p_data       = &m_deadbeef;
-//      record.data.length_words = (sizeof(m_deadbeef) + 3) / 4;   /* one word is four bytes. */
-//      ret_code_t rc;
-//      rc = fds_record_write(&record_desc, &record);
-//      if (rc != FDS_SUCCESS)
-//      {
-//          printf("Write 1 Failed\r\n");/* Handle error. */
-//      }
-//     }
-//    // Set up record.
-////
-////    
-////    record.file_id           = FILE_ID;
-////    record.key               = RECORD_KEY_2;
-////    record.data.p_data       = &m_hello;
-////    /* The following calculation takes into account any eventual remainder of the division. */
-////    record.data.length_words = (sizeof(m_hello) + 3) / 4;
-////    rc = fds_record_write(&record_desc, &record);
-////    if (rc != FDS_SUCCESS)
-////    {
-////      printf("Write 2 Failed\r\n");
-////        /* Handle error. */
-////    }
-//    printf("Done write\r\n");
-//
-//
-//    
-//
-//    fds_flash_record_t  flash_record;
-//    fds_record_desc_t   record_desc_1;
-//    fds_find_token_t    ftok;
-//    /* It is required to zero the token before first use. */
-//    memset(&ftok, 0x00, sizeof(fds_find_token_t));
-//    /* Loop until all records with the given key and file ID have been found. */
-//    while (fds_record_find(FILE_ID, RECORD_KEY_1, &record_desc_1, &ftok) == FDS_SUCCESS)
-//    {
-//        if (fds_record_open(&record_desc_1, &flash_record) != FDS_SUCCESS)
-//        {
-//            printf("error opening\r\n");/* Handle error. */
-//        }
-//        /* Access the record through the flash_record structure. */
-//
-//        printf("flash: %s \r\n", flash_record.p_data);
-//        uint32_t    upd = atoi(flash_record.p_data) + 1;
-//
-//        if (fds_record_close(&record_desc_1) != FDS_SUCCESS)
-//        {
-//          printf("close error\r\n");  /* Handle error. */
-//        }
-//        
-//        
-//
-//        
-//        static char str[(sizeof("1") + 3) / 4];
-//        sprintf(str, "%d", upd);
-//        printf("%s\r\n", str);
-//        fds_record_t        record;
-//       
-//        // Set up record.
-//        record.file_id           = FILE_ID;
-//        record.key               = RECORD_KEY_1;
-//        record.data.p_data       = &str;
-//        record.data.length_words = (sizeof(str) + 3) / 4;   /* one word is four bytes. */
-//        ret_code_t rc;
-//        rc = fds_record_update(&record_desc_1, &record);
-//        if( rc != FDS_SUCCESS)
-//        {
-//          printf("UPDATE ERROR\r\n");
-//        }
-////
-////
-////
-//        
-//        /* Close the record when done. */
-//
-//
-//
-//        
-//    }
-
-
-   
-    
-
-
-    
-    
 
     rxSemaphore = xSemaphoreCreateBinary();
     txSemaphore = xSemaphoreCreateBinary();
@@ -2578,13 +2473,6 @@ int main(void)
     sus_init = xSemaphoreCreateBinary();
     print_list_sem = xSemaphoreCreateBinary();
     //xSemaphoreGive(sus_resp);
-
-    
-      
-   
-
-
-
 
     uart_queue = xQueueCreate(25, sizeof(struct message));
 
