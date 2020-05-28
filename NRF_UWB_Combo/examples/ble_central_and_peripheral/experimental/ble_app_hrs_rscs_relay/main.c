@@ -129,6 +129,8 @@
 #include "port_platform.h"
 
 #include "semphr.h"
+#include "nrf_fstorage_sd.h"
+#include "nrf_soc.h"
 
 
 #define RESPONDER 0
@@ -140,6 +142,12 @@
 #if defined (UARTE_PRESENT)
 #include "nrf_uarte.h"
 #endif
+
+
+#define FIRMWARE_VERSION "1.0"
+
+
+
 
 
 static int mode;
@@ -277,6 +285,27 @@ static ble_uuid_t m_adv_uuids[] =
 
 
 
+#define FILE_ID         0x0015  /* The ID of the file to write the records into. */
+#define RECORD_KEY_1    0x1111  /* A key for the first record. */
+#define RECORD_KEY_2    0x2222  /* A key for the second record. */
+
+static void fds_evt_handler(fds_evt_t const * p_fds_evt)
+{
+    switch (p_fds_evt->id)
+    {
+        case FDS_EVT_INIT:
+            if (p_fds_evt->result != FDS_SUCCESS)
+            {
+                // Initialization failed.
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+
+
 /**@brief Parameters used when scanning. */
 static ble_gap_scan_params_t const m_scan_params =
 {
@@ -338,18 +367,45 @@ bool in_list(int i)
 }
 */
 
+ static int ble_started;
+ static int uwb_started;
+
+
+
+void monitor_task_function()
+{
+  while(1)
+  {
+    vTaskDelay(60000);
+    if(debug_print)printf("Still alive \r\n");
+  }
+}
+
+
 void list_task_function()
 {
 
   BaseType_t xHigherPriorityTaskWoken;
-  xSemaphoreTake(print_list_sem, portMAX_DELAY);
+  //xSemaphoreTake(print_list_sem, portMAX_DELAY);
   while(1){
-      
-      vTaskDelay(3000);
+      //printf("%f\r\n", portTICK_PERIOD_MS);
+      //float del = 3000/1024;
+      vTaskDelay(2000);
+
+      xSemaphoreTake(print_list_sem, portMAX_DELAY);
 
       message new_message = {0};
-
-      strcpy(new_message.data, "########################\r\n");
+      char node[10];
+      if((uwb_started+ble_started) == 1) mode = "BLE";
+      else if ((uwb_started+ble_started) == 2) mode = "BLE+UWB";
+      else mode = "NONE";
+      char msg [50];
+      sprintf(msg, " ID: %d MODE: %s ", NODE_UUID, mode);
+      
+      strcpy(new_message.data, "PL #####");
+      strcat(new_message.data, msg);
+      strcat(new_message.data, "#####\r\n");
+      
 
       xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
 
@@ -370,7 +426,9 @@ void list_task_function()
         snprintf(time_str, 8, "%d", seen_list[j].time_stamp);
         snprintf(idx_str, 4, "%d", j);
 
-        strcpy(list_item, idx_str);
+        strcpy(list_item, "PL ");
+
+        strcat(list_item, idx_str);
         strcat(list_item, ") ID: ");
         strcat(list_item, UUID_str);
         strcat(list_item, " range: ");
@@ -387,9 +445,10 @@ void list_task_function()
 
       }
 
-      strcpy(new_message.data, "########################\r\n");
+      strcpy(new_message.data, "PL ############################\r\n");
 
       xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
+      xSemaphoreGive(print_list_sem);
    }
 }
 
@@ -514,7 +573,7 @@ static void scan_start(void)
 
 /**@brief Function for initiating advertising and scanning.
  */
- static int ble_started;
+
 static void adv_scan_start(void)
 {
     ret_code_t err_code;
@@ -529,7 +588,7 @@ static void adv_scan_start(void)
           scan_start();
 
           // Turn on the LED to signal scanning.
-          bsp_board_led_on(CENTRAL_SCANNING_LED);
+          //bsp_board_led_on(CENTRAL_SCANNING_LED);
 
           // Start advertising.
           err_code = ble_advertising_start(&m_advertising, BLE_ADV_MODE_FAST);
@@ -1680,6 +1739,7 @@ int tx_time;
 
 
 
+
 uint16_t get_rand_num()
 {
       uint8_t num_rand_bytes_available;
@@ -1710,6 +1770,7 @@ TaskHandle_t ranging_task_handle;
 TaskHandle_t  ss_initiator_task_handle; 
 TaskHandle_t uart_task_handle;
 TaskHandle_t list_task_handle;
+TaskHandle_t monitor_task_handle;
 
 SemaphoreHandle_t uwbSem;
 
@@ -1893,15 +1954,14 @@ void ranging_task_function(void *pvParameter)
   
   while(1){
       uint16_t rand = get_rand_num();
-      //printf("%d\r\n", rand);
+      
 
       vTaskDelay(rand);
       //vTaskDelay(5000);
       
       xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
       int state = eTaskGetState(ss_responder_task_handle );
-      //printf("SS STATE: %d \r\n" , state);
-      //vTaskSuspend(ss_responder_task_handle);
+      
       xSemaphoreTake(sus_init, portMAX_DELAY);
       vTaskDelay(10);
       dwt_forcetrxoff();
@@ -1977,6 +2037,82 @@ void ranging_task_function(void *pvParameter)
  }
 
 
+ void writeFlashID(uint32_t id, int record)
+{
+
+    uint32_t record_key;
+    if(record == 1) record_key = RECORD_KEY_1;
+    if(record == 2) record_key = RECORD_KEY_2;
+    
+    static char str[(sizeof("1") + 3) / 4];
+    sprintf(str, "%d", id);
+
+    fds_record_desc_t   record_desc_2;
+    fds_find_token_t    ftok_2;
+    memset(&ftok_2, 0x00, sizeof(fds_find_token_t));
+    if (fds_record_find(FILE_ID, record_key, &record_desc_2, &ftok_2) != FDS_SUCCESS)
+    {
+      if(debug_print) printf("writing\r\n");
+     
+      
+      
+      fds_record_t        record;
+      fds_record_desc_t   record_desc;
+      // Set up record.
+      record.file_id           = FILE_ID;
+      record.key               = record_key;
+      record.data.p_data       = &str;
+      record.data.length_words = (sizeof("1") + 3) / 4;   /* one word is four bytes. */
+      ret_code_t rc;
+      rc = fds_record_write(&record_desc, &record);
+      if (rc != FDS_SUCCESS)
+      {
+          if(debug_print) printf("Write 1 Failed\r\n");/* Handle error. */
+      }
+     }
+    if(debug_print)printf("Done write\r\n");
+
+
+    
+
+    fds_flash_record_t  flash_record;
+    fds_record_desc_t   record_desc_1;
+    fds_find_token_t    ftok;
+    /* It is required to zero the token before first use. */
+    memset(&ftok, 0x00, sizeof(fds_find_token_t));
+    /* Loop until all records with the given key and file ID have been found. */
+    while (fds_record_find(FILE_ID, record_key, &record_desc_1, &ftok) == FDS_SUCCESS)
+    {
+        if (fds_record_open(&record_desc_1, &flash_record) != FDS_SUCCESS)
+        {
+            if(debug_print) printf("error opening\r\n");/* Handle error. */
+        }
+        /* Access the record through the flash_record structure. */
+
+        if(debug_print) printf("flash: %s \r\n", flash_record.p_data);
+        if (fds_record_close(&record_desc_1) != FDS_SUCCESS)
+        {
+          if(debug_print) printf("close error\r\n");  /* Handle error. */
+        }
+        
+        fds_record_t        record;
+       
+        // Set up record.
+        record.file_id           = FILE_ID;
+        record.key               = record_key;
+        record.data.p_data       = &str;
+        record.data.length_words = (sizeof(str) + 3) / 4;   /* one word is four bytes. */
+        ret_code_t rc;
+        rc = fds_record_update(&record_desc_1, &record);
+        if( rc != FDS_SUCCESS)
+        {
+          if(debug_print) printf("UPDATE ERROR\r\n");
+        }    
+        
+    }
+}
+
+
 static uint16_t   m_ble_nus_max_data_len = BLE_GATT_ATT_MTU_DEFAULT - 3; 
 
 
@@ -1990,35 +2126,49 @@ void uart_task(void * pvParameter){
     
     vTaskDelay(100);
     if(xQueueReceive(uart_queue, &incoming_message, 0) == pdPASS){  
+      
+      if(0 == strncmp((const char *)incoming_message.data, (const char *)"PL ", (size_t)3)){
+        char *append = (const char *)incoming_message.data + 3;
+        printf("%s", append);
+      }
+
+
       //Handle valid AT command begining with AT+
-      if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+", (size_t)3)){
+
+     else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+", (size_t)3)){
         //Handle specific AT commands
         if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STARTUWB", (size_t)11)){
-            printf("START UWB command recieved\r\n");
+            //printf("START UWB command recieved\r\n");
+            uwb_started = 1;
             xSemaphoreGive(sus_resp);
             xSemaphoreGive(sus_init);
+            printf("OK\r\n");
             //xSemaphoreGive(sus_resp); // Give the suspension semaphore so UWB can continue
         }
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STOPUWB", (size_t)10)){
-            
+            uwb_started = 0;
             xSemaphoreTake(sus_resp, portMAX_DELAY);
             xSemaphoreTake(sus_init, portMAX_DELAY);
-            printf("STOP UWB command recieved\r\n");
+            //printf("STOP UWB command recieved\r\n");
+            printf("OK\r\n");
             //Take UWB suspension semaphore
         }
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STARTBLE", (size_t)11)){
-            printf("START BLE command recieved\r\n");
+            //printf("START BLE command recieved\r\n");
             ble_started = 1;
             xSemaphoreGive(print_list_sem);
             adv_scan_start();
+            printf("OK\r\n");
                     //Start BLE
         }
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STOPBLE", (size_t)10)){
-            printf("STOP BLE command recieved\r\n");
+            //printf("STOP BLE command recieved\r\n");
             ble_started = 0;
             sd_ble_gap_adv_stop();
             sd_ble_gap_scan_stop();
+            xSemaphoreTake(print_list_sem, portMAX_DELAY);
                     //Stop BLE
+            printf("OK\r\n");
         }
         
 
@@ -2028,22 +2178,52 @@ void uart_task(void * pvParameter){
             strcpy(buf, incoming_message.data);
             char *uuid_char = strtok(buf, " ");
             uuid_char = strtok(NULL, " ");
-            uint16_t rec_uuid = atoi(uuid_char);
+            uint32_t rec_uuid = atoi(uuid_char);
             
             NODE_UUID = rec_uuid;
             m_adv_uuids[1].uuid = NODE_UUID; 
             advertising_init();
-            printf("Set UUID command recieved: %d\r\n", rec_uuid );
+
+            writeFlashID(rec_uuid, 1);
+
+           printf("OK\r\n");
+            //printf("Set UUID command recieved: %d\r\n", rec_uuid );
             
+        }
+        else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+BOOTMODE", (size_t)11)){
+            char buf[100];
+            strcpy(buf, incoming_message.data);
+            char *uuid_char = strtok(buf, " ");
+            uuid_char = strtok(NULL, " ");
+            uint32_t mode = atoi(uuid_char);
+          
+            if(mode == 1) 
+            {
+              
+              writeFlashID(1, 2);
+            }
+            else if (mode == 2)
+            {
+               writeFlashID(2, 2);
+            }
+            else{
+              writeFlashID(3, 2);
+            }
+            printf("%d ", mode);
+            printf("OK \r\n");
         }
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+LIST", (size_t)7)){
             //print_seen_list();
         }
-        else printf("Invalid AT Command\r\n");
+        else printf("ERROR Invalid AT Command\r\n");
+      }
+      else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT", (size_t)2))
+      {
+        printf("OK\r\n");
       }
       else{
-        //printf("Not an AT command\r\n");
-        printf("%s",(const char *)incoming_message.data);
+        printf("Not an AT command\r\n");
+        //printf("%s",(const char *)incoming_message.data);
       }  
     }
   }
@@ -2072,7 +2252,7 @@ void uart_event_handle(app_uart_evt_t * p_event)
         case APP_UART_DATA_READY:
             UNUSED_VARIABLE(app_uart_get(&data_array[index]));
             index++;
-            if ((data_array[index - 1] == '\n') || (index >= (m_ble_nus_max_data_len)))
+            if ((data_array[index - 1] == '\n') || (data_array[index - 1] == '\r') ||  (index >= (m_ble_nus_max_data_len)))
             {
               
                 send_AT_command(data_array);
@@ -2124,8 +2304,47 @@ static void uart_init(void)
 
 
 
+uint32_t getFlashID(uint32_t record_key)
+{
+  uint32_t rec;
+  if (record_key == 1) rec = RECORD_KEY_1;
+  else if (record_key == 2) rec = RECORD_KEY_2;
+  uint32_t ret_val;
+  fds_flash_record_t  flash_record;
+  fds_record_desc_t   record_desc_1;
+  fds_find_token_t    ftok;
+  /* It is required to zero the token before first use. */
+  memset(&ftok, 0x00, sizeof(fds_find_token_t));
+  while (fds_record_find(FILE_ID, rec, &record_desc_1, &ftok) == FDS_SUCCESS)
+    {
+        if (fds_record_open(&record_desc_1, &flash_record) != FDS_SUCCESS)
+        {
+            printf("error opening\r\n");/* Handle error. */
+        }
+        /* Access the record through the flash_record structure. */
+
+        ret_val = atoi(flash_record.p_data);
+        //printf("flash: %s \r\n", flash_record.p_data);
+        if (fds_record_close(&record_desc_1) != FDS_SUCCESS)
+        {
+          printf("close error\r\n");  /* Handle error. */
+        }
+        
+    }
+    return ret_val;
+
+
+}
+
+
+
+
+
 int main(void)
 {
+
+
+
     debug_print = 0;
     role = ADVERTISER;
     mode = RESPONDER;
@@ -2141,8 +2360,7 @@ int main(void)
     bool erase_bonds;
     range_flag = 0;
     
-    SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
-
+    //SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
 
     vInterruptInit();
     //boUART_Init();
@@ -2160,9 +2378,19 @@ int main(void)
     rscs_c_init();
     services_init();
     advertising_init();
+
     
-    
-    
+    ret_code_t ret = fds_register(fds_evt_handler);
+    if (ret != FDS_SUCCESS)
+    {
+        printf("reg error \r\n");// Registering of the FDS event handler has failed.
+    }
+    ret = fds_init();
+    if (ret != FDS_SUCCESS)
+    {
+       printf("init error \r\n");
+    }
+
       /* Reset DW1000 */
     reset_DW1000(); 
 
@@ -2200,10 +2428,9 @@ int main(void)
     * As this example only handles one incoming frame with always the same delay and timeout, those values can be set here once for all. */
    //dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
     dwt_setrxtimeout(0); // Maximum value timeout with DW1000 is 65ms 
-    //dwt_write8bitoffsetreg(PMSC_ID, PMSC_CTRL0_OFFSET, 0x20);
+    dwt_write8bitoffsetreg(PMSC_ID, PMSC_CTRL0_OFFSET, 0x20);
 
-    //init_reconfig();
-
+   
 
    
     
@@ -2212,21 +2439,7 @@ int main(void)
     ret_code_t start_timer =  app_timer_start(m_timestamp_keeper, APP_TIMER_TICKS(1) , NULL);
   
     
-    //ret_code_t s2 = app_timer_start(m_ble_switch,APP_TIMER_TICKS(5000) ,NULL);
-
-
-    //ret_code_t c3 = app_timer_create(&m_uwb_switch, APP_TIMER_MODE_REPEATED, switch_uwb);
-    //ret_code_t s3 = app_timer_start(m_uwb_switch,APP_TIMER_TICKS(1) ,NULL);
-
-   
-    //ret_code_t c4 = app_timer_create(&m_list_print, APP_TIMER_MODE_REPEATED, timer_list_print);
-    //ret_code_t s4 = app_timer_start(m_list_print,APP_TIMER_TICKS(3000) ,NULL);
-    
-  
-    //ret_code_t c3 = app_timer_create(&m_uwb_switch, APP_TIMER_MODE_REPEATED, switch_uwb);
-    //ret_code_t s3 = app_timer_start(m_uwb_switch,APP_TIMER_TICKS(1000) ,NULL);
-   
-    
+    printf("Node On: Firmware version %s\r\n", FIRMWARE_VERSION);
 
     LEDS_CONFIGURE(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK);
     LEDS_ON(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK );
@@ -2247,13 +2460,110 @@ int main(void)
     }
     int count = 0;
     //NRF_LOG_INFO("Relay example started.");
+
+//
+//    
+//    fds_record_desc_t   record_desc_2;
+//    fds_find_token_t    ftok_2;
+//    memset(&ftok_2, 0x00, sizeof(fds_find_token_t));
+//    if (fds_record_find(FILE_ID, RECORD_KEY_1, &record_desc_2, &ftok_2) != FDS_SUCCESS)
+//    {
+//      printf("writing\r\n");
+//     
+//      static char   const m_deadbeef[]  = "1";
+//      static char       const m_hello[]  = "Hello, world!";
+//      fds_record_t        record;
+//      fds_record_desc_t   record_desc;
+//      // Set up record.
+//      record.file_id           = FILE_ID;
+//      record.key               = RECORD_KEY_1;
+//      record.data.p_data       = &m_deadbeef;
+//      record.data.length_words = (sizeof(m_deadbeef) + 3) / 4;   /* one word is four bytes. */
+//      ret_code_t rc;
+//      rc = fds_record_write(&record_desc, &record);
+//      if (rc != FDS_SUCCESS)
+//      {
+//          printf("Write 1 Failed\r\n");/* Handle error. */
+//      }
+//     }
+//    // Set up record.
+////
+////    
+////    record.file_id           = FILE_ID;
+////    record.key               = RECORD_KEY_2;
+////    record.data.p_data       = &m_hello;
+////    /* The following calculation takes into account any eventual remainder of the division. */
+////    record.data.length_words = (sizeof(m_hello) + 3) / 4;
+////    rc = fds_record_write(&record_desc, &record);
+////    if (rc != FDS_SUCCESS)
+////    {
+////      printf("Write 2 Failed\r\n");
+////        /* Handle error. */
+////    }
+//    printf("Done write\r\n");
+//
+//
+//    
+//
+//    fds_flash_record_t  flash_record;
+//    fds_record_desc_t   record_desc_1;
+//    fds_find_token_t    ftok;
+//    /* It is required to zero the token before first use. */
+//    memset(&ftok, 0x00, sizeof(fds_find_token_t));
+//    /* Loop until all records with the given key and file ID have been found. */
+//    while (fds_record_find(FILE_ID, RECORD_KEY_1, &record_desc_1, &ftok) == FDS_SUCCESS)
+//    {
+//        if (fds_record_open(&record_desc_1, &flash_record) != FDS_SUCCESS)
+//        {
+//            printf("error opening\r\n");/* Handle error. */
+//        }
+//        /* Access the record through the flash_record structure. */
+//
+//        printf("flash: %s \r\n", flash_record.p_data);
+//        uint32_t    upd = atoi(flash_record.p_data) + 1;
+//
+//        if (fds_record_close(&record_desc_1) != FDS_SUCCESS)
+//        {
+//          printf("close error\r\n");  /* Handle error. */
+//        }
+//        
+//        
+//
+//        
+//        static char str[(sizeof("1") + 3) / 4];
+//        sprintf(str, "%d", upd);
+//        printf("%s\r\n", str);
+//        fds_record_t        record;
+//       
+//        // Set up record.
+//        record.file_id           = FILE_ID;
+//        record.key               = RECORD_KEY_1;
+//        record.data.p_data       = &str;
+//        record.data.length_words = (sizeof(str) + 3) / 4;   /* one word is four bytes. */
+//        ret_code_t rc;
+//        rc = fds_record_update(&record_desc_1, &record);
+//        if( rc != FDS_SUCCESS)
+//        {
+//          printf("UPDATE ERROR\r\n");
+//        }
+////
+////
+////
+//        
+//        /* Close the record when done. */
+//
+//
+//
+//        
+//    }
+
+
+   
     
 
-    int switching_timer; //Switching Between BLE scanner/broadcaster
 
-    //uwbSem = xSemaphoreCreateBinary();
-    //xSemaphoreGive(uwbSem);
-
+    
+    
 
     rxSemaphore = xSemaphoreCreateBinary();
     txSemaphore = xSemaphoreCreateBinary();
@@ -2263,11 +2573,11 @@ int main(void)
     //xSemaphoreGive(sus_resp);
 
     
-    
-    //resp_config();
-    
       
    
+
+
+
 
     uart_queue = xQueueCreate(25, sizeof(struct message));
 
@@ -2275,10 +2585,45 @@ int main(void)
     UNUSED_VARIABLE(xTaskCreate(ranging_task_function, "RNG", configMINIMAL_STACK_SIZE+200, NULL, 2, &ranging_task_handle));
     UNUSED_VARIABLE(xTaskCreate(uart_task, "UART", configMINIMAL_STACK_SIZE+1200, NULL, 2, &uart_task_handle));
     UNUSED_VARIABLE(xTaskCreate(list_task_function, "LIST", configMINIMAL_STACK_SIZE+600, NULL, 2, &list_task_handle));
+    UNUSED_VARIABLE(xTaskCreate(monitor_task_function, "MONITOR", configMINIMAL_STACK_SIZE+800, NULL, 2, &monitor_task_handle));
     
-    
-    //^ Controls switching between initiator and responder
-    
+
+
+    fds_record_desc_t   record_desc_2;
+    fds_find_token_t    ftok_2;
+    memset(&ftok_2, 0x00, sizeof(fds_find_token_t));
+    if (fds_record_find(FILE_ID, RECORD_KEY_1, &record_desc_2, &ftok_2) == FDS_SUCCESS) //If there is a stored ID
+    {
+        
+        uint32_t id = getFlashID(1);
+        NODE_UUID = id;
+        m_adv_uuids[1].uuid = NODE_UUID; 
+        advertising_init(); //Set UUID
+
+
+        uint32_t state = getFlashID(2); //Get State
+
+        if( (state == 1) || (state == 2) ) //Start BLE
+        {
+          ble_started = 1;
+          xSemaphoreGive(print_list_sem);
+          adv_scan_start();
+        }
+
+        if (state == 2) //Start UWB
+        {
+          uwb_started = 1;
+          xSemaphoreGive(sus_resp);
+          xSemaphoreGive(sus_init);
+        }
+
+        //printf("%d %d\r\n", id, state);
+
+    }
+
+
+
+   
     vTaskStartScheduler();
     while(1) 
     {

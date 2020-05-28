@@ -119,20 +119,11 @@ int ss_resp_run(void)
   int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); //Check if responding is suspended
   if(suspend_start == 0) return 1;
 
-  //xSemaphoreTake(sus_resp, portMAX_DELAY);
-  //xSemaphoreGive(sus_resp);
-  //printf("Thru\r\n");
-  //printf("Entered \r\n");
   /* Activate reception immediately. */
   dwt_rxenable(DWT_START_RX_IMMEDIATE);
 
   /* Poll for reception of a frame or error/timeout. See NOTE 5 below. */
-  //while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
-  //{};
-
-  //while (!(rx_int_flag || to_int_flag|| er_int_flag))
-  //{};
-  //printf("taking sem\r\n");
+  
   int rxSem = xSemaphoreTake(rxSemaphore, 0);
   while(rxSem == pdFALSE)
   {
@@ -147,14 +138,14 @@ int ss_resp_run(void)
       dwt_rxreset();
       return 1;
     }
-    //printf("%d \r\n", suspend);
+   
   }
 
 
 
    if (debug_print) printf("gotrx sem\r\n");
 
-  //if(xSemaphoreTake(sus_resp,1) == pdFALSE) return 1;
+  
   
 
     #if 0	  // Include to determine the type of timeout if required.
@@ -227,9 +218,7 @@ int ss_resp_run(void)
       {
        if (debug_print) printf("succ\r\n");
       /* Poll DW1000 until TX frame sent event set. See NOTE 5 below. */
-      //while(!tx_int_flag)
-      //{};
-      //xSemaphoreTake(txSemaphore, portMAX_DELAY);
+      
 
 
       int txSem = xSemaphoreTake(txSemaphore, 0);
@@ -239,10 +228,11 @@ int ss_resp_run(void)
         int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
         if(suspend == 0) 
         {
-          printf("Left while waiting\r\n");
+          if (debug_print) printf("Left while waiting\r\n");
+          dwt_forcetrxoff();
           return 1;
          }
-        //printf("%d \r\n", suspend);
+        
       }
       if (debug_print) printf("sent tx \r\n");
 
@@ -293,10 +283,9 @@ int ss_resp_run(void)
     er_int_flag = 0;
   }
 
-  //xSemaphoreGive(sus_resp);
-  //printf("gave\r\n");
+  
   return(1);	
-  //xSemaphoreGive(sus_resp);
+
 }
 
 

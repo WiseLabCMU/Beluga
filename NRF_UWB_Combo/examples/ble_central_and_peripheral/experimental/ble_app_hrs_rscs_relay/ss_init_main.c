@@ -110,20 +110,18 @@ double ss_init_run(int id)
 
   /* Write frame data to DW1000 and prepare transmission. See NOTE 3 below. */
   tx_poll_msg[ALL_MSG_SN_IDX] = id;
-  //tx_poll_msg[3] = id;  //Encode ID of reciever to accept message
-  //tx_poll_msg[11] = NODE_UUID; //Encode Sender ID into message
   int a = dwt_writetxdata(sizeof(tx_poll_msg), tx_poll_msg, 0); /* Zero offset in TX buffer. */
   dwt_writetxfctrl(sizeof(tx_poll_msg), 0, 1); /* Zero offset in TX buffer, ranging. */
 
   /* Start transmission, indicating that a response is expected so that reception is enabled automatically after the frame is sent and the delay
   * set by dwt_setrxaftertxdelay() has elapsed. */
   int c = dwt_starttx(DWT_START_TX_IMMEDIATE | DWT_RESPONSE_EXPECTED);
-  //printf("Output: %d %d  \r\n", a , c);
+  
   /*Waiting for transmission success flag*/
   //while (!(tx_int_flag))
   //{};
   if (debug_print) printf("Waiting for tx\r\n");
-  //xSemaphoreTake(txSemaphore, portMAX_DELAY);
+  
   tx_time = 0;
 
   ret_code_t c2 = app_timer_create(&tx_timekeeper, APP_TIMER_MODE_SINGLE_SHOT, tx_timer_function);
@@ -141,14 +139,14 @@ double ss_init_run(int id)
       dwt_forcetrxoff();
       return -1;
      }
-    //printf("%d \r\n", suspend);
+    
   }
 
 
   if (tx_int_flag)
   {
     tx_count++;
-    //printf("Transmission # : %d\r\n",tx_count);
+   
     /*Reseting tx interrupt flag*/
     tx_int_flag = 0;
   }
@@ -192,9 +190,9 @@ double ss_init_run(int id)
     { 
       if (debug_print) printf("init rx succ\r\n");
       rx_count++;
-      //printf("Reception # : %d\r\n",rx_count);
+      
       float reception_rate = (float) rx_count / (float) tx_count * 100;
-      //printf("Reception rate # : %f\r\n",reception_rate);
+ 
       uint32 poll_tx_ts, resp_rx_ts, poll_rx_ts, resp_tx_ts;
       int32 rtd_init, rtd_resp;
       float clockOffsetRatio ;
@@ -220,7 +218,7 @@ double ss_init_run(int id)
 
       /*Reseting receive interrupt flag*/
       
-      //printf("%f \r\n", distance);
+     
 
       return distance;
       
@@ -252,79 +250,6 @@ double ss_init_run(int id)
 
     return -1;
 }
-
-///*! ------------------------------------------------------------------------------------------------------------------
-//* @fn rx_ok_cb()
-//*
-//* @brief Callback to process RX good frame events
-//*
-//* @param  cb_data  callback data
-//*
-//* @return  none
-//*/
-//void rx_ok_cb(const dwt_cb_data_t *cb_data)
-//{
-//  xSemaphoreGive(rxSemaphore);
-//  rx_int_flag = 1 ;
-//
-//  /* TESTING BREAKPOINT LOCATION #1 */
-//}
-//
-///*! ------------------------------------------------------------------------------------------------------------------
-//* @fn rx_to_cb()
-//*
-//* @brief Callback to process RX timeout events
-//*
-//* @param  cb_data  callback data
-//*
-//* @return  none
-//*/
-//void rx_to_cb(const dwt_cb_data_t *cb_data)
-//{
-//  xSemaphoreGive(rxSemaphore);
-//  to_int_flag = 1 ;
-//  /* TESTING BREAKPOINT LOCATION #2 */
-//  printf("TimeOut\r\n");
-//}
-//
-///*! ------------------------------------------------------------------------------------------------------------------
-//* @fn rx_err_cb()
-//*
-//* @brief Callback to process RX error events
-//*
-//* @param  cb_data  callback data
-//*
-//* @return  none
-//*/
-//void rx_err_cb(const dwt_cb_data_t *cb_data)
-//{
-//
-//  xSemaphoreGive(rxSemaphore);
-//  er_int_flag = 1 ;
-//  /* TESTING BREAKPOINT LOCATION #3 */
-//  printf("Transmission Error : may receive package from different UWB device\r\n");
-//}
-//
-///*! ------------------------------------------------------------------------------------------------------------------
-//* @fn tx_conf_cb()
-//*
-//* @brief Callback to process TX confirmation events
-//*
-//* @param  cb_data  callback data
-//*
-//* @return  none
-//*/
-//void tx_conf_cb(const dwt_cb_data_t *cb_data)
-//{
-//  /* This callback has been defined so that a breakpoint can be put here to check it is correctly called but there is actually nothing specific to
-//  * do on transmission confirmation in this example. Typically, we could activate reception for the response here but this is automatically handled
-//  * by DW1000 using DWT_RESPONSE_EXPECTED parameter when calling dwt_starttx().
-//  * An actual application that would not need this callback could simply not define it and set the corresponding field to NULL when calling
-//  * dwt_setcallbacks(). The ISR will not call it which will allow to save some interrupt processing time. */
-//  xSemaphoreGive(txSemaphore);
-//  tx_int_flag = 1 ;
-//  /* TESTING BREAKPOINT LOCATION #4 */
-//}
 
 
 /*! ------------------------------------------------------------------------------------------------------------------

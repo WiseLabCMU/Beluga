@@ -136,4 +136,6 @@ Output/ble_app_hrs_rscs_relay_pca10040_s132\ Debug/Obj/main.o: \
  C:\Users\vikra\Desktop\decawave-ble\NRF_UWB_Combo\examples\ble_central_and_peripheral\experimental\ble_app_hrs_rscs_relay\ss_init_main.h \
  ../../../../../../../external/freertos/source/include/semphr.h \
  ../../../../../../../external/freertos/source/include/queue.h \
+ ../../../../../../../components/libraries/fstorage/nrf_fstorage_sd.h \
+ ../../../../../../../components/libraries/fstorage/nrf_fstorage.h \
  ../../../../../../../components/drivers_nrf/hal/nrf_uarte.h
