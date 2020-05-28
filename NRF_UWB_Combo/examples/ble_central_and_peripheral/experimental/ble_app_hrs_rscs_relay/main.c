@@ -1086,7 +1086,8 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
                      if(found_UUID != NODE_UUID && !in_seen_list(found_UUID)){
                        
                        seen_list[last_seen_idx].UUID = found_UUID;
-                       seen_list[last_seen_idx].RSSI = &p_gap_evt->params.rssi_changed.rssi;
+                       seen_list[last_seen_idx].RSSI = p_ble_evt->evt.gap_evt.params.adv_report.rssi;
+                       printf("%d \r\n",p_ble_evt->evt.gap_evt.params.adv_report.rssi); 
                        seen_list[last_seen_idx].time_stamp = time_keeper;
 
                        last_seen_idx += 1;

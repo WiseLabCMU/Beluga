@@ -69,27 +69,27 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="48" y="2377" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="1" top="2175" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="20" y="2366" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../main.c" selected="1" top="2360" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="219" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_init_main.c" selected="0" top="201" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="17" y="357" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_resp_main.c" selected="0" top="337" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="357" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_resp_main.c" selected="0" top="337" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="23" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ss_init_main.h" selected="0" top="7" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="86" y="99" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/config/FreeRTOSConfig.h" selected="0" top="84" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="99" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/config/FreeRTOSConfig.h" selected="0" top="84" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="417" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/ble/ble_services/ble_rscs/ble_rscs.c" selected="0" top="417" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="310" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/ble/peer_manager/peer_manager.c" selected="0" top="296" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="242" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/ble/peer_manager/peer_manager_types.h" selected="0" top="225" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="2019" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../deca_driver/deca_device.c" selected="0" top="2001" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="2318" useTextEdit="1" useBinaryEdit="0" left="0" path="../config/sdk_config.h" selected="0" top="2282" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="2318" useTextEdit="1" useBinaryEdit="0" left="0" path="../config/sdk_config.h" selected="0" top="2282" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="121" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/timer/app_timer.h" selected="0" top="101" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ds_resp_main.c" selected="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/source/queue.c" selected="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="280" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/portable/CMSIS/nrf52/port_cmsis_systick.c" selected="0" top="260" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="451" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../ds_init_main.c" selected="0" top="439" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="127" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/util/app_error.h" selected="0" top="122" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="32" y="102" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/portable/CMSIS/nrf52/portmacro_cmsis.h" selected="0" top="98" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="102" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/portable/CMSIS/nrf52/portmacro_cmsis.h" selected="0" top="98" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="741" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/source/include/FreeRTOS.h" selected="0" top="706" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="196" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../external/freertos/source/include/semphr.h" selected="0" top="165" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="2" y="144" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/fds/fds.h" selected="0" top="126" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="144" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/fds/fds.h" selected="0" top="126" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1938" useTextEdit="1" useBinaryEdit="0" left="0" path="../../../../../../../components/libraries/fds/fds.c" selected="0" top="1918" codecName="Default"/>
  </Files>
- <ARMCrossStudioWindow activeProject="ble_app_hrs_rscs_relay_pca10040_s132" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/Users/vikra/Desktop/decawave-ble/nRF5_SDK_14.2.0_17b948a/components/toolchain/cmsis/include" debugSearchPath="" autoConnectCapabilities="3711"/>
+ <ARMCrossStudioWindow activeProject="ble_app_hrs_rscs_relay_pca10040_s132" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/Users/vikra/Desktop/decawave-ble/nRF5_SDK_14.2.0_17b948a/components/toolchain/cmsis/include" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>
