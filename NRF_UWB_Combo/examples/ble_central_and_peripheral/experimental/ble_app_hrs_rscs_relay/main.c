@@ -2214,7 +2214,7 @@ void uart_task(void * pvParameter){
             else{
               writeFlashID(3, 2);
             }
-            printf("%d ", mode);
+            //printf("%d ", mode);
             printf("OK \r\n");
         }
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+LIST", (size_t)7)){
