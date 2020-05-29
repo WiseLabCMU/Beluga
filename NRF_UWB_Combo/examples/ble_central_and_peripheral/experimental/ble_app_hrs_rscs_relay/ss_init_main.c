@@ -110,57 +110,57 @@ double ss_init_run(int id)
 
   /* Write frame data to DW1000 and prepare transmission. See NOTE 3 below. */
   tx_poll_msg[ALL_MSG_SN_IDX] = id;
-  int a = dwt_writetxdata(sizeof(tx_poll_msg), tx_poll_msg, 0); /* Zero offset in TX buffer. */
+  dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
+  dwt_writetxdata(sizeof(tx_poll_msg), tx_poll_msg, 0); /* Zero offset in TX buffer. */
   dwt_writetxfctrl(sizeof(tx_poll_msg), 0, 1); /* Zero offset in TX buffer, ranging. */
 
   /* Start transmission, indicating that a response is expected so that reception is enabled automatically after the frame is sent and the delay
   * set by dwt_setrxaftertxdelay() has elapsed. */
   int c = dwt_starttx(DWT_START_TX_IMMEDIATE | DWT_RESPONSE_EXPECTED);
+  tx_count++;
   
   /*Waiting for transmission success flag*/
   //while (!(tx_int_flag))
   //{};
-  if (debug_print) printf("Waiting for tx\r\n");
+  if (debug_print) printf("sent tx\r\n");
   
   tx_time = 0;
 
-  ret_code_t c2 = app_timer_create(&tx_timekeeper, APP_TIMER_MODE_SINGLE_SHOT, tx_timer_function);
-  ret_code_t s2 = app_timer_start(tx_timekeeper,APP_TIMER_TICKS(100) ,NULL);
-  int txSem = xSemaphoreTake(txSemaphore, 0);
-  while(txSem == pdFALSE)
-  {
-    txSem = xSemaphoreTake(txSemaphore, 0);
-    if( tx_time == 1)
-    {
-      printf("TXFAIL\r\n");
-      dwt_forcetrxoff();
-      return -1;
-     }
-  }
+  //ret_code_t c2 = app_timer_create(&tx_timekeeper, APP_TIMER_MODE_SINGLE_SHOT, tx_timer_function);
+  //ret_code_t s2 = app_timer_start(tx_timekeeper,APP_TIMER_TICKS(100) ,NULL);
+  if (debug_print) printf("Waiting for rx\r\n");
+  while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
+  {};
+
+//  int txSem = xSemaphoreTake(txSemaphore, 0);
+//  while(txSem == pdFALSE)
+//  {
+//    txSem = xSemaphoreTake(txSemaphore, 0);
+//    if( tx_time == 1)
+//    {
+//      printf("TXFAIL\r\n");
+//      dwt_forcetrxoff();
+//      return -1;
+//     }
+//  }
 
 
-  if (tx_int_flag)
-  {
-    tx_count++;
-   
-    /*Reseting tx interrupt flag*/
-    tx_int_flag = 0;
-  }
-
+  
   /* Wait for reception, timeout or error interrupt flag*/
   //while (!(rx_int_flag || to_int_flag|| er_int_flag))
   //{};
   
-    if (debug_print) printf("Waiting for rx\r\n");
-    xSemaphoreTake(rxSemaphore, portMAX_DELAY);
+    
+    //xSemaphoreTake(rxSemaphore, portMAX_DELAY);
   
 
     /* Increment frame sequence number after transmission of the poll message (modulo 256). */
     frame_seq_nb++;
 
-    if (rx_int_flag)
+    if (status_reg & SYS_STATUS_RXFCG)
     {   
       uint32 frame_len;
+      dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG);
 
       /* A frame has been received, read it into the local buffer. */
       frame_len = dwt_read32bitreg(RX_FINFO_ID) & RX_FINFO_RXFLEN_MASK;
@@ -172,7 +172,7 @@ double ss_init_run(int id)
 
     
     
-    rx_int_flag = 0; 
+    
 
 
     /* Check that the frame is the expected response from the companion "SS TWR responder" example.
@@ -228,15 +228,13 @@ double ss_init_run(int id)
     //xSemaphoreGive(rxSemaphore);
    }
 
-  if (to_int_flag || er_int_flag)
+  else
   {
+    /* Clear RX error/timeout events in the DW1000 status register. */
+    dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR);
+
     /* Reset RX to properly reinitialise LDE operation. */
     dwt_rxreset();
-
-    /*Reseting interrupt flag*/
-    to_int_flag = 0 ;
-    er_int_flag = 0 ;
-    //xSemaphoreGive(rxSemaphore);
   }
 
   

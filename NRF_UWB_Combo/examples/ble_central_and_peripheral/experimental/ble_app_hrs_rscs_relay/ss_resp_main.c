@@ -122,12 +122,8 @@ int ss_resp_run(void)
   /* Activate reception immediately. */
   dwt_rxenable(DWT_START_RX_IMMEDIATE);
 
-  /* Poll for reception of a frame or error/timeout. See NOTE 5 below. */
-  
-  int rxSem = xSemaphoreTake(rxSemaphore, 0);
-  while(rxSem == pdFALSE)
+  while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
   {
-    rxSem = xSemaphoreTake(rxSemaphore, 0);
     int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
     if(suspend == 0) 
     {
@@ -138,8 +134,26 @@ int ss_resp_run(void)
       dwt_rxreset();
       return 1;
     }
-   
   }
+
+  /* Poll for reception of a frame or error/timeout. See NOTE 5 below. */
+//  
+//  int rxSem = xSemaphoreTake(rxSemaphore, 0);
+//  while(rxSem == pdFALSE)
+//  {
+//    rxSem = xSemaphoreTake(rxSemaphore, 0);
+//    int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
+//    if(suspend == 0) 
+//    {
+//      if (debug_print) printf("stopped from loop \r\n");
+//      dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
+//    
+//      /* Reset RX to properly reinitialise LDE operation. */
+//      dwt_rxreset();
+//      return 1;
+//    }
+//   
+//  }
 
 
 
@@ -157,16 +171,16 @@ int ss_resp_run(void)
     temp =2;
     #endif
 
-  //if (status_reg & SYS_STATUS_RXFCG)
-  if(rx_int_flag)
+  if (status_reg & SYS_STATUS_RXFCG)
+  //if(rx_int_flag)
   {
     if(debug_print) printf("rx good \r\n");
     //printf("good\r\n");
     uint32 frame_len;
 
     /* Clear good RX frame event in the DW1000 status register. */
-    //dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG);
-    rx_int_flag = 0;
+    dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG);
+    //rx_int_flag = 0;
 
 
 
@@ -221,10 +235,27 @@ int ss_resp_run(void)
       
 
 
-      int txSem = xSemaphoreTake(txSemaphore, 0);
-      while(txSem == pdFALSE)
+//      int txSem = xSemaphoreTake(txSemaphore, 0);
+//      while(txSem == pdFALSE)
+//      {
+//        txSem = xSemaphoreTake(txSemaphore, 0);
+//        int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
+//        if(suspend == 0) 
+//        {
+//          if (debug_print) printf("Left while waiting\r\n");
+//          dwt_forcetrxoff();
+//          return 1;
+//         }
+//        
+//      }
+
+      
+      
+
+
+
+      while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
       {
-        txSem = xSemaphoreTake(txSemaphore, 0);
         int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
         if(suspend == 0) 
         {
@@ -232,20 +263,15 @@ int ss_resp_run(void)
           dwt_forcetrxoff();
           return 1;
          }
-        
       }
-      if (debug_print) printf("sent tx \r\n");
-
-
-
-      //while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
-      //{};
 
       /* Clear TXFRS event. */
       dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
-      tx_int_flag = 0;
+
       /* Increment frame sequence number after transmission of the poll message (modulo 256). */
       frame_seq_nb++;
+
+      if (debug_print) printf("sent tx \r\n");
       }
       else
       {
@@ -279,8 +305,7 @@ int ss_resp_run(void)
     
     /* Reset RX to properly reinitialise LDE operation. */
     dwt_rxreset();
-    to_int_flag  = 0;
-    er_int_flag = 0;
+
   }
 
   
