@@ -56,9 +56,13 @@
   
 # ADDITIONAL NOTES/ To be Added: 
   
-    1.) Neighbor List Eviction not in Place yet, if a node is removed from system, it's place on the list will remain
-    2.) Right now frequency of switching between UWB initiator and responder is not fixed, its currently a random number of ms between 700 and 2000, which we can see isn't the best method, as there are a lot of times where ranges dont get updated and some nodes aren't seen. 
-    3.) Currently RSSI and last seen timestamp only written once, when node is initially found. This should be updated periodically, everytime node is found over BLE.
+    1.) Neighbor List Eviction and Sorting in Place, but timing parameters are hardcoded, they need to be exposed in the AT command set
+    2.) Right now Poll frequency is set by taking the AT+RATE <rate> command and picking rand(rate, rate+50) in ms. This should probably be a better function than just random
+    3.) Some BLE softdevice calls are spread throughout different FreeRTOS tasks, there should be 1 task that makes calls to the softdevice that the other tasks send signals to.
+    4.) Move all neighbor list editing operations to one task, currently they are also spread out.
+    5.) There are a lot of extraneous functions left over from nordic example code. These should be deleted to clean up code.
+    6.) Codebase should be refactored into standalone project that imports libraries from nrf sdk and decawave sdk. 
+   
     
   
   
