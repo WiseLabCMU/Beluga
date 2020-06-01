@@ -219,7 +219,7 @@ typedef struct
 
 
 static bool in_seen_list(uint16_t UUID);
-
+static int get_seen_list_idx(uint16_t UUID);
 
 
 static ble_hrs_t m_hrs;                                             /**< Heart rate service instance. */
@@ -371,17 +371,12 @@ bool in_list(int i)
 
  static int ble_started;
  static int uwb_started;
+ uint32_t time_keeper;
+ static int node_added;
 
 
 
-void monitor_task_function()
-{
-  while(1)
-  {
-    vTaskDelay(60000);
-    if(debug_print)printf("Still alive \r\n");
-  }
-}
+
 
 
 void list_task_function()
@@ -389,19 +384,22 @@ void list_task_function()
 
   BaseType_t xHigherPriorityTaskWoken;
   //xSemaphoreTake(print_list_sem, portMAX_DELAY);
+
   while(1){
       //printf("%f\r\n", portTICK_PERIOD_MS);
       //float del = 3000/1024;
       vTaskDelay(100);
 
       xSemaphoreTake(print_list_sem, portMAX_DELAY);
-
+      
       message new_message = {0};
+      /*
       char node[10];
       if((uwb_started+ble_started) == 1) mode = "BLE";
       else if ((uwb_started+ble_started) == 2) mode = "BLE+UWB";
       else mode = "NONE";
       char msg [50];
+      */
       //sprintf(msg, "My ID: %d MODE: %s ", NODE_UUID, mode);
       
       //strcpy(new_message.data, "# ID, RANGE, RSSI, TIMESTAMP   ");
@@ -416,6 +414,7 @@ void list_task_function()
       {
 
         if(seen_list[j].UUID != 0) printf("%d, %f, %d, %d \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp); 
+        //printf("%d, %f, %d, %d \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp); 
         /*
         char list_item[50] ;
 
@@ -978,7 +977,7 @@ static uint16_t find_adv_uuid_next(ble_gap_evt_adv_report_t const * p_adv_report
     return -1;
 }
 
-int time_keeper;
+
 /**@brief   Function for handling BLE events from central applications.
  *
  * @details This function parses scanning reports and initiates a connection to peripherals when a
@@ -1095,6 +1094,12 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
                      uint16_t found_UUID = find_adv_uuid_next(&p_gap_evt->params.adv_report);
                      if(found_UUID != NODE_UUID && !in_seen_list(found_UUID)){
                        
+
+                       uint16_t index = get_seen_list_idx(0); //Get empty index
+                       if(index == -1) //If list is full
+                       {
+                        index = MAX_ANCHOR_COUNT-1; //Evict least RSSI
+                       }
                        seen_list[last_seen_idx].UUID = found_UUID;
                        seen_list[last_seen_idx].RSSI = p_ble_evt->evt.gap_evt.params.adv_report.rssi;
                        //printf("%d \r\n",p_ble_evt->evt.gap_evt.params.adv_report.rssi); 
@@ -1102,6 +1107,15 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
 
                        last_seen_idx += 1;
                        last_seen_idx %= MAX_ANCHOR_COUNT;
+                       node_added = 1;
+
+                     }
+
+                     if((found_UUID != NODE_UUID) && in_seen_list(found_UUID) ) //Update
+                     {
+                       int index = get_seen_list_idx(found_UUID);
+                       seen_list[index].RSSI = p_ble_evt->evt.gap_evt.params.adv_report.rssi;
+                       seen_list[index].time_stamp = time_keeper;
 
                      }
 
@@ -1748,7 +1762,63 @@ static int role;
 #define ADVERTISER 0
 int tx_time;
 
+void monitor_task_function()
+{
 
+  int count = 0;
+  while(1)
+  {
+    vTaskDelay(1000);
+    count += 1;
+    
+    xSemaphoreTake(sus_init, portMAX_DELAY);
+    int removed = 0;
+    for(int x = 0; x < MAX_ANCHOR_COUNT; x++)
+      {
+        if(seen_list[x].UUID != 0)
+        {
+          if( (time_keeper - seen_list[x].time_stamp) >= 10000) //Timeout Eviction
+          {
+            removed = 1;
+            seen_list[x].UUID = 0;
+            seen_list[x].range = 0;
+            seen_list[x].time_stamp = 0;
+            seen_list[x].RSSI = 0;
+          }
+        }
+      }
+      
+      if(removed || node_added || ((count % 5) == 0)  ) //Re-sort by RSSI
+      {
+        //Now sort neighbor list
+        (void) sd_ble_gap_scan_stop();
+
+        for (int j = 0; j < MAX_ANCHOR_COUNT; j++)
+        {
+          for( int k = j+1; k < MAX_ANCHOR_COUNT; k++)
+          {
+            if(seen_list[j].RSSI < seen_list[k].RSSI)
+            {
+                //printf("j : %d k: %d \r\n", seen_list[j].RSSI, seen_list[k].RSSI);
+                node A = seen_list[j];
+                seen_list[j] = seen_list[k];
+                seen_list[k] = A;
+         
+            }
+          }
+        }
+        scan_start(); //Resume scanning/building up neighbor list
+        node_added = 0;
+        removed = 0;
+        count = 0;
+      }
+      
+      xSemaphoreGive(sus_init);
+
+
+    if(debug_print)printf("Still alive \r\n");
+  }
+}
 
 
 uint16_t get_rand_num(uint32_t freq)
@@ -1832,6 +1902,24 @@ bool in_seen_list(uint16_t UUID){
   return false;
 
 }
+
+int get_seen_list_idx(uint16_t UUID)
+{
+  for(int i = 0; i < MAX_ANCHOR_COUNT; i++){
+
+    if(seen_list[i].UUID == UUID){
+      
+      return i;
+      
+      }
+  }
+  return -1;
+  
+}
+
+
+
+
 
 TaskHandle_t  led_toggle_task_handle; 
 
@@ -1964,87 +2052,71 @@ void ranging_task_function(void *pvParameter)
 {
   
   while(1){
-      uint16_t rand = get_rand_num(initiator_freq);
-      
-
-      vTaskDelay(rand);
-      //vTaskDelay(5000);
-      
-      xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
-      int state = eTaskGetState(ss_responder_task_handle );
-      
-      xSemaphoreTake(sus_init, portMAX_DELAY);
-      vTaskDelay(10);
-      dwt_forcetrxoff();
-
-      init_reconfig();
-
-      int i = 0;
-      state = eTaskGetState(ss_responder_task_handle );
-      //printf("SS STATE: %d \r\n" , state);
-     
-      while(i < MAX_ANCHOR_COUNT){
-        if(seen_list[i].UUID != 0)
-        {
-          if (debug_print)printf("IN\r\n");
-          float range1 = ss_init_run(seen_list[i].UUID);
-          vTaskDelay(10);
-          float range2 = ss_init_run(seen_list[i].UUID);
-          vTaskDelay(10);
-          float range3 = ss_init_run(seen_list[i].UUID);
-          vTaskDelay(10);
-          if (debug_print)printf("OUT\r\n");
-          int numThru = 3;
-          if (range1 == -1)
-          {
-            range1 = 0;
-            numThru -= 1;
-          }
-          if (range2 == -1)
-          {
-            range2 = 0;
-            numThru -= 1;
-          }
-          if(range3 == -1)
-          {
-            range3 = 0;
-            numThru -= 1;
-          }
-        
-          //printf("R: %f \r\n", (range1 + range2 + range3)/numThru);
-          float range = (range1 + range2 + range3)/numThru;
-          if( (numThru != 0) && (range >= -5) && (range <= 100) ) seen_list[i].range = range;
-          //vTaskDelay(250);
-         }
-          i++;
-        
-      }
-      /*
-      //Now sort neighbor list
-      (void) sd_ble_gap_scan_stop();
-
-      for (int j = 0; j < MAX_ANCHOR_COUNT; j++)
+      if(initiator_freq != 0)
       {
-        for( int k = j+1; k < MAX_ANCHOR_COUNT; k++)
-        {
-          if(seen_list[j].RSSI < seen_list[k].RSSI)
+        uint16_t rand = get_rand_num(initiator_freq);
+      
+
+        vTaskDelay(rand);
+        //vTaskDelay(5000);
+      
+        xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
+        int state = eTaskGetState(ss_responder_task_handle );
+      
+        xSemaphoreTake(sus_init, portMAX_DELAY);
+        vTaskDelay(10);
+        dwt_forcetrxoff();
+
+        init_reconfig();
+
+        int i = 0;
+        state = eTaskGetState(ss_responder_task_handle );
+        //printf("SS STATE: %d \r\n" , state);
+     
+        while(i < MAX_ANCHOR_COUNT){
+          if(seen_list[i].UUID != 0)
           {
-              //printf("j : %d k: %d \r\n", seen_list[j].RSSI, seen_list[k].RSSI);
-              node A = seen_list[j];
-              seen_list[j] = seen_list[k];
-              seen_list[k] = A;
-         
-          }
+            if (debug_print)printf("IN\r\n");
+            float range1 = ss_init_run(seen_list[i].UUID);
+            vTaskDelay(10);
+            float range2 = ss_init_run(seen_list[i].UUID);
+            vTaskDelay(10);
+            float range3 = ss_init_run(seen_list[i].UUID);
+            vTaskDelay(10);
+            if (debug_print)printf("OUT\r\n");
+            int numThru = 3;
+            if (range1 == -1)
+            {
+              range1 = 0;
+              numThru -= 1;
+            }
+            if (range2 == -1)
+            {
+              range2 = 0;
+              numThru -= 1;
+            }
+            if(range3 == -1)
+            {
+              range3 = 0;
+              numThru -= 1;
+            }
+        
+            //printf("R: %f \r\n", (range1 + range2 + range3)/numThru);
+            float range = (range1 + range2 + range3)/numThru;
+            if( (numThru != 0) && (range >= -5) && (range <= 100) ) seen_list[i].range = range;
+            //vTaskDelay(250);
+           }
+            i++;
+        
         }
-      }
-      scan_start(); //Resume scanning/building up neighbor list
-      */
-      resp_reconfig();
-      dwt_forcetrxoff();
-      //vTaskResume(ss_responder_task_handle);
-      xSemaphoreGive(sus_init);
-      xSemaphoreGive(sus_resp); //Resume Responder Task
-  }
+        
+        resp_reconfig();
+        dwt_forcetrxoff();
+        //vTaskResume(ss_responder_task_handle);
+        xSemaphoreGive(sus_init);
+        xSemaphoreGive(sus_resp); //Resume Responder Task
+       }
+    }
 
  }
 
@@ -2477,7 +2549,7 @@ int main(void)
   
     
     printf("Node On: Firmware version %s\r\n", FIRMWARE_VERSION);
-
+    
     //LEDS_CONFIGURE(BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK);
 
     bsp_board_led_on(BSP_BOARD_LED_0);
@@ -2522,7 +2594,7 @@ int main(void)
     if (fds_record_find(FILE_ID, RECORD_KEY_1, &record_desc_2, &ftok_2) == FDS_SUCCESS) //If there is a stored ID
     {
         
-        uint32_t id = getFlashID(1);
+        uint32_t id = getFlashID(1); //Get ID
         NODE_UUID = id;
         m_adv_uuids[1].uuid = NODE_UUID; 
         advertising_init(); //Set UUID
