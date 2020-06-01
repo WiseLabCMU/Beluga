@@ -62,7 +62,8 @@
     4.) Move all neighbor list editing operations to one task, currently they are also spread out.
     5.) There are a lot of extraneous functions left over from nordic example code. These should be deleted to clean up code.
     6.) Codebase should be refactored into standalone project that imports libraries from nrf sdk and decawave sdk. 
-   
+    7.) Create list of all available+planned AT commands
+    8.) Make code more efficient - lots of inefficiencies with sorting, searching through neighbor list   
     
   
   
