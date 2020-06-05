@@ -1,4 +1,4 @@
-# decawave-ble
+# Beluga (UWB-BLE)
 ## Decawave controller for nRF52 that uses BLE for discovery
 
 ##  Required Software:
