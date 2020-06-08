@@ -1,7 +1,7 @@
 Output/beluga\ Debug/Obj/SEGGER_RTT.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/external/segger_rtt/SEGGER_RTT.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/external/segger_rtt/SEGGER_RTT.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/external/segger_rtt/SEGGER_RTT_Conf.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/external/segger_rtt/SEGGER_RTT.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/external/segger_rtt/SEGGER_RTT.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/external/segger_rtt/SEGGER_RTT_Conf.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
  ../nRF52-sdk/components/libraries/util/app_util_platform.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \

@@ -1,6 +1,6 @@
 Output/beluga\ Debug/Obj/bsp_btn_ble.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/bsp/bsp_btn_ble.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/bsp/bsp_btn_ble.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/bsp/bsp_btn_ble.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/bsp/bsp_btn_ble.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_ranges.h \
@@ -25,7 +25,7 @@ Output/beluga\ Debug/Obj/bsp_btn_ble.o: \
  ../nRF52-sdk/components/device/nrf52_name_change.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gatts.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/bsp/bsp.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/bsp/bsp.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
  ../nRF52-sdk/components/boards/boards.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpio.h \

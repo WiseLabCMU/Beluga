@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/nrf_fstorage_sd.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.c \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
@@ -26,8 +26,8 @@ Output/beluga\ Debug/Obj/nrf_fstorage_sd.o: \
  ../nRF52-sdk/components/device/nrf52_name_change.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/sdk_macros.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/fstorage/nrf_fstorage.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/fstorage/nrf_fstorage.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/libraries/experimental_section_vars/nrf_section.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \

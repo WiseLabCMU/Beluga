@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/retarget.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/uart/retarget.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/uart/retarget.c \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
@@ -27,7 +27,7 @@ Output/beluga\ Debug/Obj/retarget.o: \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/sdk_macros.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/uart/app_uart.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/uart/app_uart.h \
  ../nRF52-sdk/components/libraries/util/app_util_platform.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_soc.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_svc.h \

@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/UART.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/UART/UART.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/UART/UART.c \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
@@ -37,7 +37,7 @@ Output/beluga\ Debug/Obj/UART.o: \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_peripherals.h \
  ../nRF52-sdk/components/device/nrf52832_peripherals.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/UART/UART.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/UART/UART.h \
  ../nRF52-sdk/components/libraries/bsp/bsp.h \
  ../nRF52-sdk/components/boards/boards.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpio.h \

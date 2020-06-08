@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/security_dispatcher.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/ble/peer_manager/security_dispatcher.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/peer_manager/security_dispatcher.c \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
@@ -26,7 +26,7 @@ Output/beluga\ Debug/Obj/security_dispatcher.o: \
  ../nRF52-sdk/components/device/nrf52_name_change.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/sdk_macros.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/ble/peer_manager/security_dispatcher.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/peer_manager/security_dispatcher.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_ranges.h \
@@ -40,7 +40,7 @@ Output/beluga\ Debug/Obj/security_dispatcher.o: \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gattc.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gatts.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gap.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/ble/peer_manager/peer_manager_types.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/peer_manager/peer_manager_types.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_hci.h \
  ../nRF52-sdk/components/ble/common/ble_gatt_db.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gattc.h \
@@ -56,6 +56,6 @@ Output/beluga\ Debug/Obj/security_dispatcher.o: \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_err.h \
  ../nRF52-sdk/components/ble/common/ble_conn_state.h \
  ../nRF52-sdk/components/libraries/util/sdk_mapped_flags.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/ble/peer_manager/peer_database.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/ble/peer_manager/peer_manager_internal.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/ble/peer_manager/id_manager.h
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/peer_manager/peer_database.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/peer_manager/peer_manager_internal.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/peer_manager/id_manager.h

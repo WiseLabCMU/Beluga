@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/app_error.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/util/app_error.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/util/app_error.c \
  ../nRF52-sdk/components/device/nrf.h \
  ../nRF52-sdk/components/device/nrf52.h \
  ../nRF52-sdk/components/toolchain/cmsis/include/core_cm4.h \
@@ -15,10 +15,10 @@ Output/beluga\ Debug/Obj/app_error.o: \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/util/app_error.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/util/app_error.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/util/sdk_errors.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/util/nordic_common.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/util/app_error_weak.h
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/util/nordic_common.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/util/app_error_weak.h

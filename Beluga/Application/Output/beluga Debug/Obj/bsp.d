@@ -1,6 +1,6 @@
 Output/beluga\ Debug/Obj/bsp.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/bsp/bsp.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/bsp/bsp.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/bsp/bsp.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/bsp/bsp.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
  ../nRF52-sdk/components/boards/boards.h \
@@ -34,7 +34,7 @@ Output/beluga\ Debug/Obj/bsp.o: \
  ../nRF52-sdk/components/libraries/util/app_error.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/libraries/bsp/bsp_config.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/bsp/bsp_config.h \
  ../nRF52-sdk/components/libraries/timer/app_timer.h \
  ../nRF52-sdk/components/libraries/util/app_util.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h

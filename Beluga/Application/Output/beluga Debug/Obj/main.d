@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/main.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/Application/src/main.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/main.c \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
@@ -129,7 +129,7 @@ Output/beluga\ Debug/Obj/main.o: \
  ../deca_driver/deca_version.h ../UART/UART.h \
  ../nRF52-sdk/components/drivers_nrf/gpiote/nrf_drv_gpiote.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpiote.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/Application/src/ss_init_main.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ss_init_main.h \
  ../nRF52-sdk/external/freertos/source/include/semphr.h \
  ../nRF52-sdk/external/freertos/source/include/queue.h \
  ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.h \

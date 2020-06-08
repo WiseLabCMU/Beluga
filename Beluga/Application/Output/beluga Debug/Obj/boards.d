@@ -1,6 +1,6 @@
 Output/beluga\ Debug/Obj/boards.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/boards/boards.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/boards/boards.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/boards/boards.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/boards/boards.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpio.h \
  ../nRF52-sdk/components/device/nrf.h \
  ../nRF52-sdk/components/device/nrf52.h \
@@ -28,4 +28,4 @@ Output/beluga\ Debug/Obj/boards.o: \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
  ../nRF52-sdk/components/libraries/util/app_error_weak.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/boards/dw1001_dev.h
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/boards/dw1001_dev.h

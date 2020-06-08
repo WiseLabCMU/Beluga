@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/nrf_drv_uart.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/drivers_nrf/uart/nrf_drv_uart.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/drivers_nrf/uart/nrf_drv_uart.c \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
@@ -26,7 +26,7 @@ Output/beluga\ Debug/Obj/nrf_drv_uart.o: \
  ../nRF52-sdk/components/device/nrf52_name_change.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/sdk_macros.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/drivers_nrf/uart/nrf_drv_uart.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/drivers_nrf/uart/nrf_drv_uart.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_peripherals.h \
  ../nRF52-sdk/components/device/nrf52832_peripherals.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_uart.h \

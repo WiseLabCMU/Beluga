@@ -1,8 +1,8 @@
 Output/beluga\ Debug/Obj/nrf_drv_common.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/drivers_nrf/common/nrf_drv_common.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/drivers_nrf/common/nrf_drv_common.c \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/components/drivers_nrf/common/nrf_drv_common.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/drivers_nrf/common/nrf_drv_common.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
  ../nRF52-sdk/components/device/nrf.h \
