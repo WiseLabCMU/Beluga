@@ -134,4 +134,5 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/external/freertos/source/include/queue.h \
  ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.h \
  ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage.h \
- ../nRF52-sdk/components/drivers_nrf/hal/nrf_uarte.h
+ ../nRF52-sdk/components/drivers_nrf/hal/nrf_uarte.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/flash.h
