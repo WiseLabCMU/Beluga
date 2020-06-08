@@ -11,13 +11,12 @@
 
   Run the Following CD command once inside cloned repo:
  
-    cd NRF_UWB_COMBO/examples/ble_central_and_peripheral/experimental/ble_app_hrs_rscs_relay/
+    cd Beluga/Application
 
 ## How to Open Project in Segger:
 
     1.) Go to Project Directory mentioned above
-    2.) Navigate to pca10040/s132/ses/
-    3.) Open the segger embedded studio project file (the one labeled EMPROJECT File)
+    2.) Open the segger embedded studio project file (the one labeled EMPROJECT File)
 
 ## To Test Code:
     0.) Plug in Decawave Module
