@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/port.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/external/freertos/portable/GCC/nrf52/port.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/external/freertos/portable/GCC/nrf52/port.c \
  ../nRF52-sdk/external/freertos/source/include/FreeRTOS.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \

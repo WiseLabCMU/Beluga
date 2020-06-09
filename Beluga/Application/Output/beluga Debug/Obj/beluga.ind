@@ -60,7 +60,7 @@
 "Output/beluga Debug/Obj/deca_params_init.o"
 "Output/beluga Debug/Obj/deca_range_tables.o"
 "Output/beluga Debug/Obj/port_platform.o"
-"Output/beluga Debug/Obj/UART.o"
+"Output/beluga Debug/Obj/uart.o"
 "Output/beluga Debug/Obj/croutine.o"
 "Output/beluga Debug/Obj/event_groups.o"
 "Output/beluga Debug/Obj/list.o"

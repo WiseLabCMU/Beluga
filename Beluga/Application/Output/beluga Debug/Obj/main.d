@@ -126,7 +126,7 @@ Output/beluga\ Debug/Obj/main.o: \
  ../deca_driver/port/port_platform.h ../deca_driver/deca_types.h \
  ../deca_driver/deca_device_api.h ../deca_driver/deca_param_types.h \
  ../deca_driver/deca_types.h ../deca_driver/deca_regs.h \
- ../deca_driver/deca_version.h ../UART/UART.h \
+ ../deca_driver/deca_version.h \
  ../nRF52-sdk/components/drivers_nrf/gpiote/nrf_drv_gpiote.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpiote.h \
  /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ss_init_main.h \
@@ -135,4 +135,5 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.h \
  ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_uarte.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/flash.h
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/flash.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/uart.h

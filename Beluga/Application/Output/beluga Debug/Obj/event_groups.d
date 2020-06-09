@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/event_groups.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/myown/decawave-ble.3/NRF_UWB_Combo/nRF52-sdk/external/freertos/source/event_groups.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/external/freertos/source/event_groups.c \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
  ../nRF52-sdk/external/freertos/source/include/FreeRTOS.h \
