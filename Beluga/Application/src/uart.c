@@ -13,8 +13,13 @@
 #include "dw1001_dev.h"
 #include "nrf_uart.h"
 #include "uart.h"
+#include "FreeRTOS.h"
+#include "portmacro_cmsis.h"
+#include <string.h>
+#include "queue.h"
 
 static uint16_t   m_ble_nus_max_data_len = BLE_GATT_ATT_MTU_DEFAULT - 3; 
+extern QueueHandle_t uart_queue;
 
 /**
  * @brief Handling the data received over UART
@@ -31,10 +36,8 @@ static void uart_event_handle(app_uart_evt_t * p_event)
             UNUSED_VARIABLE(app_uart_get(&data_array[index]));
             index++;
             if ((data_array[index - 1] == '\n') || (data_array[index - 1] == '\r') ||  (index >= (m_ble_nus_max_data_len)))
-            {
-              
+            {         
                 send_AT_command(data_array);
-
                 index = 0;
             }
             break;
@@ -80,4 +83,19 @@ void uart_init(void)
 
     APP_ERROR_CHECK(err_code);
     
+}
+
+/**
+ * @brief Send AT command
+ */
+void send_AT_command(char *command){
+
+    BaseType_t xHigherPriorityTaskWoken;
+    message new_message = {0};
+
+    strcpy(new_message.data, command);
+
+    xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
+
+    return;
 }

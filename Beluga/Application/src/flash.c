@@ -14,6 +14,23 @@
 #include <string.h>
 
 
+/**@brief FDS event handler to handle errors during initialization */
+void fds_evt_handler(fds_evt_t const * p_fds_evt)
+{
+    switch (p_fds_evt->id)
+    {
+        case FDS_EVT_INIT:
+            if (p_fds_evt->result != FDS_SUCCESS)
+            {
+                // Initialization failed.
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+
 /**
  * @brief Modify storage information
  */

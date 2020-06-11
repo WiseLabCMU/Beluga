@@ -37,41 +37,6 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
  */
-/**
- * @brief BLE Heart Rate and Running speed Relay application main file.
- *
- * @detail This application demonstrates a simple "Relay".
- * Meaning we pass on the values that we receive. By combining a collector part on
- * one end and a sensor part on the other, we show that the s130 can function
- * simultaneously as a central and a peripheral device.
- *
- * In the figure below, the sensor ble_app_hrs connects and interacts with the relay
- * in the same manner it would connect to a heart rate collector. In this case, the Relay
- * application acts as a central.
- *
- * On the other side, a collector (such as Master Control panel or ble_app_hrs_c) connects
- * and interacts with the relay the same manner it would connect to a heart rate sensor peripheral.
- *
- * Led layout:
- * LED 1: Central side is scanning       LED 2: Central side is connected to a peripheral
- * LED 3: Peripheral side is advertising LED 4: Peripheral side is connected to a central
- *
- * @note While testing, be careful that the Sensor and Collector are actually connecting to the Relay,
- *       and not directly to each other!
- *
- *    Peripheral                  Relay                    Central
- *    +--------+        +-----------|----------+        +-----------+
- *    | Heart  |        | Heart     |   Heart  |        |           |
- *    | Rate   | -----> | Rate     -|-> Rate   | -----> | Collector |
- *    | Sensor |        | Collector |   Sensor |        |           |
- *    +--------+        +-----------|   and    |        +-----------+
- *                      | Running   |   Running|
- *    +--------+        | Speed    -|-> Speed  |
- *    | Running|------> | Collector |   Sensor |
- *    | Speed  |        +-----------|----------+
- *    | Sensor |
- *    +--------+
- */
 
 
 #include <stdint.h>
@@ -154,8 +119,7 @@
 
 static int mode;
 
-//#define UART_TX_BUF_SIZE                256                                         /**< UART TX buffer size. */
-//#define UART_RX_BUF_SIZE                256                                         /**< UART RX buffer size. */
+
 
 #define PERIPHERAL_ADVERTISING_LED      BSP_BOARD_LED_2
 #define PERIPHERAL_CONNECTED_LED        BSP_BOARD_LED_3
@@ -257,7 +221,6 @@ uint16_t NODE_UUID = 1;
 #define BLE_UWB_RANGE2 0x0000
 #define NCNT 8
 
-void send_AT_command(char *command);
 
 QueueHandle_t uart_queue;
 
@@ -287,21 +250,6 @@ static ble_uuid_t m_adv_uuids[] =
 
 
 
-/**@brief FDS event handler to handle errors during initialization */
-static void fds_evt_handler(fds_evt_t const * p_fds_evt)
-{
-    switch (p_fds_evt->id)
-    {
-        case FDS_EVT_INIT:
-            if (p_fds_evt->result != FDS_SUCCESS)
-            {
-                // Initialization failed.
-            }
-            break;
-        default:
-            break;
-    }
-}
 
 
 /**@brief Parameters used when scanning. */
@@ -330,9 +278,6 @@ static ble_gap_conn_params_t const m_connection_param =
 };
 
 
-
-
-
 typedef struct node{
     int UUID;
     int8_t RSSI;
@@ -342,40 +287,15 @@ typedef struct node{
 
 
 
-typedef struct message
-{
-   char data[50];
-} message;
-
-
-
 node seen_list[MAX_ANCHOR_COUNT];
 int last_seen_idx = 0;
 
 
 
-/*
-bool in_list(int i)
-{
-  for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
-  {
-    if(seen_list[j] == i) return true;
-  }
-  return false;
-}
-*/
-
- static int ble_started;
- static int uwb_started;
- uint32_t time_keeper;
- static int node_added;
-
-
-
-
-
-
-
+static int ble_started;
+static int uwb_started;
+uint32_t time_keeper;
+static int node_added;
 
 
 
@@ -414,11 +334,9 @@ volatile int rx_int_flag = 0 ; // Receive success interrupt flag
 volatile int to_int_flag = 0 ; // Timeout interrupt flag
 volatile int er_int_flag = 0 ; // Error interrupt flag 
 
-
-
-
-
 //--------------dw1000---end---------------
+
+
 /**@brief Function to handle asserts in the SoftDevice.
  *
  * @details This function will be called in case of an assert in the SoftDevice.
@@ -499,7 +417,6 @@ static void scan_start(void)
 
 /**@brief Function for initiating advertising and scanning.
  */
-
 static void adv_scan_start(void)
 {
     ret_code_t err_code;
@@ -624,129 +541,6 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
     }
 }
 
-
-/**@brief Handles events coming from the Heart Rate central module.
- */
-static void hrs_c_evt_handler(ble_hrs_c_t * p_hrs_c, ble_hrs_c_evt_t * p_hrs_c_evt)
-{
-    switch (p_hrs_c_evt->evt_type)
-    {
-        case BLE_HRS_C_EVT_DISCOVERY_COMPLETE:
-        {
-            if (m_conn_handle_hrs_c == BLE_CONN_HANDLE_INVALID)
-            {
-                ret_code_t err_code;
-
-                m_conn_handle_hrs_c = p_hrs_c_evt->conn_handle;
-                NRF_LOG_INFO("HRS discovered on conn_handle 0x%x", m_conn_handle_hrs_c);
-
-                err_code = ble_hrs_c_handles_assign(p_hrs_c,
-                                                    m_conn_handle_hrs_c,
-                                                    &p_hrs_c_evt->params.peer_db);
-                APP_ERROR_CHECK(err_code);
-                // Initiate bonding.
-                err_code = pm_conn_secure(m_conn_handle_hrs_c, false);
-                if (err_code != NRF_ERROR_INVALID_STATE)
-                {
-                    APP_ERROR_CHECK(err_code);
-                }
-
-                // Heart rate service discovered. Enable notification of Heart Rate Measurement.
-                err_code = ble_hrs_c_hrm_notif_enable(p_hrs_c);
-                APP_ERROR_CHECK(err_code);
-            }
-        } break; // BLE_HRS_C_EVT_DISCOVERY_COMPLETE
-
-        case BLE_HRS_C_EVT_HRM_NOTIFICATION:
-        {
-            ret_code_t err_code;
-
-            NRF_LOG_INFO("Heart Rate = %d", p_hrs_c_evt->params.hrm.hr_value);
-
-            err_code = ble_hrs_heart_rate_measurement_send(&m_hrs, p_hrs_c_evt->params.hrm.hr_value);
-            if ((err_code != NRF_SUCCESS) &&
-                (err_code != NRF_ERROR_INVALID_STATE) &&
-                (err_code != NRF_ERROR_RESOURCES) &&
-                (err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING)
-                )
-            {
-                APP_ERROR_HANDLER(err_code);
-            }
-        } break; // BLE_HRS_C_EVT_HRM_NOTIFICATION
-
-        default:
-            // No implementation needed.
-            break;
-    }
-}
-
-
-/**@brief Handles events coming from  Running Speed and Cadence central module.
- */
-static void rscs_c_evt_handler(ble_rscs_c_t * p_rscs_c, ble_rscs_c_evt_t * p_rscs_c_evt)
-{
-    switch (p_rscs_c_evt->evt_type)
-    {
-        case BLE_RSCS_C_EVT_DISCOVERY_COMPLETE:
-        {
-            if (m_conn_handle_rscs_c == BLE_CONN_HANDLE_INVALID)
-            {
-                ret_code_t err_code;
-
-                m_conn_handle_rscs_c = p_rscs_c_evt->conn_handle;
-                NRF_LOG_INFO("Running Speed and Cadence service discovered on conn_handle 0x%x",
-                             m_conn_handle_rscs_c);
-
-                err_code = ble_rscs_c_handles_assign(p_rscs_c,
-                                                    m_conn_handle_rscs_c,
-                                                    &p_rscs_c_evt->params.rscs_db);
-                APP_ERROR_CHECK(err_code);
-
-                // Initiate bonding.
-                err_code = pm_conn_secure(m_conn_handle_rscs_c, false);
-                if (err_code != NRF_ERROR_INVALID_STATE)
-                {
-                    APP_ERROR_CHECK(err_code);
-                }
-
-                // Running speed cadence service discovered. Enable notifications.
-                err_code = ble_rscs_c_rsc_notif_enable(p_rscs_c);
-                APP_ERROR_CHECK(err_code);
-            }
-        } break; // BLE_RSCS_C_EVT_DISCOVERY_COMPLETE:
-
-        case BLE_RSCS_C_EVT_RSC_NOTIFICATION:
-        {
-            ret_code_t      err_code;
-            ble_rscs_meas_t rscs_measurment;
-
-            NRF_LOG_INFO("Speed      = %d", p_rscs_c_evt->params.rsc.inst_speed);
-
-            rscs_measurment.is_running                  = p_rscs_c_evt->params.rsc.is_running;
-            rscs_measurment.is_inst_stride_len_present  = p_rscs_c_evt->params.rsc.is_inst_stride_len_present;
-            rscs_measurment.is_total_distance_present   = p_rscs_c_evt->params.rsc.is_total_distance_present;
-
-            rscs_measurment.inst_stride_length = p_rscs_c_evt->params.rsc.inst_stride_length;
-            rscs_measurment.inst_cadence       = p_rscs_c_evt->params.rsc.inst_cadence;
-            rscs_measurment.inst_speed         = p_rscs_c_evt->params.rsc.inst_speed;
-            rscs_measurment.total_distance     = p_rscs_c_evt->params.rsc.total_distance;
-
-            err_code = ble_rscs_measurement_send(&m_rscs, &rscs_measurment);
-            if ((err_code != NRF_SUCCESS) &&
-                (err_code != NRF_ERROR_INVALID_STATE) &&
-                (err_code != NRF_ERROR_RESOURCES) &&
-                (err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING)
-                )
-            {
-                APP_ERROR_HANDLER(err_code);
-            }
-        } break; // BLE_RSCS_C_EVT_RSC_NOTIFICATION
-
-        default:
-            // No implementation needed.
-            break;
-    }
-}
 
 
 /**@brief Function for searching a given name in the advertisement packets.
@@ -1274,44 +1068,16 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
     // Based on the role this device plays in the connection, dispatch to the right handler.
     if (role == BLE_GAP_ROLE_PERIPH || ble_evt_is_advertising_timeout(p_ble_evt))
     {
-        ble_hrs_on_ble_evt(p_ble_evt, &m_hrs);
-        ble_rscs_on_ble_evt(p_ble_evt, &m_rscs);
+        //ble_hrs_on_ble_evt(p_ble_evt, &m_hrs);
+        //ble_rscs_on_ble_evt(p_ble_evt, &m_rscs);
         on_ble_peripheral_evt(p_ble_evt);
     }
     else if ((role == BLE_GAP_ROLE_CENTRAL) || (p_ble_evt->header.evt_id == BLE_GAP_EVT_ADV_REPORT))
     {
-        ble_hrs_c_on_ble_evt(p_ble_evt, &m_hrs_c);
-        ble_rscs_c_on_ble_evt(p_ble_evt, &m_rscs_c);
+        //ble_hrs_c_on_ble_evt(p_ble_evt, &m_hrs_c);
+        //ble_rscs_c_on_ble_evt(p_ble_evt, &m_rscs_c);
         on_ble_central_evt(p_ble_evt);
     }
-}
-
-
-/**@brief Heart rate collector initialization.
- */
-static void hrs_c_init(void)
-{
-    ret_code_t       err_code;
-    ble_hrs_c_init_t hrs_c_init_obj;
-
-    hrs_c_init_obj.evt_handler = hrs_c_evt_handler;
-
-    err_code = ble_hrs_c_init(&m_hrs_c, &hrs_c_init_obj);
-    APP_ERROR_CHECK(err_code);
-}
-
-
-/**@brief RSC collector initialization.
- */
-static void rscs_c_init(void)
-{
-    ret_code_t        err_code;
-    ble_rscs_c_init_t rscs_c_init_obj;
-
-    rscs_c_init_obj.evt_handler = rscs_c_evt_handler;
-
-    err_code = ble_rscs_c_init(&m_rscs_c, &rscs_c_init_obj);
-    APP_ERROR_CHECK(err_code);
 }
 
 
@@ -1470,81 +1236,6 @@ static void conn_params_init(void)
 }
 
 
-/**@brief Function for handling database discovery events.
- *
- * @details This function is callback function to handle events from the database discovery module.
- *          Depending on the UUIDs that are discovered, this function should forward the events
- *          to their respective services.
- *
- * @param[in] p_event  Pointer to the database discovery event.
- */
-static void db_disc_handler(ble_db_discovery_evt_t * p_evt)
-{
-    ble_hrs_on_db_disc_evt(&m_hrs_c, p_evt);
-    ble_rscs_on_db_disc_evt(&m_rscs_c, p_evt);
-}
-
-
-/**
- * @brief Database discovery initialization.
- */
-static void db_discovery_init(void)
-{
-    ret_code_t err_code = ble_db_discovery_init(db_disc_handler);
-    APP_ERROR_CHECK(err_code);
-}
-
-
-/**@brief Function for initializing services that will be used by the application.
- *
- * @details Initialize the Heart Rate, Battery and Device Information services.
- */
-static void services_init(void)
-{
-    ret_code_t      err_code;
-    ble_hrs_init_t  hrs_init;
-    ble_rscs_init_t rscs_init;
-    uint8_t         body_sensor_location;
-
-    // Initialize the Heart Rate Service.
-    body_sensor_location = BLE_HRS_BODY_SENSOR_LOCATION_FINGER;
-
-    memset(&hrs_init, 0, sizeof(hrs_init));
-
-    hrs_init.evt_handler                 = NULL;
-    hrs_init.is_sensor_contact_supported = true;
-    hrs_init.p_body_sensor_location      = &body_sensor_location;
-
-    // Here the sec level for the Heart Rate Service can be changed/increased.
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&hrs_init.hrs_hrm_attr_md.cccd_write_perm);
-    BLE_GAP_CONN_SEC_MODE_SET_NO_ACCESS(&hrs_init.hrs_hrm_attr_md.read_perm);
-    BLE_GAP_CONN_SEC_MODE_SET_NO_ACCESS(&hrs_init.hrs_hrm_attr_md.write_perm);
-
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&hrs_init.hrs_bsl_attr_md.read_perm);
-    BLE_GAP_CONN_SEC_MODE_SET_NO_ACCESS(&hrs_init.hrs_bsl_attr_md.write_perm);
-
-    err_code = ble_hrs_init(&m_hrs, &hrs_init);
-    APP_ERROR_CHECK(err_code);
-
-    // Initialize the Running Speed and Cadence Service.
-    memset(&rscs_init, 0, sizeof(rscs_init));
-
-    rscs_init.evt_handler = NULL;
-    rscs_init.feature     = BLE_RSCS_FEATURE_INSTANT_STRIDE_LEN_BIT |
-                            BLE_RSCS_FEATURE_WALKING_OR_RUNNING_STATUS_BIT;
-
-    // Here the sec level for the Running Speed and Cadence Service can be changed/increased.
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&rscs_init.rsc_meas_attr_md.cccd_write_perm);
-    BLE_GAP_CONN_SEC_MODE_SET_NO_ACCESS(&rscs_init.rsc_meas_attr_md.read_perm);
-    BLE_GAP_CONN_SEC_MODE_SET_NO_ACCESS(&rscs_init.rsc_meas_attr_md.write_perm);
-
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&rscs_init.rsc_feature_attr_md.read_perm);
-    BLE_GAP_CONN_SEC_MODE_SET_NO_ACCESS(&rscs_init.rsc_feature_attr_md.write_perm);
-
-    err_code = ble_rscs_init(&m_rscs, &rscs_init);
-    APP_ERROR_CHECK(err_code);
-}
-
 
 /**@brief Function for initializing the Advertising functionality.
  */
@@ -1609,6 +1300,57 @@ static void log_init(void)
 }
 
 
+/** @brief Function to sleep until a BLE event is received by the application.
+ */
+static void power_manage(void)
+{
+    ret_code_t err_code = sd_app_evt_wait();
+    APP_ERROR_CHECK(err_code);
+}
+
+
+
+
+
+
+static int role;
+#define SCANNER 1
+#define ADVERTISER 0
+int tx_time;
+
+
+
+bool in_seen_list(uint16_t UUID) {
+
+  for(int i = 0; i < MAX_ANCHOR_COUNT; i++){
+
+    if(seen_list[i].UUID == UUID){
+      
+      return true;
+      
+      }
+  }
+  return false;
+}
+
+int get_seen_list_idx(uint16_t UUID) {
+
+  for(int i = 0; i < MAX_ANCHOR_COUNT; i++){
+
+    if(seen_list[i].UUID == UUID){
+      
+      return i;
+      
+      }
+  }
+  return -1;
+}
+
+//---------------------- Timer Functions -------------------------//
+
+APP_TIMER_DEF(m_timestamp_keeper);    /**< Handler for repeated timer used to blink LED 1. */
+
+
 /**@brief Function for initializing the timer.
  */
 static void timer_init(void)
@@ -1619,51 +1361,6 @@ static void timer_init(void)
     APP_ERROR_CHECK(err_code);
 }
 
-
-/** @brief Function to sleep until a BLE event is received by the application.
- */
-static void power_manage(void)
-{
-    ret_code_t err_code = sd_app_evt_wait();
-    APP_ERROR_CHECK(err_code);
-}
-
-void vInterruptHandler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
-{
-  dwt_isr(); // DW1000 interrupt service routine 
-}
-
-/*!
-* @brief Configure an IO pin as a positive edge triggered interrupt source.
-*/
-void vInterruptInit (void)
-{
-  ret_code_t err_code;
-
-  if (nrf_drv_gpiote_is_init())
-    printf("nrf_drv_gpiote_init already installed\n");
-  else
-    nrf_drv_gpiote_init();
-
-  // input pin, +ve edge interrupt, no pull-up
-  nrf_drv_gpiote_in_config_t in_config = GPIOTE_CONFIG_IN_SENSE_LOTOHI(true);
-  in_config.pull = NRF_GPIO_PIN_NOPULL;
-
-  // Link this pin interrupt source to its interrupt handler
-  err_code = nrf_drv_gpiote_in_init(DW1000_IRQ, &in_config, vInterruptHandler);
-  APP_ERROR_CHECK(err_code);
-
-  nrf_drv_gpiote_in_event_enable(DW1000_IRQ, true);
-}
-
-
-APP_TIMER_DEF(m_timestamp_keeper);    /**< Handler for repeated timer used to blink LED 1. */
-
-APP_TIMER_DEF(m_uwb_switch);
-APP_TIMER_DEF(m_list_print);
-
-
-
 /**@brief Timeout handler for the repeated timer.
  */
 static void timestamp_handler(void * p_context)
@@ -1671,16 +1368,25 @@ static void timestamp_handler(void * p_context)
     time_keeper += 1; 
 }
 
-static int role;
-#define SCANNER 1
-#define ADVERTISER 0
-int tx_time;
 
+//---------------------- UWB related Functions -------------------------//
 
+void init_reconfig() {
 
+  dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
+  dwt_setrxtimeout(65000); // Maximum value timeout with DW1000 is 65ms  
 
-uint16_t get_rand_num(uint32_t freq)
-{
+}
+
+void resp_reconfig() {
+
+  dwt_setrxaftertxdelay(0);
+  dwt_setrxtimeout(0);
+
+}
+
+uint16_t get_rand_num(uint32_t freq) {
+
       uint32_t lower = freq;
       uint32_t upper = freq+50;
       uint8_t num_rand_bytes_available;
@@ -1705,213 +1411,14 @@ uint16_t get_rand_num(uint32_t freq)
 }
 
 
+//------------------------ Task Functions -------------------------------//
 
-TaskHandle_t  ss_responder_task_handle; 
+TaskHandle_t ss_responder_task_handle; 
 TaskHandle_t ranging_task_handle;
-TaskHandle_t  ss_initiator_task_handle; 
+TaskHandle_t ss_initiator_task_handle; 
 TaskHandle_t uart_task_handle;
 TaskHandle_t list_task_handle;
 TaskHandle_t monitor_task_handle;
-
-SemaphoreHandle_t uwbSem;
-
-void resp_config();
-void init_config();
-
-void init_reconfig();
-void resp_reconfig();
-
-static int milliseconds_since_start;
-static int second_timer = 0;
-
-
-static void switch_uwb(void* p_context)
-{
-   //printf("Switch called\r\n");
-   second_timer += 1;
-}
-
-
-static void lfclk_request(void)
-{
-    ret_code_t err_code = nrf_drv_clock_init();
-    APP_ERROR_CHECK(err_code);
-    nrf_drv_clock_lfclk_request(NULL);
-}
-
-
-bool in_seen_list(uint16_t UUID){
-
-  for(int i = 0; i < MAX_ANCHOR_COUNT; i++){
-
-    if(seen_list[i].UUID == UUID){
-      
-      return true;
-      
-      }
-  }
-
-  return false;
-}
-
-int get_seen_list_idx(uint16_t UUID)
-{
-  for(int i = 0; i < MAX_ANCHOR_COUNT; i++){
-
-    if(seen_list[i].UUID == UUID){
-      
-      return i;
-      
-      }
-  }
-  return -1;
-}
-
-
-TaskHandle_t  led_toggle_task_handle; 
-
-static void led_toggle_task_function (void * pvParameter)
-{
-    UNUSED_PARAMETER(pvParameter);
-    while (true)
-    {
-        bsp_board_led_invert(BSP_BOARD_LED_0);
-
-        /* Delay a task for a given number of ticks */
-        vTaskDelay(200);
-
-        /* Tasks must be implemented to never return... */
-    }
-}
-
-
-void tx_conf_cb(const dwt_cb_data_t *cb_data);
-void rx_ok_cb(const dwt_cb_data_t *cb_data);
-void rx_to_cb(const dwt_cb_data_t *cb_data);
-void rx_err_cb(const dwt_cb_data_t *cb_data);
-
-
-void resp_config()
-{
-    //nrf_gpio_cfg_input(DW1000_IRQ, NRF_GPIO_PIN_NOPULL); 		//irq
-
-    /* Reset DW1000 */
-    reset_DW1000(); 
-
-    /* Set SPI clock to 2MHz */
-    port_set_dw1000_slowrate();			
-
-    /* Init the DW1000 */
-    if (dwt_initialise(DWT_LOADUCODE) == DWT_ERROR)
-    {
-      //Init of DW1000 Failed
-      while (1)
-      {};
-    }
-
-    // Set SPI to 8MHz clock
-    port_set_dw1000_fastrate();  
-
-    /* Configure DW1000. */
-    dwt_configure(&config);
-    dwt_setcallbacks(&tx_conf_cb, &rx_ok_cb, &rx_to_cb, &rx_err_cb);
-
-    /* Enable wanted interrupts (TX confirmation, RX good frames, RX timeouts and RX errors). */
-    dwt_setinterrupt(DWT_INT_TFRS | DWT_INT_RFCG | DWT_INT_RFTO | DWT_INT_RXPTO | DWT_INT_RPHE | DWT_INT_RFCE | DWT_INT_RFSL | DWT_INT_SFDT, 1);
-    /* Apply default antenna delay value. Defined in port platform.h */
-    dwt_setrxantennadelay(RX_ANT_DLY);
-    dwt_settxantennadelay(TX_ANT_DLY);
-
-    /* Set preamble timeout for expected frames.  */
-    //dwt_setpreambledetecttimeout(PRE_TIMEOUT);
-
-    dwt_setrxtimeout(0);
-}
-
-void init_config()
-{
-       /* Reset DW1000 */
-    reset_DW1000(); 
-
-    /* Set SPI clock to 2MHz */
-    port_set_dw1000_slowrate();			
-  
-    /* Init the DW1000 */
-    if (dwt_initialise(DWT_LOADUCODE) == DWT_ERROR)
-    {
-      //Init of DW1000 Failed
-      while (1) {};
-    }
-
-    // Set SPI to 8MHz clock  
-    port_set_dw1000_fastrate();
-
-    /* Configure DW1000. */
-    dwt_configure(&config);
-
-    /* Initialization of the DW1000 interrupt*/
-    /* Callback are defined in ss_init_main.c */
-    dwt_setcallbacks(&tx_conf_cb, &rx_ok_cb, &rx_to_cb, &rx_err_cb);
-
-    /* Enable wanted interrupts (TX confirmation, RX good frames, RX timeouts and RX errors). */
-    dwt_setinterrupt(DWT_INT_TFRS | DWT_INT_RFCG | DWT_INT_RFTO | DWT_INT_RXPTO | DWT_INT_RPHE | DWT_INT_RFCE | DWT_INT_RFSL | DWT_INT_SFDT, 1);
-
-    /* Apply default antenna delay value. See NOTE 2 below. */
-    dwt_setrxantennadelay(RX_ANT_DLY);
-    dwt_settxantennadelay(TX_ANT_DLY);
-
-    /* Set preamble timeout for expected frames. See NOTE 3 below. */
-    //dwt_setpreambledetecttimeout(0); // PRE_TIMEOUT
-          
-    /* Set expected response's delay and timeout. 
-    * As this example only handles one incoming frame with always the same delay and timeout, those values can be set here once for all. */
-   //dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
-   
-          
-    /* Set expected response's delay and timeout. 
-    * As this example only handles one incoming frame with always the same delay and timeout, those values can be set here once for all. */
-    dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
-    dwt_setrxtimeout(65000); // Maximum value timeout with DW1000 is 65ms  
-
-  //-------------dw1000  ini------end---------------------------	
-}
-
-void init_reconfig(){
-
-  dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
-  dwt_setrxtimeout(65000); // Maximum value timeout with DW1000 is 65ms  
-
-}
-
-void resp_reconfig(){
-
-  dwt_setrxaftertxdelay(0);
-  dwt_setrxtimeout(0);
-
-}
-
-
-
-
-
-
-void send_AT_command(char *command){
-
-    BaseType_t xHigherPriorityTaskWoken;
-    message new_message = {0};
-
-    strcpy(new_message.data, command);
-
-    xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
-
-    return;
-}
-
-
-
-
-
-//------------------------ Task Functions -------------------------------//
 
 /**
  * @brief Output visible nodes information
@@ -2314,19 +1821,16 @@ int main(void)
 
     //vInterruptInit();
     //boUART_Init();
-    uart_init();
     //log_init();
-    timer_init();
+
+    uart_init();                       // Init UART
+    timer_init();                      // Init timeer
     buttons_leds_init(&erase_bonds);
     ble_stack_init();
     gap_params_init();
     gatt_init();
     conn_params_init();
-    db_discovery_init();
     peer_manager_init();
-    hrs_c_init();
-    rscs_c_init();
-    services_init();
     advertising_init();
 
     
