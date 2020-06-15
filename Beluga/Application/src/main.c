@@ -1070,12 +1070,14 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
     {
         //ble_hrs_on_ble_evt(p_ble_evt, &m_hrs);
         //ble_rscs_on_ble_evt(p_ble_evt, &m_rscs);
+        //printf("peripheral \r\n");
         on_ble_peripheral_evt(p_ble_evt);
     }
     else if ((role == BLE_GAP_ROLE_CENTRAL) || (p_ble_evt->header.evt_id == BLE_GAP_EVT_ADV_REPORT))
     {
         //ble_hrs_c_on_ble_evt(p_ble_evt, &m_hrs_c);
         //ble_rscs_c_on_ble_evt(p_ble_evt, &m_rscs_c);
+        //printf("central \r\n");
         on_ble_central_evt(p_ble_evt);
     }
 }
@@ -1715,6 +1717,7 @@ void ranging_task_function(void *pvParameter)
         
             //printf("R: %f \r\n", (range1 + range2 + range3)/numThru);
             float range = (range1 + range2 + range3)/numThru;
+            //printf("range: %f \r\n", range);
             if( (numThru != 0) && (range >= -5) && (range <= 100) ) seen_list[i].range = range;
             //vTaskDelay(250);
            }
@@ -1803,8 +1806,8 @@ int main(void)
 {
 
     debug_print = 0;
-    role = ADVERTISER;
-    mode = RESPONDER;
+    //role = ADVERTISER;
+    //mode = RESPONDER;
     for(int i = 0; i < MAX_ANCHOR_COUNT; i++)
     {
       seen_list[i].UUID = 0;
@@ -1833,7 +1836,7 @@ int main(void)
     peer_manager_init();
     advertising_init();
 
-    
+    // Init flash data storage
     ret_code_t ret = fds_register(fds_evt_handler);
     if (ret != FDS_SUCCESS)
     {
@@ -1845,9 +1848,10 @@ int main(void)
        printf("init error \r\n");
     }
      
-
+    // UWB config part
     nrf_gpio_cfg_input(DW1000_IRQ, NRF_GPIO_PIN_NOPULL); 	
-      /* Reset DW1000 */
+    
+    /* Reset DW1000 */
     reset_DW1000(); 
 
     /* Set SPI clock to 2MHz */
@@ -1886,10 +1890,7 @@ int main(void)
     dwt_setrxtimeout(0); // Maximum value timeout with DW1000 is 65ms 
     //dwt_write8bitoffsetreg(PMSC_ID, PMSC_CTRL0_OFFSET, 0x20);
 
-   
-
-   
-    
+  
     
     ret_code_t create_timer = app_timer_create(&m_timestamp_keeper, APP_TIMER_MODE_REPEATED, timestamp_handler);
     ret_code_t start_timer =  app_timer_start(m_timestamp_keeper, APP_TIMER_TICKS(1) , NULL);
