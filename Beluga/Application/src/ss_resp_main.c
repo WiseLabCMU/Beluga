@@ -126,7 +126,7 @@ static double distance;
 
 int ss_resp_run(void)
 {
-  //printf("Waiting for suspend\r\n");
+  //if (debug_print) printf("Waiting for suspend\r\n");
   int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); //Check if responding is suspended
   if(suspend_start == 0) return 1;
 
@@ -139,7 +139,7 @@ int ss_resp_run(void)
     int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
     if(suspend == 0) 
     {
-      if (debug_print) printf("stopped from loop \r\n");
+      //if (debug_print) printf("stopped from loop \r\n");
       dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
     
       /* Reset RX to properly reinitialise LDE operation. */
@@ -166,7 +166,7 @@ int ss_resp_run(void)
 //   
 //  }
 
-   if (debug_print) printf("gotrx sem\r\n");
+   //if (debug_print) printf("gotrx sem\r\n");
 
     #if 0	  // Include to determine the type of timeout if required.
     int temp = 0;
@@ -179,7 +179,7 @@ int ss_resp_run(void)
 
   if (status_reg & SYS_STATUS_RXFCG)
   {
-    if(debug_print) printf("rx good \r\n");
+    //if(debug_print) printf("rx good \r\n");
     uint32 frame_len;
 
     /* Clear good RX frame event in the DW1000 status register. */
@@ -250,7 +250,7 @@ int ss_resp_run(void)
           int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
           if(suspend == 0) 
           {
-            if (debug_print) printf("Left while waiting\r\n");
+            //if (debug_print) printf("Left while waiting\r\n");
             dwt_forcetrxoff();
             return 1;
            }
@@ -262,7 +262,7 @@ int ss_resp_run(void)
       }
       else
       {
-        if (debug_print) printf("Seound message fail \r\n");
+        if (debug_print) printf("Second message fail \r\n");
 
         /* If we end up in here then we have not succeded in transmitting the packet we sent up.
         POLL_RX_TO_RESP_TX_DLY_UUS is a critical value for porting to different processors. 
@@ -280,7 +280,7 @@ int ss_resp_run(void)
 
     else
     {
-      if(debug_print) printf("no match\r\n");
+      //if(debug_print) printf("no match\r\n");
       dwt_rxreset();
     }
     
@@ -288,7 +288,7 @@ int ss_resp_run(void)
 
   else
   {
-    if(debug_print) printf("rx err/to \r\n");
+    //if(debug_print) printf("rx err/to \r\n");
     /* Clear RX error events in the DW1000 status register. */
     dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
     
@@ -304,7 +304,7 @@ int ss_resp_run(void)
     int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
     if(suspend == 0) 
     {
-      if (debug_print) printf("stopped from loop \r\n");
+      //if (debug_print) printf("stopped from loop \r\n");
       dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
     
       /* Reset RX to properly reinitialise LDE operation. */
@@ -346,6 +346,7 @@ int ss_resp_run(void)
 
     if (memcmp(rx_buffer, rx_final_msg, ALL_MSG_COMMON_LEN) == 0  && (id == NODE_UUID))
     {
+      if (debug_print) printf("Final msg received \r\n");
       int ret;
       uint32 resp_rx_ts, tl_roundA, tl_replyA, poll_tx_ts, final_tx_ts;
       uint32 poll_rx_ts_32, resp_tx_ts_32, final_rx_ts_32;
@@ -397,7 +398,7 @@ int ss_resp_run(void)
           int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
           if(suspend == 0) 
           {
-            if (debug_print) printf("Left while waiting\r\n");
+            //if (debug_print) printf("Left while waiting\r\n");
             dwt_forcetrxoff();
             return 1;
            }
@@ -544,7 +545,7 @@ void ss_responder_task_function (void * pvParameter)
 
   while (true)
   {
-
+    //printf("response task start! \r\n");
     int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); //Check if responding is suspended
     if(suspend_start != 0) 
     {

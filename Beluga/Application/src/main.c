@@ -1501,6 +1501,8 @@ void list_task_function()
 
       //xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
       //printf("%s", new_message.data);
+      //printf("ranging task state: %d \r\n", eTaskGetState(ranging_task_handle));
+      //printf("response task state: %d \r\n", eTaskGetState(ss_responder_task_handle));
       xSemaphoreGive(print_list_sem);
    }
 }
@@ -1670,12 +1672,12 @@ void ranging_task_function(void *pvParameter)
       {
         uint16_t rand = get_rand_num(initiator_freq);
       
-
+        
         vTaskDelay(rand);
         //vTaskDelay(5000);
-      
+        
         xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
-        int state = eTaskGetState(ss_responder_task_handle );
+        int state = eTaskGetState(ss_responder_task_handle);
       
         xSemaphoreTake(sus_init, portMAX_DELAY);
         vTaskDelay(10);
@@ -1684,7 +1686,7 @@ void ranging_task_function(void *pvParameter)
         init_reconfig();
 
         int i = 0;
-        state = eTaskGetState(ss_responder_task_handle );
+        state = eTaskGetState(ss_responder_task_handle);
         //printf("SS STATE: %d \r\n" , state);
      
         while(i < MAX_ANCHOR_COUNT){
@@ -1692,10 +1694,16 @@ void ranging_task_function(void *pvParameter)
           {
             if (debug_print)printf("IN\r\n");
             float range1 = ss_init_run(seen_list[i].UUID);
+            if (debug_print)printf("range 1 out \r\n");
+            if (debug_print)printf("range 1: %f \r\n", range1);
             vTaskDelay(10);
             float range2 = ss_init_run(seen_list[i].UUID);
+            if (debug_print)printf("range 2 out \r\n");
+            if (debug_print)printf("range 2: %f \r\n", range2);
             vTaskDelay(10);
             float range3 = ss_init_run(seen_list[i].UUID);
+            if (debug_print)printf("range 3 out \r\n");
+            if (debug_print)printf("range 3: %f \r\n", range3);
             vTaskDelay(10);
             if (debug_print)printf("OUT\r\n");
             int numThru = 3;
@@ -1792,7 +1800,7 @@ void monitor_task_function()
       xSemaphoreGive(sus_init);
 
 
-    if(debug_print)printf("Still alive \r\n");
+    //if(debug_print)printf("Still alive \r\n");
   }
 }
 

@@ -125,11 +125,11 @@ double ss_init_run(int id)
   
   if (check_poll_msg == DWT_SUCCESS)
   {
-    if (debug_print) printf("Poll msg success! \r\n");
+    if (debug_print) printf("Poll msg send success! \r\n");
   }
   else
   {
-    if (debug_print) printf("Poll msg fail! \r\n");
+    if (debug_print) printf("Poll msg send fail! \r\n");
   }
   
   /* We assume that the transmission is achieved correctly, poll for reception of a frame or error/timeout. See NOTE 4 below. */
@@ -218,7 +218,9 @@ double ss_init_run(int id)
         */
 
         /* Reset RX to properly reinitialise LDE operation. */
+        //dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
         dwt_rxreset();
+        return -1;
       }
 
 
@@ -258,6 +260,8 @@ double ss_init_run(int id)
       rx_buffer[ALL_MSG_SN_IDX] = 0;
       if ((got == id) && memcmp(rx_buffer, rx_report_msg, ALL_MSG_COMMON_LEN) == 0)
       {
+        if (debug_print) printf("Report msg receive \r\n");
+
         uint32 msg_tof_dtu;
 
         /* Get timestamps embedded in response message. */
@@ -274,7 +278,7 @@ double ss_init_run(int id)
     }
     else
     {
-      if (debug_print) printf("init rx fail\r\n");
+      //if (debug_print) printf("init rx fail\r\n");
       dwt_rxreset();
     }
     
