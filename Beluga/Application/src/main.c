@@ -321,8 +321,8 @@ static dwt_config_t config = {
 #define POLL_TX_TO_RESP_RX_DLY_UUS 100 
 
 /*Should be accurately calculated during calibration*/
-#define TX_ANT_DLY 16300
-#define RX_ANT_DLY 16456
+//#define TX_ANT_DLY 16380
+//#define RX_ANT_DLY 16456
 
 
 
@@ -827,6 +827,7 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
                        int index = get_seen_list_idx(found_UUID);
                        seen_list[index].RSSI = p_ble_evt->evt.gap_evt.params.adv_report.rssi;
                        seen_list[index].time_stamp = time_keeper;
+                       //printf("update time stamp \r\n");
 
                      }
 
@@ -1432,6 +1433,7 @@ void list_task_function()
   //xSemaphoreTake(print_list_sem, portMAX_DELAY);
 
   while(1){
+      if (debug_print == 1) printf("list task in \r\n");
       //printf("%f\r\n", portTICK_PERIOD_MS);
       //float del = 3000/1024;
       vTaskDelay(100);
@@ -1455,11 +1457,12 @@ void list_task_function()
       printf("# ID, RANGE, RSSI, TIMESTAMP\r\n");
 
       //xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
-      printf("%s", new_message.data);
+      //printf("%s", new_message.data);
       for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
       {
 
         if(seen_list[j].UUID != 0) printf("%d, %f, %d, %d \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp); 
+        //if(seen_list[j].UUID != 0) printf("%f \r\n", seen_list[j].range); 
         //printf("%d, %f, %d, %d \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp); 
         /*
         char list_item[50] ;
@@ -1503,6 +1506,7 @@ void list_task_function()
       //printf("%s", new_message.data);
       //printf("ranging task state: %d \r\n", eTaskGetState(ranging_task_handle));
       //printf("response task state: %d \r\n", eTaskGetState(ss_responder_task_handle));
+      if (debug_print == 1) printf("list task out \r\n");
       xSemaphoreGive(print_list_sem);
    }
 }
@@ -1518,7 +1522,7 @@ void uart_task_function(void * pvParameter){
   message incoming_message = {0};
 
   while(1){
-    
+    if (debug_print == 1) printf("uart task in \r\n");
     vTaskDelay(100);
     if(xQueueReceive(uart_queue, &incoming_message, 0) == pdPASS){  
       
@@ -1658,6 +1662,7 @@ void uart_task_function(void * pvParameter){
         //printf("%s",(const char *)incoming_message.data);
       }  
     }
+    if (debug_print == 1) printf("uart task out \r\n");
   }
 }
 
@@ -1668,6 +1673,7 @@ void ranging_task_function(void *pvParameter)
 {
   
   while(1){
+  if (debug_print == 1) printf("ranging task in \r\n");
       if(initiator_freq != 0)
       {
         uint16_t rand = get_rand_num(initiator_freq);
@@ -1677,16 +1683,15 @@ void ranging_task_function(void *pvParameter)
         //vTaskDelay(5000);
         
         xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
-        int state = eTaskGetState(ss_responder_task_handle);
-      
         xSemaphoreTake(sus_init, portMAX_DELAY);
+
         vTaskDelay(10);
         dwt_forcetrxoff();
 
         init_reconfig();
 
         int i = 0;
-        state = eTaskGetState(ss_responder_task_handle);
+        //state = eTaskGetState(ss_responder_task_handle);
         //printf("SS STATE: %d \r\n" , state);
      
         while(i < MAX_ANCHOR_COUNT){
@@ -1705,6 +1710,9 @@ void ranging_task_function(void *pvParameter)
             if (debug_print)printf("range 3 out \r\n");
             if (debug_print)printf("range 3: %f \r\n", range3);
             vTaskDelay(10);
+//            float range2 = -1;
+//            float range3 = -1;
+
             if (debug_print)printf("OUT\r\n");
             int numThru = 3;
             if (range1 == -1)
@@ -1723,7 +1731,7 @@ void ranging_task_function(void *pvParameter)
               numThru -= 1;
             }
         
-            //printf("R: %f \r\n", (range1 + range2 + range3)/numThru);
+            //if( (numThru != 0) ) printf("%f \r\n", (range1 + range2 + range3)/numThru);
             float range = (range1 + range2 + range3)/numThru;
             //printf("range: %f \r\n", range);
             if( (numThru != 0) && (range >= -5) && (range <= 100) ) seen_list[i].range = range;
@@ -1739,6 +1747,7 @@ void ranging_task_function(void *pvParameter)
         xSemaphoreGive(sus_init);
         xSemaphoreGive(sus_resp); //Resume Responder Task
        }
+       if (debug_print == 1) printf("ranging task out \r\n");
     }
 
  }
@@ -1752,6 +1761,7 @@ void monitor_task_function()
   int count = 0;
   while(1)
   {
+  if (debug_print == 1) printf("monitor task in \r\n");
     vTaskDelay(1000);
     count += 1;
     
@@ -1801,6 +1811,7 @@ void monitor_task_function()
 
 
     //if(debug_print)printf("Still alive \r\n");
+    if (debug_print == 1) printf("monitor task out \r\n");
   }
 }
 
