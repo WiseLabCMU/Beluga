@@ -298,10 +298,9 @@ uint32_t time_keeper;
 static int node_added;
 
 
-
 //-----------------dw1000----------------------------
 /*DW1000 config function*/
-static dwt_config_t config = {
+dwt_config_t config = {
     5,                /* Channel number. */
     DWT_PRF_64M,      /* Pulse repetition frequency. */
     DWT_PLEN_128,     /* Preamble length. Used in TX only. */
@@ -1638,11 +1637,28 @@ void uart_task_function(void * pvParameter){
             writeFlashID(rate, 3);
             initiator_freq = rate;
             
-            printf("%d ", rate);
+            printf("rate: %d \r\n", rate);
             printf("OK \r\n");
         }
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+CHANNEL", (size_t)10)){
-            printf("Channel testing \r\n");
+            char buf[100];
+            strcpy(buf, incoming_message.data);
+            char *uuid_char = strtok(buf, " ");
+            uuid_char = strtok(NULL, " ");
+            uint32_t channel = atoi(uuid_char);
+
+            if (channel < 1 || channel > 7 || channel == 6) {
+              printf("Invalid Channel number \r\n");
+            }
+            else {
+              writeFlashID(channel, 4);
+              config.chan = channel;
+              dwt_configure(&config);
+            
+              printf("channel: %d \r\n", channel);
+              printf("OK \r\n");
+            }
+
         }
 
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+TIMEOUT", (size_t)10)){
@@ -2003,6 +2019,8 @@ int main(void)
         //printf("%d %d\r\n", id, state);
 
     }
+
+    /* Fetch rate record from flash */
     fds_record_desc_t   record_desc_3;
     fds_find_token_t    ftok_3;
     memset(&ftok_3, 0x00, sizeof(fds_find_token_t));
@@ -2011,7 +2029,20 @@ int main(void)
       uint32_t rate = getFlashID(3);
 
       initiator_freq = rate;
-      printf("%d\r\n", rate);
+      printf("Flash get rate: %d\r\n", rate);
+    }
+
+    /* Fetch channel record from flash */
+    fds_record_desc_t   record_desc_4;
+    fds_find_token_t    ftok_4;
+    memset(&ftok_4, 0x00, sizeof(fds_find_token_t));
+    if (fds_record_find(FILE_ID, RECORD_KEY_4, &record_desc_4, &ftok_4) == FDS_SUCCESS) //If there is a stored channel
+    {
+      uint32_t channel = getFlashID(4);
+
+      config.chan = channel;
+      dwt_configure(&config);
+      printf("Flash get channel: %d\r\n", channel);
     }
 
 
