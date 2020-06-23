@@ -327,11 +327,13 @@ int ss_resp_run(void)
           roundA = (double) (resp_rx_ts - poll_tx_ts);
           replyA = (double) (final_tx_ts - resp_rx_ts);
 
+          if ((roundA * roundB - replyA * replyB) <= 0) return 1;
+
           /* Compute time of flight and distance, using clock offset ratio to correct for differing local and remote clock rates */
           tof_dtu = (uint64) ((roundA * roundB - replyA * replyB) / (roundA + roundB + replyA + replyB));
           tof = tof_dtu * DWT_TIME_UNITS;
           distance = tof * SPEED_OF_LIGHT;
-      
+          //if (tof_dtu== 0) printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ \r\n");
           //printf("SDS-TWR Distance : %f\r\n",distance);
 
 

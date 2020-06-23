@@ -44,4 +44,4 @@ void tx_conf_cb(const dwt_cb_data_t *cb_data);
 static void resp_msg_get_ts(uint8 *ts_field, uint32 *ts);
 
 void ss_responder_task_function (void * pvParameter);
-void ss_initiator_task_function (void * pvParameter);
+

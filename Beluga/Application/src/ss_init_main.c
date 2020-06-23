@@ -35,9 +35,6 @@
 
 #define APP_NAME "SS TWR INIT v1.3"
 
-/* Inter-ranging delay period, in milliseconds. */
-#define RNG_DELAY_MS 250
-
 /* Frames used in the ranging process. See NOTE 1,2 below. */                //  After E0,  
 static uint8 tx_poll_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0xE0, 0, 0};
 static uint8 rx_resp_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0xE1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -210,15 +207,6 @@ double ss_init_run(int id)
       else
       {
         if (debug_print) printf("Final msg error! \r\n");
-        
-        /* If we end up in here then we have not succeded in transmitting the packet we sent up.
-        POLL_RX_TO_RESP_TX_DLY_UUS is a critical value for porting to different processors. 
-        For slower platforms where the SPI is at a slower speed or the processor is operating at a lower 
-        frequency (Comparing to STM32F, SPI of 18MHz and Processor internal 72MHz)this value needs to be increased.
-        Knowing the exact time when the responder is going to send its response is vital for time of flight 
-        calculation. The specification of the time of respnse must allow the processor enough time to do its 
-        calculations and put the packet in the Tx buffer. So more time is required for a slower system(processor).
-        */
 
         /* Reset RX to properly reinitialise LDE operation. */
         //dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
@@ -227,7 +215,7 @@ double ss_init_run(int id)
       }
 
 
-      // ------ Receive Report message ------
+      /* ------ Receive Report message ------ */
       
       /* Poll for reception of a frame or error/timeout. See NOTE 5 below. */
       while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
@@ -273,7 +261,7 @@ double ss_init_run(int id)
           /* Compute time of flight and distance, using clock offset ratio to correct for differing local and remote clock rates */
           tof = msg_tof_dtu * DWT_TIME_UNITS;
           distance = tof * SPEED_OF_LIGHT;
-      
+          
           //printf("SDS-TWR Distance : %f\r\n", distance);
           return distance; 
         }
@@ -299,9 +287,6 @@ double ss_init_run(int id)
     dwt_rxreset();
   }
 
-    /* Execute a delay between ranging exchanges. */
-    //deca_sleep(RNG_DELAY_MS);
-
   return -1;
 }
 
@@ -324,6 +309,27 @@ static void resp_msg_get_ts(uint8 *ts_field, uint32 *ts)
   for (i = 0; i < RESP_MSG_TS_LEN; i++)
   {
   *ts += ts_field[i] << (i * 8);
+  }
+}
+
+
+/*! ------------------------------------------------------------------------------------------------------------------
+* @fn final_msg_set_ts()
+*
+* @brief Fill a given timestamp field in the response message with the given value. In the timestamp fields of the
+*        response message, the least significant byte is at the lower address.
+*
+* @param  ts_field  pointer on the first byte of the timestamp field to fill
+*         ts  timestamp value
+*
+* @return none
+*/
+static void resp_msg_set_ts(uint8 *ts_field, const uint64 ts)
+{
+  int i;
+  for (i = 0; i < RESP_MSG_TS_LEN; i++)
+  {
+    ts_field[i] = (ts >> (i * 8)) & 0xFF;
   }
 }
 
@@ -377,50 +383,8 @@ static uint64 get_rx_timestamp_u64(void)
 }
 
 
-/*! ------------------------------------------------------------------------------------------------------------------
-* @fn final_msg_set_ts()
-*
-* @brief Fill a given timestamp field in the response message with the given value. In the timestamp fields of the
-*        response message, the least significant byte is at the lower address.
-*
-* @param  ts_field  pointer on the first byte of the timestamp field to fill
-*         ts  timestamp value
-*
-* @return none
-*/
-static void resp_msg_set_ts(uint8 *ts_field, const uint64 ts)
-{
-  int i;
-  for (i = 0; i < RESP_MSG_TS_LEN; i++)
-  {
-    ts_field[i] = (ts >> (i * 8)) & 0xFF;
-  }
-}
 
 
-
-/**@brief SS TWR Initiator task entry function.
-*
-* @param[in] pvParameter   Pointer that will be used as the parameter for the task.
-*/
-void ss_initiator_task_function (void * pvParameter)
-{
-  UNUSED_PARAMETER(pvParameter);
-  //printf("Starting again\r\n");
-  dwt_setleds(DWT_LEDS_ENABLE);
-  /*
-  rxSemaphore = xSemaphoreCreateBinary();
-  txSemaphore = xSemaphoreCreateBinary();
-  */
-
-  while (true)
-  {
-    ss_init_run(1);
-    /* Delay a task for a given number of ticks */
-    vTaskDelay(RNG_DELAY_MS);
-    /* Tasks must be implemented to never return... */
-  }
-}
 /*****************************************************************************************************************************************************
 * NOTES:
 *

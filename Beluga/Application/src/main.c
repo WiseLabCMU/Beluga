@@ -148,8 +148,8 @@ static int mode;
 #define SEC_PARAM_MIN_KEY_SIZE          7                                           /**< Minimum encryption key size in octets. */
 #define SEC_PARAM_MAX_KEY_SIZE          16                                          /**< Maximum encryption key size in octets. */
 
-#define SCAN_INTERVAL                   0x00A0                                      /**< Determines scan interval in units of 0.625 millisecond. */
-#define SCAN_WINDOW                     0x0050                                      /**< Determines scan window in units of 0.625 millisecond. */
+#define SCAN_INTERVAL                   0x0004                                      /**< Determines scan interval in units of 0.625 millisecond. 0x00A0 */ 
+#define SCAN_WINDOW                     0x0004                                      /**< Determines scan window in units of 0.625 millisecond. 0x0050*/
 #define SCAN_TIMEOUT                    0
 
 
@@ -1422,6 +1422,19 @@ TaskHandle_t ss_initiator_task_handle;
 TaskHandle_t uart_task_handle;
 TaskHandle_t list_task_handle;
 TaskHandle_t monitor_task_handle;
+TaskHandle_t ble_task_handle;
+
+void ble_task_fuction() {
+
+  while(1) {
+    if (debug_print == 1) printf("BLE task in \r\n");
+    vTaskDelay(100);
+    (void) sd_ble_gap_scan_stop();
+    scan_start();
+    if (debug_print == 1) printf("BLE task out \r\n");
+  }
+
+}
 
 /**
  * @brief Output visible nodes information
@@ -1524,6 +1537,7 @@ void uart_task_function(void * pvParameter){
   while(1){
     if (debug_print == 1) printf("uart task in \r\n");
     vTaskDelay(100);
+    
     if(xQueueReceive(uart_queue, &incoming_message, 0) == pdPASS){  
       
       if(0 == strncmp((const char *)incoming_message.data, (const char *)"PL ", (size_t)3)){
@@ -1733,7 +1747,7 @@ void ranging_task_function(void *pvParameter)
         
             //if( (numThru != 0) ) printf("%f \r\n", (range1 + range2 + range3)/numThru);
             float range = (range1 + range2 + range3)/numThru;
-            //printf("range: %f \r\n", range);
+            //printf("range %d: %f \r\n",i, range);
             if( (numThru != 0) && (range >= -5) && (range <= 100) ) seen_list[i].range = range;
             //vTaskDelay(250);
            }
@@ -1952,6 +1966,7 @@ int main(void)
     UNUSED_VARIABLE(xTaskCreate(uart_task_function, "UART", configMINIMAL_STACK_SIZE+1200, NULL, 2, &uart_task_handle));
     UNUSED_VARIABLE(xTaskCreate(list_task_function, "LIST", configMINIMAL_STACK_SIZE+600, NULL, 2, &list_task_handle));
     UNUSED_VARIABLE(xTaskCreate(monitor_task_function, "MONITOR", configMINIMAL_STACK_SIZE+800, NULL, 2, &monitor_task_handle));
+    //UNUSED_VARIABLE(xTaskCreate(ble_task_fuction, "BLE", configMINIMAL_STACK_SIZE+1600, NULL, 0, &ble_task_handle));
     
 
 
