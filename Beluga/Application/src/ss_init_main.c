@@ -108,6 +108,8 @@ double ss_init_run(int id)
  // dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
   //dwt_setrxtimeout(RESP_RX_TIMEOUT_UUS);
 //--
+//printf("TX_POWER: %x \r\n", dwt_read32bitreg(TX_POWER_ID));
+//printf("DIS SMARTX: %x \r\n", dwt_read32bitreg(SYS_CFG_ID));
 
   /* Write frame data to DW1000 and prepare transmission. See NOTE 3 below. */
   tx_poll_msg[ALL_MSG_SN_IDX] = id;

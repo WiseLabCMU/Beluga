@@ -313,6 +313,14 @@ dwt_config_t config = {
     (129 + 8 - 8)     /* SFD timeout (preamble length + 1 + SFD length - PAC size). Used in RX only. */
 };
 
+#define TX_POWER_MAX 0x1F1F1F1F
+
+/*DW1000 tx config struct*/
+dwt_txconfig_t config_tx = {
+  TC_PGDELAY_CH5,
+  TX_POWER_MAN_DEFAULT
+};
+
 /* Preamble timeout, in multiple of PAC size. See NOTE 3 below. */
 #define PRE_TIMEOUT 1000
 
@@ -326,6 +334,7 @@ dwt_config_t config = {
 
 
 static int initiator_freq = 100;
+static int time_out = 10000;
 
 
 volatile int tx_int_flag = 0 ; // Transmit success interrupt flag
@@ -1622,7 +1631,7 @@ void uart_task_function(void * pvParameter){
                writeFlashID(2, 2);
             }
             else{
-              writeFlashID(3, 2);
+              writeFlashID(0, 2);
             }
             //printf("%d ", mode);
             printf("OK \r\n");
@@ -1637,7 +1646,7 @@ void uart_task_function(void * pvParameter){
             writeFlashID(rate, 3);
             initiator_freq = rate;
             
-            printf("rate: %d \r\n", rate);
+            //printf("rate: %d \r\n", rate);
             printf("OK \r\n");
         }
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+CHANNEL", (size_t)10)){
@@ -1655,26 +1664,117 @@ void uart_task_function(void * pvParameter){
               config.chan = channel;
               dwt_configure(&config);
             
-              printf("channel: %d \r\n", channel);
               printf("OK \r\n");
             }
 
         }
 
+        else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+RESET", (size_t)8)){
+
+          fds_record_desc_t   record_desc_1;
+          fds_find_token_t    ftok_1;
+          memset(&ftok_1, 0x00, sizeof(fds_find_token_t));
+          if (fds_record_find(FILE_ID, RECORD_KEY_1, &record_desc_1, &ftok_1) == FDS_SUCCESS) //If there is a stored rate
+            {};
+          ret_code_t ret = fds_record_delete(&record_desc_1);
+          if (ret != FDS_SUCCESS)
+          {
+             printf("FDS Delete error \r\n");
+          }
+
+          // Delete rate record
+          fds_record_desc_t   record_desc_2;
+          fds_find_token_t    ftok_2;
+          memset(&ftok_2, 0x00, sizeof(fds_find_token_t));
+          if (fds_record_find(FILE_ID, RECORD_KEY_3, &record_desc_2, &ftok_2) == FDS_SUCCESS) //If there is a stored rate
+            {};
+          ret_code_t ret2 = fds_record_delete(&record_desc_2);
+          if (ret2 != FDS_SUCCESS)
+          {
+             printf("FDS Delete error \r\n");
+          }
+
+          // Delete channel record
+          fds_record_desc_t   record_desc_3;
+          fds_find_token_t    ftok_3;
+          memset(&ftok_3, 0x00, sizeof(fds_find_token_t));
+          if (fds_record_find(FILE_ID, RECORD_KEY_4, &record_desc_3, &ftok_3) == FDS_SUCCESS) //If there is a stored rate
+            {};
+          ret_code_t ret3 = fds_record_delete(&record_desc_3);
+          if (ret3 != FDS_SUCCESS)
+          {
+             printf("FDS Delete error \r\n");
+          }
+
+          // Delete timeout record
+          fds_record_desc_t   record_desc_4;
+          fds_find_token_t    ftok_4;
+          memset(&ftok_4, 0x00, sizeof(fds_find_token_t));
+          if (fds_record_find(FILE_ID, RECORD_KEY_5, &record_desc_4, &ftok_4) == FDS_SUCCESS) //If there is a stored rate
+            {};
+          ret_code_t ret4 = fds_record_delete(&record_desc_4);
+          if (ret4 != FDS_SUCCESS)
+          {
+             printf("FDS Delete error \r\n");
+          }
+          // Delete Tx power record
+          fds_record_desc_t   record_desc_5;
+          fds_find_token_t    ftok_5;
+          memset(&ftok_5, 0x00, sizeof(fds_find_token_t));
+          if (fds_record_find(FILE_ID, RECORD_KEY_6, &record_desc_5, &ftok_5) == FDS_SUCCESS) //If there is a stored rate
+            {};
+          ret_code_t ret5 = fds_record_delete(&record_desc_5);
+          if (ret5 != FDS_SUCCESS)
+          {
+             printf("FDS Delete error \r\n");
+          }
+
+          printf("Reset OK \r\n");
+        }
+
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+TIMEOUT", (size_t)10)){
-            printf("Timeout testing \r\n");
+            
             char buf[100];
             strcpy(buf, incoming_message.data);
             char *uuid_char = strtok(buf, " ");
             uuid_char = strtok(NULL, " ");
-            uint32_t rate = atoi(uuid_char);
-
-            printf("%d \r\n", rate);
-            //writeFlashID(rate, 3);
-            //initiator_freq = rate;
+            uint32_t timeout = atoi(uuid_char);
+            //printf("%d \r\n", timeout);
             
-            //printf("%d ", rate);
-            //printf("OK \r\n");
+            if (timeout < 0) {
+              printf("Timeout cannot be negative \r\n");
+            }
+            else {
+              writeFlashID(timeout, 5);
+              time_out = timeout; 
+
+              printf("OK \r\n");
+            }
+        }
+
+        else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+TXPOWER", (size_t)10)){
+            
+            char buf[100];
+            strcpy(buf, incoming_message.data);
+            char *uuid_char = strtok(buf, " ");
+            uuid_char = strtok(NULL, " ");
+            uint32_t tx_power = atoi(uuid_char);
+            //printf("%d \r\n", timeout);
+            
+            if (tx_power < 0 || tx_power > 1) {
+              printf("Tx Power parameter input error \r\n");
+            }
+            else {
+              writeFlashID(tx_power, 6);
+              if (tx_power == 0) {
+                config_tx.power = TX_POWER_MAN_DEFAULT;
+              }
+              if (tx_power == 1) {
+                config_tx.power = TX_POWER_MAX;
+              }
+              dwt_configuretxrf(&config_tx);
+              printf("OK \r\n");
+            }
         }
 
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+LIST", (size_t)7)){
@@ -1801,7 +1901,7 @@ void monitor_task_function()
       {
         if(seen_list[x].UUID != 0)
         {
-          if( (time_keeper - seen_list[x].time_stamp) >= 10000) //Timeout Eviction
+          if( (time_keeper - seen_list[x].time_stamp) >= time_out) //Timeout Eviction
           {
             removed = 1;
             seen_list[x].UUID = 0;
@@ -1919,6 +2019,9 @@ int main(void)
     /* Configure DW1000. */
     dwt_configure(&config);
 
+    /* Configure DW1000 TX power and pulse delay */
+    dwt_configuretxrf(&config_tx);
+
     /* Initialization of the DW1000 interrupt*/
 
     //dwt_setcallbacks(&tx_conf_cb, &rx_ok_cb, &rx_to_cb, &rx_err_cb);
@@ -1985,7 +2088,7 @@ int main(void)
     //UNUSED_VARIABLE(xTaskCreate(ble_task_fuction, "BLE", configMINIMAL_STACK_SIZE+1600, NULL, 0, &ble_task_handle));
     
 
-
+    printf("Flash Configuration: \r\n");
     fds_record_desc_t   record_desc_2;
     fds_find_token_t    ftok_2;
     memset(&ftok_2, 0x00, sizeof(fds_find_token_t));
@@ -1996,9 +2099,11 @@ int main(void)
         NODE_UUID = id;
         m_adv_uuids[1].uuid = NODE_UUID; 
         advertising_init(); //Set UUID
-
+        printf("  Node ID: %d \r\n", id);
 
         uint32_t state = getFlashID(2); //Get State
+
+        printf("  Boot Mode: %d \r\n", state);
 
         if( (state == 1) || (state == 2) ) //Start BLE
         {
@@ -2029,7 +2134,7 @@ int main(void)
       uint32_t rate = getFlashID(3);
 
       initiator_freq = rate;
-      printf("Flash get rate: %d\r\n", rate);
+      printf("  UWB Polling Rate: %d\r\n", rate);
     }
 
     /* Fetch channel record from flash */
@@ -2042,7 +2147,37 @@ int main(void)
 
       config.chan = channel;
       dwt_configure(&config);
-      printf("Flash get channel: %d\r\n", channel);
+      printf("  UWB Channel: %d \r\n", channel);
+    }
+    /* Fetch timeout record from flash */
+    fds_record_desc_t   record_desc_5;
+    fds_find_token_t    ftok_5;
+    memset(&ftok_5, 0x00, sizeof(fds_find_token_t));
+    if (fds_record_find(FILE_ID, RECORD_KEY_5, &record_desc_5, &ftok_5) == FDS_SUCCESS) //If there is a stored channel
+    {
+      uint32_t timeout = getFlashID(5);
+      //printf("fetch flash timeout: %d \r\n", timeout);
+
+      time_out = timeout;
+      printf("  BLE Timeout: %d \r\n", time_out);
+    }
+    /* Fetch TX power record from flash */
+    fds_record_desc_t   record_desc_6;
+    fds_find_token_t    ftok_6;
+    memset(&ftok_6, 0x00, sizeof(fds_find_token_t));
+    if (fds_record_find(FILE_ID, RECORD_KEY_6, &record_desc_6, &ftok_6) == FDS_SUCCESS) //If there is a stored channel
+    {
+      uint32_t tx_power = getFlashID(6);
+      //printf("fetch flash timeout: %d \r\n", timeout);
+      if (tx_power == 1) {
+        config_tx.power = TX_POWER_MAX;
+        printf("  TX Power: Max \r\n");
+      }
+      if (tx_power == 0) {
+        config_tx.power = TX_POWER_MAN_DEFAULT;
+        printf("  TX Power: Default \r\n");
+      }
+      dwt_configuretxrf(&config_tx);
     }
 
 

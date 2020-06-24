@@ -9,6 +9,8 @@
 #define RECORD_KEY_2    0x2222  /* A key for the second record. (BOOTMODE) */
 #define RECORD_KEY_3    0x3333  /* A key for the third record. (RATE)*/
 #define RECORD_KEY_4    0x4444  /* A key for the forth record. (CHANNEL)*/
+#define RECORD_KEY_5    0x5555  /* A key for the fifth record. (BLE Timeout)*/
+#define RECORD_KEY_6    0x6666  /* A key for the sixth record. (TX Power)*/
 
 void fds_evt_handler(fds_evt_t const * p_fds_evt);
 void writeFlashID(uint32_t id, int record);
