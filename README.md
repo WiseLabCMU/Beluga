@@ -30,7 +30,7 @@
 ###  After downloading and opening Arduino, follow these instructions
   
     NOTE: This must be done every time the decawave module is restarted/plugged in, flash memory not supported yet
-    Run the Following Commands in this Order, other orders may lead to undefined behaiviour
+    Run the Following Commands in this Order, other orders may lead to undefined behaviour
   
       1.) AT+ID <number>  (for now use id greater than 0)
       2.) AT+STARTBLE
@@ -47,8 +47,47 @@
     <mode> = 0  -  Do nothing on startup, by default BLE and UWB off.
     <mode> = 1  -  Start BLE broadcasting/recieving on startup
     <mode> = 2  -  Start BOTH BLE and UWB on startup, full functionality.
+
+    Defualt setting: 0
     
     NOTE: For BOOTMODEs 1 and 2, The AT+ID command must have been previously run, the last set ID will be used on startup. 
+
+#### The AT+RATE command
+    
+    AT+RATE <freq>  Determines the frequency that the node send poll message
+    <freq> = 0-100 
+    
+    Defualt setting: 100
+    
+    NOTE: When frequency is 0, the node is in listening mode. (It only receives message passively)
+
+#### The AT+CHANNEL command
+    
+    AT+CHANNEL <channel>  Determines the UWB signal's channel
+    Available <channel> options: 1, 2, 3, 4, 5, 7
+    
+    Defualt setting: 5
+
+    NOTE: The corresponding centre frequency and bandwidth of each channel please reference DW1000 User Manual
+
+#### The AT+TXPOWER command
+    
+    AT+TXPOWER <mode>  Determines the UWB transmitter power setting
+    <mode> = 0  -  Default power supply
+    <mode> = 1  -  Maximum power supply
+    
+    Defualt setting: 0
+
+    NOTE: Increasing transmitter power supply can help UWB to maximum range, but the maximum power supply exceed restricted transmit power level regulation.
+
+#### The AT+RESET command
+    
+    AT+RESET   Clear flash memory configuration
+    This command will reset all user configuration including node's ID, BOOTMODE, RATE, CHANNEL, TXPOWER
+    
+    NOTE: The node should be re-configure follow the above instructions to avoid undefinded behavior.
+    
+
 #### LED Layout: 
 
    ![LED Layout](https://github.com/WiseLabCMU/decawave-ble/blob/master/images/decawaveLED.png?raw=true)
