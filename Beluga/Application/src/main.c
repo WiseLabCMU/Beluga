@@ -283,6 +283,7 @@ typedef struct node{
     int8_t RSSI;
     int time_stamp;
     float range;
+    int update_flag;
 } node;
 
 
@@ -297,6 +298,9 @@ static int uwb_started;
 uint32_t time_keeper;
 static int node_added;
 
+
+int debug_print;
+int streaming_mode;
 
 //-----------------dw1000----------------------------
 /*DW1000 config function*/
@@ -334,7 +338,7 @@ dwt_txconfig_t config_tx = {
 
 
 static int initiator_freq = 100;
-static int time_out = 10000;
+static int time_out = 5000;
 
 
 volatile int tx_int_flag = 0 ; // Transmit success interrupt flag
@@ -1044,11 +1048,13 @@ static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
         case BLE_ADV_EVT_IDLE:
         {
             ret_code_t err_code = ble_advertising_start(&m_advertising, BLE_ADV_MODE_FAST);
+            //printf("ADV IDLE \r\n");
             APP_ERROR_CHECK(err_code);
         } break;
 
         default:
             // No implementation needed.
+            //printf("ADV Default \r\n");
             break;
     }
 }
@@ -1073,6 +1079,7 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
 {
     uint16_t conn_handle = p_ble_evt->evt.gap_evt.conn_handle;
     uint16_t role        = ble_conn_state_role(conn_handle);
+    //printf("%d \r\b\n", role);
 
     // Based on the role this device plays in the connection, dispatch to the right handler.
     if (role == BLE_GAP_ROLE_PERIPH || ble_evt_is_advertising_timeout(p_ble_evt))
@@ -1272,9 +1279,7 @@ static void advertising_init(void)
     init.advdata.uuids_complete.p_uuids  = m_adv_uuids;
 
     // Configuration of manufacturer specific data
-    
 
-    
     /*
     adv_manuf_data_array.p_data = adv_manuf_data_data;
     adv_manuf_data_array.size = 3;
@@ -1282,9 +1287,7 @@ static void advertising_init(void)
     adv_manuf_data.company_identifier = 0xFF00;
     adv_manuf_data.data = adv_manuf_data_array;
     
-    init.advdata.p_manuf_specific_data = &adv_manuf_data;
-    
-    
+    init.advdata.p_manuf_specific_data = &adv_manuf_data;  
     */
   
     init.config.ble_adv_fast_enabled  = true;
@@ -1469,64 +1472,41 @@ void list_task_function()
       else mode = "NONE";
       char msg [50];
       */
-      //sprintf(msg, "My ID: %d MODE: %s ", NODE_UUID, mode);
-      
-      //strcpy(new_message.data, "# ID, RANGE, RSSI, TIMESTAMP   ");
-      //strcat(new_message.data, msg);
-      //strcat(new_message.data, "#####\r\n");
-      
-      printf("# ID, RANGE, RSSI, TIMESTAMP\r\n");
-
-      //xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
-      //printf("%s", new_message.data);
-      for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
-      {
-
-        if(seen_list[j].UUID != 0) printf("%d, %f, %d, %d \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp); 
-        //if(seen_list[j].UUID != 0) printf("%f \r\n", seen_list[j].range); 
-        //printf("%d, %f, %d, %d \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp); 
-        /*
-        char list_item[50] ;
-
-        char UUID_str[4] ;
-        char range_str[8];
-        char RSSI_str[4] ;
-        char time_str[8];
-        char idx_str[4];
-
-        snprintf(UUID_str, 4, "%d", seen_list[j].UUID);
-        snprintf(range_str, 8, "%f", seen_list[j].range);
-        snprintf(RSSI_str, 4, "%d", seen_list[j].RSSI);
-        snprintf(time_str, 8, "%d", seen_list[j].time_stamp);
-        snprintf(idx_str, 4, "%d", j);
-
-        strcpy(list_item, "");
-
-        strcat(list_item, idx_str);
-        strcat(list_item, ") ID: ");
-        strcat(list_item, UUID_str);
-        strcat(list_item, " range: ");
-        strcat(list_item, range_str);
-        strcat(list_item, " RSSI: ");
-        strcat(list_item, RSSI_str);
-        strcat(list_item, " Time: ");
-        strcat(list_item, time_str);
-        strcat(list_item, "\r\n");
-        strcpy(new_message.data, list_item);
-    
+      if (streaming_mode == 0) {
+        printf("# ID, RANGE, RSSI, TIMESTAMP\r\n");
 
         //xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
-        printf("%s", list_item);
-        */
-
+        //printf("%s", new_message.data);
+        for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
+        {
+          if(seen_list[j].UUID != 0) printf("%d, %f, %d, %d \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp); 
+          //if(seen_list[j].UUID != 0) printf("%f \r\n", seen_list[j].range); 
+          //printf("%d, %f, %d, %d \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp); 
+        }
       }
 
-      //strcpy(new_message.data, "############################\r\n");
+      if (streaming_mode == 1) {
+        int count_flag = 0;
+        // Check whether alive nodes have update flag or not
+        for(int i = 0; i < MAX_ANCHOR_COUNT; i++)
+        {
+          if(seen_list[i].UUID != 0 && seen_list[i].update_flag != 0) {
+            count_flag++;
+          }      
+        }
+        // If one of node has update flag, print it
+        if (count_flag != 0) {
+          printf("# ID, RANGE, RSSI, TIMESTAMP\r\n");
 
-      //xQueueSendFromISR(uart_queue,(void *)&new_message, xHigherPriorityTaskWoken);
-      //printf("%s", new_message.data);
-      //printf("ranging task state: %d \r\n", eTaskGetState(ranging_task_handle));
-      //printf("response task state: %d \r\n", eTaskGetState(ss_responder_task_handle));
+          for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
+          {
+            if(seen_list[j].UUID != 0 && seen_list[j].update_flag == 1) printf("%d, %f, %d, %d \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp); 
+            // Reset update flag of the node
+            seen_list[j].update_flag = 0;
+          }
+        }
+      }
+
       if (debug_print == 1) printf("list task out \r\n");
       xSemaphoreGive(print_list_sem);
    }
@@ -1642,9 +1622,10 @@ void uart_task_function(void * pvParameter){
             char *uuid_char = strtok(buf, " ");
             uuid_char = strtok(NULL, " ");
             uint32_t rate = atoi(uuid_char);
-          
+            
             writeFlashID(rate, 3);
             initiator_freq = rate;
+            printf("freq: %d \r\n", initiator_freq);
             
             //printf("rate: %d \r\n", rate);
             printf("OK \r\n");
@@ -1777,6 +1758,24 @@ void uart_task_function(void * pvParameter){
             }
         }
 
+        else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+STREAMMODE", (size_t)13)){
+            
+            char buf[100];
+            strcpy(buf, incoming_message.data);
+            char *uuid_char = strtok(buf, " ");
+            uuid_char = strtok(NULL, " ");
+            uint32_t stream_mode = atoi(uuid_char);
+            
+            if (stream_mode < 0 || stream_mode > 1) {
+              printf("Stream mode parameter input error \r\n");
+            }
+            else {
+              writeFlashID(stream_mode, 7);
+              streaming_mode = stream_mode;
+              printf("OK \r\n");
+            }
+        }
+
         else if(0 == strncmp((const char *)incoming_message.data, (const char *)"AT+LIST", (size_t)7)){
             //print_seen_list();
         }
@@ -1864,7 +1863,10 @@ void ranging_task_function(void *pvParameter)
             //if( (numThru != 0) ) printf("%f \r\n", (range1 + range2 + range3)/numThru);
             float range = (range1 + range2 + range3)/numThru;
             //printf("range %d: %f \r\n",i, range);
-            if( (numThru != 0) && (range >= -5) && (range <= 100) ) seen_list[i].range = range;
+            if( (numThru != 0) && (range >= -5) && (range <= 100) ) {
+              seen_list[i].update_flag = 1;
+              seen_list[i].range = range;
+            }
             //vTaskDelay(250);
            }
             i++;
@@ -1876,7 +1878,10 @@ void ranging_task_function(void *pvParameter)
         //vTaskResume(ss_responder_task_handle);
         xSemaphoreGive(sus_init);
         xSemaphoreGive(sus_resp); //Resume Responder Task
-       }
+      }
+      else {
+        vTaskDelay(1000);
+      }
        if (debug_print == 1) printf("ranging task out \r\n");
     }
 
@@ -1908,6 +1913,7 @@ void monitor_task_function()
             seen_list[x].range = 0;
             seen_list[x].time_stamp = 0;
             seen_list[x].RSSI = 0;
+            seen_list[x].update_flag = 0;
           }
         }
       }
@@ -1946,7 +1952,6 @@ void monitor_task_function()
 }
 
 
-int debug_print;
 
 /**
  * @brief program main entrance.
@@ -1955,6 +1960,7 @@ int main(void)
 {
 
     debug_print = 0;
+    streaming_mode = 0;
     //role = ADVERTISER;
     //mode = RESPONDER;
     for(int i = 0; i < MAX_ANCHOR_COUNT; i++)
@@ -1963,6 +1969,7 @@ int main(void)
       seen_list[i].RSSI = 0;
       seen_list[i].time_stamp = 0;
       seen_list[i].range = 0;
+      seen_list[i].update_flag = 0;
     }
 
 
@@ -2178,6 +2185,17 @@ int main(void)
         printf("  TX Power: Default \r\n");
       }
       dwt_configuretxrf(&config_tx);
+    }
+    /* Fetch streaming mode from flash */
+    fds_record_desc_t   record_desc_7;
+    fds_find_token_t    ftok_7;
+    memset(&ftok_7, 0x00, sizeof(fds_find_token_t));
+    if (fds_record_find(FILE_ID, RECORD_KEY_7, &record_desc_7, &ftok_7) == FDS_SUCCESS) //If there is a stored channel
+    {
+      uint32_t stream_mode = getFlashID(7);
+
+      streaming_mode = stream_mode;
+      printf("  Stream Mode: %d \r\n", stream_mode);
     }
 
 

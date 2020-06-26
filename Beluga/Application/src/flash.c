@@ -43,6 +43,7 @@ void writeFlashID(uint32_t id, int record) {
   if(record == 4) record_key = RECORD_KEY_4;
   if(record == 5) record_key = RECORD_KEY_5;
   if(record == 6) record_key = RECORD_KEY_6;
+  if(record == 7) record_key = RECORD_KEY_7;
 
   static char str[(sizeof("1") + 3) / 4];
   sprintf(str, "%d", id);
@@ -121,6 +122,7 @@ uint32_t getFlashID(uint32_t record_key) {
   else if (record_key == 4) rec = RECORD_KEY_4;
   else if (record_key == 5) rec = RECORD_KEY_5;
   else if (record_key == 6) rec = RECORD_KEY_6;
+  else if (record_key == 7) rec = RECORD_KEY_7;
 
   uint32_t ret_val;
   fds_flash_record_t  flash_record;

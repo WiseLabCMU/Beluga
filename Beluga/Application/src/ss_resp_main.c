@@ -162,15 +162,15 @@ int ss_resp_run(void)
     else if(status_reg & SYS_STATUS_RXPTO )
     temp =2;
     #endif
-  if (debug_print) printf("RXFCG:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXFCG);
-  if (debug_print) printf("RXRFTO:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXRFTO);
-  if (debug_print) printf("RXPTO:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXPTO);
-  if (debug_print) printf("RXPHE:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXPHE);
-  if (debug_print) printf("RXFCE:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXFCE);
-  if (debug_print) printf("RXRFSL:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXRFSL);
-  if (debug_print) printf("RXSFDTO:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXSFDTO);
-  if (debug_print) printf("AFFREJ:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_AFFREJ);
-  if (debug_print) printf("LDEERR:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_LDEERR);
+//  if (debug_print) printf("RXFCG:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXFCG);
+//  if (debug_print) printf("RXRFTO:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXRFTO);
+//  if (debug_print) printf("RXPTO:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXPTO);
+//  if (debug_print) printf("RXPHE:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXPHE);
+//  if (debug_print) printf("RXFCE:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXFCE);
+//  if (debug_print) printf("RXRFSL:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXRFSL);
+//  if (debug_print) printf("RXSFDTO:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXSFDTO);
+//  if (debug_print) printf("AFFREJ:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_AFFREJ);
+//  if (debug_print) printf("LDEERR:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_LDEERR);
 
   if (status_reg & SYS_STATUS_RXFCG)
   {
