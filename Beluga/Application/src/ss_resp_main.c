@@ -35,14 +35,14 @@
 /* Frames used in the ranging process. See NOTE 1,2 below. */
 
 /* Frames used in the ranging process. See NOTE 2,3 below. */
-static uint8 rx_poll_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0xE0, 0, 0};
-static uint8 tx_resp_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0xE1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-static uint8 rx_final_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0xE2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static uint8 rx_poll_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0x61, 0, 0};
+static uint8 tx_resp_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0x50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static uint8 rx_final_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0x69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 static uint8 tx_report_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0xE3, 0, 0, 0, 0, 0, 0};
 
 /* Length of the common part of the message (up to and including the function code, see NOTE 1 below). */
 /* Length of the common part of the message (up to and including the function code, see NOTE 3 below). */
-#define ALL_MSG_COMMON_LEN 8
+#define ALL_MSG_COMMON_LEN 10
 
 /* Index to access some of the fields in the frames involved in the process. */
 #define ALL_MSG_SN_IDX 2
@@ -116,6 +116,7 @@ static double distance;
 /* Receive final timeout. See NOTE 5 below. */
 #define FINAL_RX_TIMEOUT_UUS 4500
 
+uint32_t time_keeper;
 
 /*! ------------------------------------------------------------------------------------------------------------------
 * @fn main()
@@ -142,6 +143,7 @@ int ss_resp_run(void)
   /* Poll for reception of a frame or error/timeout. See NOTE 5 below. */
   while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
   {
+    nrf_gpio_pin_set(27);
     int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
     if(suspend == 0) 
     {
@@ -150,9 +152,11 @@ int ss_resp_run(void)
     
       /* Reset RX to properly reinitialise LDE operation. */
       dwt_rxreset();
+      nrf_gpio_pin_clear(27);
       return 1;
     }
   }
+  nrf_gpio_pin_clear(27);
 
     #if 0	  // Include to determine the type of timeout if required.
     int temp = 0;
@@ -204,18 +208,10 @@ int ss_resp_run(void)
       resp_tx_time = (poll_rx_ts + (1500 * UUS_TO_DWT_TIME)) >> 8;
       dwt_setdelayedtrxtime(resp_tx_time);
 
-      /* Response TX timestamp is the transmission time we programmed plus the antenna delay. */
-      //resp_tx_ts = (((uint64)(resp_tx_time & 0xFFFFFFFEUL)) << 8) + TX_ANT_DLY;
-
-
 //--  /* Set expected delay and timeout for final message reception. See NOTE 4 and 5 below. */
   //  dwt_setrxaftertxdelay(RESP_TX_TO_FINAL_RX_DLY_UUS);
   //  dwt_setrxtimeout(FINAL_RX_TIMEOUT_UUS);
 //--
-
-      /* Write all timestamps in the final message. See NOTE 8 below. */
-      //resp_msg_set_ts(&tx_resp_msg[RESP_MSG_POLL_RX_TS_IDX], poll_rx_ts);
-      //resp_msg_set_ts(&tx_resp_msg[RESP_MSG_RESP_TX_TS_IDX], resp_tx_ts);
 
       /* Write and send the response message. See NOTE 9 below. */
       tx_resp_msg[ALL_MSG_SN_IDX] = NODE_UUID;
@@ -224,6 +220,7 @@ int ss_resp_run(void)
 
       /* Send Response message */
       ret = dwt_starttx(DWT_START_TX_DELAYED | DWT_RESPONSE_EXPECTED);
+      nrf_gpio_pin_set(12);
 
       /* If dwt_starttx() returns an error, abandon this ranging exchange and proceed to the next one. */
       if (ret == DWT_SUCCESS)
@@ -233,14 +230,16 @@ int ss_resp_run(void)
         /* Poll DW1000 until TX frame sent event set. See NOTE 5 below. */
         while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
         {
-          int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
-          if(suspend == 0) 
-          {
-            //if (debug_print) printf("Left while waiting\r\n");
-            dwt_forcetrxoff();
-            return 1;
-           }
+//          int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
+//          if(suspend == 0) 
+//          {
+//            //if (debug_print) printf("Left while waiting\r\n");
+//            nrf_gpio_pin_clear(12);
+//            dwt_forcetrxoff();
+//            return 1;
+//           }
         }
+        nrf_gpio_pin_clear(12);
 
         /* Clear TXFRS event. */
         dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
@@ -249,6 +248,7 @@ int ss_resp_run(void)
       else
       {
         if (debug_print) printf("Second message fail \r\n");
+        nrf_gpio_pin_clear(12);
 
         /* If we end up in here then we have not succeded in transmitting the packet we sent up.
         POLL_RX_TO_RESP_TX_DLY_UUS is a critical value for porting to different processors. 
@@ -264,10 +264,11 @@ int ss_resp_run(void)
         return 1;
       }
 
-
+      
       /* Poll for reception of a frame or error/timeout. See NOTE 5 below. */
       while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
       {
+        nrf_gpio_pin_set(27);
         int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
         if(suspend == 0) 
         {
@@ -276,9 +277,11 @@ int ss_resp_run(void)
     
           /* Reset RX to properly reinitialise LDE operation. */
           dwt_rxreset();
+          nrf_gpio_pin_clear(27);
           return 1;
         }
       };
+      nrf_gpio_pin_clear(27);
 
         #if 0	  // Include to determine the type of timeout if required.
         int temp = 0;
@@ -357,6 +360,7 @@ int ss_resp_run(void)
           dwt_writetxdata(sizeof(tx_report_msg), tx_report_msg, 0); /* Zero offset in TX buffer. See Note 5 below.*/
           dwt_writetxfctrl(sizeof(tx_report_msg), 0, 1); /* Zero offset in TX buffer, ranging. */
           int ret_report = dwt_starttx(DWT_START_TX_IMMEDIATE);
+          nrf_gpio_pin_set(12);
 
           if (ret_report == DWT_SUCCESS)
           {
@@ -364,15 +368,16 @@ int ss_resp_run(void)
             /* Poll DW1000 until TX frame sent event set. See NOTE 5 below. */
             while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
             {
-              int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
-              if(suspend == 0) 
-              {
-                //if (debug_print) printf("Left while waiting\r\n");
-                dwt_forcetrxoff();
-                return 1;
-               }
+//              int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
+//              if(suspend == 0) 
+//              {
+//                //if (debug_print) printf("Left while waiting\r\n");
+//                dwt_forcetrxoff();
+//                nrf_gpio_pin_clear(12);
+//                return 1;
+//               }
             };
-
+            nrf_gpio_pin_clear(12);
             /* Clear TXFRS event. */
             dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
           }
@@ -388,7 +393,7 @@ int ss_resp_run(void)
             calculation. The specification of the time of respnse must allow the processor enough time to do its 
             calculations and put the packet in the Tx buffer. So more time is required for a slower system(processor).
             */
-
+            nrf_gpio_pin_clear(12);
             /* Reset RX to properly reinitialise LDE operation. */
             dwt_rxreset();
             return 1;
@@ -526,15 +531,17 @@ void ss_responder_task_function (void * pvParameter)
   {
   if (debug_print == 1) printf("resp task in \r\n");
   
-    //printf("response task start! \r\n");
-    int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); //Check if responding is suspended
+    
+    int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); //Check if responding is suspended, return 0 means suspended
     if(suspend_start != 0) 
     {
-    //xSemaphoreTake(sus_resp, portMAX_DELAY);
-      ss_resp_run();
+      //printf("in resp time keeper: %d \r\n", time_keeper);
+        ss_resp_run();
+      //printf("out resp time keeper: %d \r\n", time_keeper);
     }
+
     /* Delay a task for a given number of ticks */
-    vTaskDelay(10);
+    //vTaskDelay(20);
     
   if (debug_print == 1) printf("resp task out \r\n");
     

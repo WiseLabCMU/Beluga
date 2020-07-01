@@ -1,18 +1,17 @@
 Output/beluga\ Debug/Obj/main.o: \
  /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/main.c \
+ ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/ble_gap.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/ble_ranges.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/nrf_svc.h \
+ ../nRF52-sdk/components/libraries/timer/app_timer.h \
+ ../config/sdk_config.h \
+ ../nRF52-sdk/components/libraries/util/app_error.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
- ../nRF52-sdk/components/libraries/util/nordic_common.h \
- ../nRF52-sdk/components/softdevice/common/nrf_sdh.h \
- ../config/sdk_config.h \
- ../nRF52-sdk/components/libraries/util/sdk_errors.h \
- ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
- ../nRF52-sdk/components/libraries/experimental_section_vars/nrf_section_iter.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
- ../nRF52-sdk/components/libraries/experimental_section_vars/nrf_section.h \
- ../nRF52-sdk/components/libraries/util/nrf_assert.h \
+ /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
  ../nRF52-sdk/components/device/nrf.h \
  ../nRF52-sdk/components/device/nrf52.h \
  ../nRF52-sdk/components/toolchain/cmsis/include/core_cm4.h \
@@ -25,83 +24,24 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/components/device/nrf51_to_nrf52.h \
  ../nRF52-sdk/components/device/nrf52_name_change.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
- ../nRF52-sdk/components/libraries/util/app_error.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
  ../nRF52-sdk/components/libraries/util/app_error_weak.h \
  ../nRF52-sdk/components/libraries/util/app_util.h \
+ /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
- ../nRF52-sdk/components/softdevice/common/nrf_sdh_soc.h \
+ ../nRF52-sdk/components/libraries/util/nordic_common.h \
+ ../nRF52-sdk/external/freertos/source/include/FreeRTOS.h \
+ ../nRF52-sdk/external/freertos/config/FreeRTOSConfig.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_soc.h \
- ../nRF52-sdk/components/softdevice/s132/headers/nrf_svc.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error_soc.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
- ../nRF52-sdk/components/softdevice/common/nrf_sdh_ble.h \
- ../nRF52-sdk/components/softdevice/s132/headers/ble.h \
- ../nRF52-sdk/components/softdevice/s132/headers/ble_ranges.h \
- ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
- ../nRF52-sdk/components/softdevice/s132/headers/ble_gap.h \
- ../nRF52-sdk/components/softdevice/s132/headers/ble_l2cap.h \
- ../nRF52-sdk/components/softdevice/s132/headers/ble_err.h \
- ../nRF52-sdk/components/softdevice/s132/headers/ble_gatt.h \
- ../nRF52-sdk/components/softdevice/s132/headers/ble_gattc.h \
- ../nRF52-sdk/components/softdevice/s132/headers/ble_gatts.h \
- ../nRF52-sdk/components/ble/peer_manager/peer_manager.h \
- ../nRF52-sdk/components/libraries/util/sdk_common.h \
- ../nRF52-sdk/components/libraries/util/sdk_os.h \
- ../nRF52-sdk/components/libraries/util/app_util.h \
- ../nRF52-sdk/components/libraries/util/sdk_macros.h \
- ../nRF52-sdk/components/softdevice/s132/headers/ble_gap.h \
- ../nRF52-sdk/components/ble/peer_manager/peer_manager_types.h \
- ../nRF52-sdk/components/softdevice/s132/headers/ble_hci.h \
- ../nRF52-sdk/components/ble/common/ble_gatt_db.h \
- ../nRF52-sdk/components/softdevice/s132/headers/ble_gattc.h \
  ../nRF52-sdk/components/libraries/util/app_util_platform.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_nvic.h \
  ../nRF52-sdk/components/libraries/util/nrf_assert.h \
- ../nRF52-sdk/components/ble/peer_manager/peer_database.h \
- ../nRF52-sdk/components/ble/peer_manager/peer_manager_internal.h \
- ../nRF52-sdk/components/libraries/timer/app_timer.h \
  ../nRF52-sdk/components/libraries/util/app_error.h \
- ../nRF52-sdk/components/libraries/bsp/bsp_btn_ble.h \
- ../nRF52-sdk/components/libraries/bsp/bsp.h \
- ../nRF52-sdk/components/boards/boards.h \
- ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpio.h \
- ../nRF52-sdk/components/drivers_nrf/hal/nrf_peripherals.h \
- ../nRF52-sdk/components/device/nrf52832_peripherals.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
- ../nRF52-sdk/components/boards/dw1001_dev.h \
- ../nRF52-sdk/components/libraries/button/app_button.h \
- ../nRF52-sdk/components/ble/common/ble_advdata.h \
- ../nRF52-sdk/components/ble/ble_advertising/ble_advertising.h \
- ../nRF52-sdk/components/ble/common/ble_conn_params.h \
- ../nRF52-sdk/components/ble/common/ble_srv_common.h \
- ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
- ../nRF52-sdk/components/softdevice/s132/headers/ble_gatt.h \
- ../nRF52-sdk/components/ble/ble_db_discovery/ble_db_discovery.h \
- ../nRF52-sdk/components/ble/ble_services/ble_hrs/ble_hrs.h \
- ../nRF52-sdk/components/ble/common/ble_srv_common.h \
- ../nRF52-sdk/components/ble/nrf_ble_gatt/nrf_ble_gatt.h \
- ../nRF52-sdk/components/ble/ble_services/ble_rscs/ble_rscs.h \
- ../nRF52-sdk/components/ble/ble_services/ble_hrs_c/ble_hrs_c.h \
- ../nRF52-sdk/components/ble/ble_services/ble_rscs_c/ble_rscs_c.h \
- ../nRF52-sdk/components/ble/ble_services/ble_nus/ble_nus.h \
- ../nRF52-sdk/components/ble/common/ble_conn_state.h \
- ../nRF52-sdk/components/libraries/util/sdk_mapped_flags.h \
- ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage.h \
- ../nRF52-sdk/components/libraries/experimental_section_vars/nrf_section.h \
- ../nRF52-sdk/components/libraries/fds/fds.h \
- ../nRF52-sdk/components/libraries/experimental_log/nrf_log.h \
- ../nRF52-sdk/components/libraries/experimental_log/src/nrf_log_internal.h \
- ../nRF52-sdk/components/libraries/experimental_log/nrf_log_ctrl.h \
- ../nRF52-sdk/components/libraries/experimental_log/src/nrf_log_ctrl_internal.h \
- ../nRF52-sdk/components/libraries/experimental_log/nrf_log_backend_interface.h \
- ../nRF52-sdk/components/libraries/experimental_memobj/nrf_memobj.h \
- ../nRF52-sdk/components/libraries/balloc/nrf_balloc.h \
- ../nRF52-sdk/components/libraries/experimental_log/nrf_log_default_backends.h \
- ../nRF52-sdk/external/freertos/source/include/FreeRTOS.h \
- ../nRF52-sdk/external/freertos/config/FreeRTOSConfig.h \
+ ../nRF52-sdk/components/libraries/util/nrf_assert.h \
  ../nRF52-sdk/external/freertos/source/include/projdefs.h \
  ../nRF52-sdk/external/freertos/source/include/portable.h \
  ../nRF52-sdk/external/freertos/source/include/deprecated_definitions.h \
@@ -113,9 +53,22 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/external/freertos/source/include/timers.h \
  ../nRF52-sdk/external/freertos/source/include/task.h \
  ../nRF52-sdk/components/libraries/bsp/bsp.h \
+ ../nRF52-sdk/components/boards/boards.h \
+ ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpio.h \
+ ../nRF52-sdk/components/drivers_nrf/hal/nrf_peripherals.h \
+ ../nRF52-sdk/components/device/nrf52832_peripherals.h \
+ /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
+ ../nRF52-sdk/components/boards/dw1001_dev.h \
+ ../nRF52-sdk/components/libraries/button/app_button.h \
  ../nRF52-sdk/components/drivers_nrf/clock/nrf_drv_clock.h \
+ ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_clock.h \
  ../nRF52-sdk/components/drivers_nrf/common/nrf_drv_common.h \
+ ../nRF52-sdk/components/libraries/util/sdk_common.h \
+ /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
+ ../nRF52-sdk/components/libraries/util/sdk_os.h \
+ ../nRF52-sdk/components/libraries/util/app_util.h \
+ ../nRF52-sdk/components/libraries/util/sdk_macros.h \
  ../nRF52-sdk/components/drivers_nrf/spi_master/nrf_drv_spi.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_peripherals.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_spi.h \
@@ -124,6 +77,9 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/components/drivers_nrf/delay/nrf_delay.h \
  ../nRF52-sdk/components/libraries/uart/app_uart.h \
  ../deca_driver/port/port_platform.h ../deca_driver/deca_types.h \
+ ../nRF52-sdk/components/libraries/experimental_log/nrf_log.h \
+ ../nRF52-sdk/components/libraries/experimental_section_vars/nrf_section.h \
+ ../nRF52-sdk/components/libraries/experimental_log/src/nrf_log_internal.h \
  ../deca_driver/deca_device_api.h ../deca_driver/deca_param_types.h \
  ../deca_driver/deca_types.h ../deca_driver/deca_regs.h \
  ../deca_driver/deca_version.h \
@@ -134,6 +90,8 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/external/freertos/source/include/queue.h \
  ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.h \
  ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage.h \
- ../nRF52-sdk/components/drivers_nrf/hal/nrf_uarte.h \
  /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/flash.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/uart.h
+ ../nRF52-sdk/components/libraries/fds/fds.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/uart.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ble_app.h \
+ ../nRF52-sdk/components/drivers_nrf/hal/nrf_uarte.h

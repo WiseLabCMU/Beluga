@@ -19,6 +19,7 @@
 *
 * @author Decawave
 */
+#include "nrf_gpio.h"
 #include <stdio.h>
 #include <string.h>
 #include "FreeRTOS.h"
@@ -36,9 +37,9 @@
 #define APP_NAME "SS TWR INIT v1.3"
 
 /* Frames used in the ranging process. See NOTE 1,2 below. */                //  After E0,  
-static uint8 tx_poll_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0xE0, 0, 0};
-static uint8 rx_resp_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0xE1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-static uint8 tx_final_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0xE2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static uint8 tx_poll_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0x61, 0, 0};
+static uint8 rx_resp_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0x50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static uint8 tx_final_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0x69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 static uint8 rx_report_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0xE3, 0, 0, 0, 0, 0, 0};
 
 /* Length of the common part of the message (up to and including the function code, see NOTE 1 below). */
@@ -101,9 +102,14 @@ static void tx_timer_function(void* p_context)
 *
 * @return none
 */
-double ss_init_run(int id)
+double ss_init_run(uint8 id)
 {
-
+  static int total = 0;
+  static int success = 0;
+  printf("total: %d \r\n", total);
+  printf("success: %d \r\n", success);
+  //nrf_gpio_pin_set(12);
+  //nrf_gpio_pin_clear(12);
 //--
  // dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
   //dwt_setrxtimeout(RESP_RX_TIMEOUT_UUS);
@@ -119,21 +125,36 @@ double ss_init_run(int id)
 
   /* ----- Send Poll message ----- */
   int check_poll_msg = dwt_starttx(DWT_START_TX_IMMEDIATE | DWT_RESPONSE_EXPECTED);
+  nrf_gpio_pin_set(12);
   
   if (check_poll_msg == DWT_SUCCESS)
   {
     if (debug_print) printf("Poll msg send success! \r\n");
+
+    /* Poll DW1000 until TX frame sent event set. See NOTE 5 below. */
+    while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
+    {};
+    nrf_gpio_pin_clear(12);
+
+    /* Clear TXFRS event. */
+    dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
   }
   else
   {
     if (debug_print) printf("Poll msg send fail! \r\n");
+    nrf_gpio_pin_clear(12);
     //dwt_rxreset();
     return -1;
   }
+
+  total++;
   
   /*  Poll for reception of 1. a frame 2. error 3. timeout. See NOTE 4 below. */
   while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
-  {};
+  {
+    nrf_gpio_pin_set(27);
+  };
+  nrf_gpio_pin_clear(27);
 
   /* Check the status register is a frame or not */
   if (status_reg & SYS_STATUS_RXFCG)
@@ -151,7 +172,7 @@ double ss_init_run(int id)
       dwt_readrxdata(rx_buffer, frame_len, 0);
     }
 
-    /* Check that the frame is the expected response from the companion frame and extract ID from sender' message */
+    /* Check that the frame is the expected response from the companion frame and extract ID from sender's message */
     int got = rx_buffer[ALL_MSG_SN_IDX];
     rx_buffer[ALL_MSG_SN_IDX] = 0;
     if ((got == id) && memcmp(rx_buffer, rx_resp_msg, ALL_MSG_COMMON_LEN) == 0)
@@ -175,7 +196,7 @@ double ss_init_run(int id)
 
 //--
    //   dwt_setrxaftertxdelay(RESP_TX_TO_FINAL_RX_DLY_UUS);
-   //   dwt_setrxtimeout(FINAL_RX_TIMEOUT_UUS);
+   //   dwt_setrxtimeout(1500);
 //--
       
       /* ------ Send Final (third) message ------ */
@@ -191,7 +212,8 @@ double ss_init_run(int id)
       dwt_writetxfctrl(sizeof(tx_final_msg), 0, 1); /* Zero offset in TX buffer, ranging. */
       
       /* Send Final message */
-      int ret = dwt_starttx(DWT_START_TX_DELAYED | DWT_RESPONSE_EXPECTED); 
+      int ret = dwt_starttx(DWT_START_TX_DELAYED | DWT_RESPONSE_EXPECTED);
+      nrf_gpio_pin_set(12);
       
       /* If dwt_starttx() returns an error, abandon this ranging exchange and proceed to the next one. */
       if (ret == DWT_SUCCESS)
@@ -201,6 +223,7 @@ double ss_init_run(int id)
         /* Poll DW1000 until TX frame sent event set. See NOTE 5 below. */
         while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
         {};
+        nrf_gpio_pin_clear(12);
 
         /* Clear TXFRS event. */
         dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
@@ -209,7 +232,7 @@ double ss_init_run(int id)
       else
       {
         if (debug_print) printf("Final msg error! \r\n");
-
+        nrf_gpio_pin_clear(12);
         /* Reset RX to properly reinitialise LDE operation. */
         //dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
         dwt_rxreset();
@@ -221,7 +244,10 @@ double ss_init_run(int id)
       
       /* Poll for reception of a frame or error/timeout. See NOTE 5 below. */
       while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
-      {};
+      {
+        nrf_gpio_pin_set(27);
+      };
+      nrf_gpio_pin_clear(27);
 
         #if 0	  // Include to determine the type of timeout if required.
         int temp = 0;
@@ -265,6 +291,7 @@ double ss_init_run(int id)
           distance = tof * SPEED_OF_LIGHT;
           
           //printf("SDS-TWR Distance : %f\r\n", distance);
+          success++;
           return distance; 
         }
 
@@ -278,6 +305,12 @@ double ss_init_run(int id)
   
         dwt_rxreset();
       }
+    }
+    else
+    {
+      /* Reset RX to properly reinitialise LDE operation. */
+      dwt_rxreset();
+      return -1;
     }
   }
   else
