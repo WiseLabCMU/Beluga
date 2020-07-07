@@ -26,6 +26,7 @@
 #include "port_platform.h"
 #include "ss_init_main.h"
 #include "semphr.h"
+#include "random.h"
 
 #define APP_NAME "SS TWR INIT v1.3"
 
@@ -117,6 +118,7 @@ static double distance;
 #define FINAL_RX_TIMEOUT_UUS 4500
 
 uint32_t time_keeper;
+
 
 /*! ------------------------------------------------------------------------------------------------------------------
 * @fn main()
@@ -399,6 +401,12 @@ int ss_resp_run(void)
             return 1;
           }
         } //memcpy
+        else
+        {
+          /* Reset RX to properly reinitialise LDE operation. */
+//          dwt_rxreset();
+//          return -1;
+        }
       } //status_reg
       else
       {
@@ -409,6 +417,12 @@ int ss_resp_run(void)
         dwt_rxreset();
       } 
     } //memcpy
+    else
+    {
+      /* Reset RX to properly reinitialise LDE operation. */
+//      dwt_rxreset();
+//      return -1;
+    }
   } //status_reg
   else
   {

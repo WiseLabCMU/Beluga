@@ -33,6 +33,7 @@
 
 #include "timers.h"
 #include "semphr.h"
+#include "random.h"
 
 #define APP_NAME "SS TWR INIT v1.3"
 
@@ -86,6 +87,7 @@ static uint64 get_rx_timestamp_u64(void);
 #define RESP_TX_TO_FINAL_RX_DLY_UUS 500
 #define FINAL_RX_TIMEOUT_UUS 4500
 
+
 APP_TIMER_DEF(tx_timekeeper);
 static int tx_time;
 static void tx_timer_function(void* p_context)
@@ -108,8 +110,8 @@ double ss_init_run(uint8 id)
   static int success = 0;
   printf("total: %d \r\n", total);
   printf("success: %d \r\n", success);
-  //nrf_gpio_pin_set(12);
-  //nrf_gpio_pin_clear(12);
+  
+
 //--
  // dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
   //dwt_setrxtimeout(RESP_RX_TIMEOUT_UUS);
@@ -294,6 +296,12 @@ double ss_init_run(uint8 id)
           success++;
           return distance; 
         }
+        else
+        {
+          /* Reset RX to properly reinitialise LDE operation. */
+//          dwt_rxreset();
+//          return -1;
+        }
 
       }
       else
@@ -309,17 +317,19 @@ double ss_init_run(uint8 id)
     else
     {
       /* Reset RX to properly reinitialise LDE operation. */
-      dwt_rxreset();
-      return -1;
+//      dwt_rxreset();
+//      return -1;
     }
   }
   else
   {
+    
     /* Clear RX error/timeout events in the DW1000 status register. */
     dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR);
 
     /* Reset RX to properly reinitialise LDE operation. */
     dwt_rxreset();
+
   }
 
   return -1;

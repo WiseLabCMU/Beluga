@@ -44,6 +44,7 @@
 #include "flash.h"
 #include "uart.h"
 #include "ble_app.h"
+#include "random.h"
 
 #if defined (UART_PRESENT)
 #include "nrf_uart.h"
@@ -148,28 +149,28 @@ void resp_reconfig() {
 
 }
 
-uint16_t get_rand_num(uint32_t freq) {
-
-      uint32_t lower = freq;
-      uint32_t upper = freq + 50;
-      uint8_t num_rand_bytes_available;
-      int err_code = sd_rand_application_bytes_available_get(&num_rand_bytes_available);
-      APP_ERROR_CHECK(err_code);
-      uint8_t rand_number;
-      if (num_rand_bytes_available > 0)
-      {
-          err_code = sd_rand_application_vector_get(&rand_number, 1);
-          APP_ERROR_CHECK(err_code);
-      }
-
-
-      float rand = rand_number * 1.0;
-
-      float r =  (rand - 0) * (upper - lower) / (255 - 0) + lower;
-      uint16_t ret = (uint16_t) r;
-
-      return ret;
-}
+//uint16_t get_rand_num(uint32_t freq) {
+//
+//      uint32_t lower = freq;
+//      uint32_t upper = freq + 50;
+//      uint8_t num_rand_bytes_available;
+//      int err_code = sd_rand_application_bytes_available_get(&num_rand_bytes_available);
+//      APP_ERROR_CHECK(err_code);
+//      uint8_t rand_number;
+//      if (num_rand_bytes_available > 0)
+//      {
+//          err_code = sd_rand_application_vector_get(&rand_number, 1);
+//          APP_ERROR_CHECK(err_code);
+//      }
+//
+//
+//      float rand = rand_number * 1.0;
+//
+//      float r =  (rand - 0) * (upper - lower) / (255 - 0) + lower;
+//      uint16_t ret = (uint16_t) r;
+//      
+//      return ret;
+//}
 
 
 //------------------------ Task Functions -------------------------------//
@@ -542,20 +543,35 @@ void uart_task_function(void * pvParameter){
 }
 
 
+
 /**
  * @brief UWB ranging task.
  */
 void ranging_task_function(void *pvParameter)
 {
-  
+  int drop_flag = 0;
+  static int cur_index = 0;
+
   while(1){
     
       if(initiator_freq != 0)
       {
-        uint16_t rand = get_rand_num(initiator_freq);
-        vTaskDelay(rand);
-        //printf("rand: %d \r\n", rand);
-        //vTaskDelay(initiator_freq);
+        
+        uint16_t rand = get_rand_num_exp(initiator_freq);
+        //printf("Big delay: %d \r\n", rand);
+        //vTaskDelay(rand);
+        vTaskDelay(initiator_freq);
+
+        
+        // If previous polling drop, give some random delay
+        if (drop_flag != 0) {
+          uint16_t rand_small = get_rand_num_exp_collision();
+          //printf("Small delay: %d \r\n", rand_small);
+          vTaskDelay(rand_small);
+          drop_flag = 0;
+        }
+        
+
         if (debug_print == 1) printf("ranging task in \r\n");
         
         xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
@@ -567,64 +583,82 @@ void ranging_task_function(void *pvParameter)
         dwt_forcetrxoff();
         init_reconfig();
 
-        int i = 0;
-     
-        while(i < MAX_ANCHOR_COUNT) {
+//------- separate ranging codes
 
-          if (seen_list[i].UUID != 0) {
+        int search_count = 0;
 
-            if (debug_print)printf("IN\r\n");
-            //printf("range 1 time keeper: %d \r\n", time_keeper);
-            float range1 = ss_init_run(seen_list[i].UUID);
-            //printf("range 1 time keeper: %d \r\n", time_keeper);
-            if (debug_print)printf("range 1 out \r\n");
-            if (debug_print)printf("range 1: %f \r\n", range1);
-            //vTaskDelay(10);
-            //printf("range 2 time keeper: %d \r\n", time_keeper);
-            //float range2 = ss_init_run(seen_list[i].UUID);
-            //printf("range 2 time keeper: %d \r\n", time_keeper);
-            //if (debug_print)printf("range 2 out \r\n");
-            //if (debug_print)printf("range 2: %f \r\n", range2);
-            //vTaskDelay(10);
-            //printf("range 3 time keeper: %d \r\n", time_keeper);
-            //float range3 = ss_init_run(seen_list[i].UUID);
-            //printf("range 3 time keeper: %d \r\n", time_keeper);
-            //if (debug_print)printf("range 3 out \r\n");
-            //if (debug_print)printf("range 3: %f \r\n", range3);
-            //vTaskDelay(10);
-
-            float range2 = -1;
-            float range3 = -1;
-            if (debug_print)printf("OUT\r\n");
-
-            int numThru = 3;
-            if (range1 == -1) {
-              range1 = 0;
-              numThru -= 1;
-            }
-
-            if (range2 == -1) {
-              range2 = 0;
-              numThru -= 1;
-            }
-
-            if(range3 == -1) {
-              range3 = 0;
-              numThru -= 1;
-            }
-        
-            //if( (numThru != 0) ) printf("%f \r\n", (range1 + range2 + range3)/numThru);
-            float range = (range1 + range2 + range3)/numThru;
-            
-            if( (numThru != 0) && (range >= -5) && (range <= 100) ) {
-              seen_list[i].update_flag = 1;
-              seen_list[i].range = range;
-              seen_list[i].time_stamp = time_keeper;
-              printf("node: %d; range: %f; timestamp: %u \r\n",seen_list[i].UUID, seen_list[i].range, time_keeper);
-            }
+        while (seen_list[cur_index].UUID == 0) {
+          cur_index += 1;
+          // Back to the head of seen list
+          if (cur_index == MAX_ANCHOR_COUNT) {
+            cur_index = 0;
           }
-          i++;     
+          // Finish search for whole list, no found, then break
+          if (search_count == MAX_ANCHOR_COUNT - 1) {
+            break;
+          }
         }
+
+        // UWB ranging measurment
+        float range1 = ss_init_run(seen_list[cur_index].UUID);
+        if (range1 == -1) drop_flag = 1;
+
+        int numThru = 1;
+        if (range1 == -1) {
+          range1 = 0;
+          numThru -= 1;
+        }
+
+        float range = (range1)/numThru;
+          
+        if( (numThru != 0) && (range >= -5) && (range <= 100) ) {
+          seen_list[cur_index].update_flag = 1;
+          seen_list[cur_index].range = range;
+          seen_list[cur_index].time_stamp = time_keeper;
+          //printf("node: %d; range: %f; timestamp: %u \r\n",seen_list[cur_index].UUID, seen_list[cur_index].range, time_keeper);
+        }      
+
+
+        cur_index += 1;
+        // Back to the head of seen list
+        if (cur_index == MAX_ANCHOR_COUNT) {
+          cur_index = 0;
+        }
+
+
+
+
+//        int i = 0;   
+//        while(i < MAX_ANCHOR_COUNT) {
+//
+//          if (seen_list[i].UUID != 0) {
+//
+//            if (debug_print)printf("IN\r\n");
+//            
+//            // Do ranging task
+//            float range1 = ss_init_run(seen_list[i].UUID);
+//            // Check the message is dropped or not
+//            if (range1 == -1) drop_flag = 1;
+//
+//            if (debug_print)printf("OUT\r\n");
+//
+//            int numThru = 1;
+//            if (range1 == -1) {
+//              range1 = 0;
+//              numThru -= 1;
+//            }
+//
+//            float range = (range1)/numThru;
+//            
+//            if( (numThru != 0) && (range >= -5) && (range <= 100) ) {
+//              seen_list[i].update_flag = 1;
+//              seen_list[i].range = range;
+//              seen_list[i].time_stamp = time_keeper;
+//              printf("node: %d; range: %f; timestamp: %u \r\n",seen_list[i].UUID, seen_list[i].range, time_keeper);
+//            }
+//          }
+//          i++;     
+//        }
         
         resp_reconfig();
         dwt_forcetrxoff();
@@ -643,9 +677,9 @@ void ranging_task_function(void *pvParameter)
  }
 
 /**
- * @brief function to check nodes eviction
+ * @brief function to check nodes eviction and re-sorting
  */
-void monitor_task_function()
+void monitor_task_function(void *pvParameter)
 {
 
   uint32 count = 0;
@@ -659,52 +693,44 @@ void monitor_task_function()
     
     xSemaphoreTake(sus_init, portMAX_DELAY);
     int removed = 0;
-    for(int x = 0; x < MAX_ANCHOR_COUNT; x++)
-      {
-        if(seen_list[x].UUID != 0)
-        {
-          if( (time_keeper - seen_list[x].time_stamp) >= time_out) //Timeout Eviction
-          {
-            removed = 1;
-            seen_list[x].UUID = 0;
-            seen_list[x].range = 0;
-            seen_list[x].time_stamp = 0;
-            seen_list[x].RSSI = 0;
-            seen_list[x].update_flag = 0;
+
+    // Check for timeout eviction
+    for(int x = 0; x < MAX_ANCHOR_COUNT; x++) {
+      if(seen_list[x].UUID != 0) {
+        if( (time_keeper - seen_list[x].time_stamp) >= time_out) {
+          removed = 1;
+          seen_list[x].UUID = 0;
+          seen_list[x].range = 0;
+          seen_list[x].time_stamp = 0;
+          seen_list[x].RSSI = 0;
+          seen_list[x].update_flag = 0;
+        }
+      }
+    }
+    
+    // Re-sort seen list by RSSI value when a node is removed, added, or a period of time
+    if(removed || node_added || ((count % 5) == 0)  ) {
+        
+      (void) sd_ble_gap_scan_stop();
+
+      for (int j = 0; j < MAX_ANCHOR_COUNT; j++) {
+        for( int k = j+1; k < MAX_ANCHOR_COUNT; k++) {
+          if(seen_list[j].RSSI < seen_list[k].RSSI) {
+              node A = seen_list[j];
+              seen_list[j] = seen_list[k];
+              seen_list[k] = A;
           }
         }
       }
+
+      scan_start(); //Resume scanning/building up neighbor list
+      node_added = 0;
+      removed = 0;
+      count = 0;
+    }
       
-      if(removed || node_added || ((count % 5) == 0)  ) //Re-sort by RSSI
-      {
-        //Now sort neighbor list
-        (void) sd_ble_gap_scan_stop();
+    xSemaphoreGive(sus_init);
 
-        for (int j = 0; j < MAX_ANCHOR_COUNT; j++)
-        {
-          for( int k = j+1; k < MAX_ANCHOR_COUNT; k++)
-          {
-            if(seen_list[j].RSSI < seen_list[k].RSSI)
-            {
-                //printf("j : %d k: %d \r\n", seen_list[j].RSSI, seen_list[k].RSSI);
-                node A = seen_list[j];
-                seen_list[j] = seen_list[k];
-                seen_list[k] = A;
-         
-            }
-          }
-        }
-
-        scan_start(); //Resume scanning/building up neighbor list
-        node_added = 0;
-        removed = 0;
-        count = 0;
-      }
-      
-      xSemaphoreGive(sus_init);
-
-
-    //if(debug_print)printf("Still alive \r\n");
     if (debug_print == 1) printf("monitor task out \r\n");
   }
 }
@@ -753,12 +779,12 @@ int main(void)
     {
        printf("init error \r\n");
     }
+
     
-    // Logic analyzer debug part
     nrf_gpio_cfg_output(12);
     nrf_gpio_cfg_output(27);
 
-    // UWB config part
+    /*------------ UWB config part ------------- */
     nrf_gpio_cfg_input(DW1000_IRQ, NRF_GPIO_PIN_NOPULL); 	
     
     /* Reset DW1000 */
@@ -783,13 +809,6 @@ int main(void)
     /* Configure DW1000 TX power and pulse delay */
     dwt_configuretxrf(&config_tx);
 
-    /* Initialization of the DW1000 interrupt*/
-
-    //dwt_setcallbacks(&tx_conf_cb, &rx_ok_cb, &rx_to_cb, &rx_err_cb);
-
-    /* Enable wanted interrupts (TX confirmation, RX good frames, RX timeouts and RX errors). */
-    //dwt_setinterrupt(DWT_INT_TFRS | DWT_INT_RFCG | DWT_INT_RFTO | DWT_INT_RXPTO | DWT_INT_RPHE | DWT_INT_RFCE | DWT_INT_RFSL | DWT_INT_SFDT, 1);
-
     /* Apply default antenna delay value. See NOTE 2 below. */
     dwt_setrxantennadelay(RX_ANT_DLY);
     dwt_settxantennadelay(TX_ANT_DLY);
@@ -797,8 +816,7 @@ int main(void)
     /* Set preamble timeout for expected frames. See NOTE 3 below. */
     //dwt_setpreambledetecttimeout(0); // PRE_TIMEOUT
           
-    /* Set expected response's delay and timeout. */
-    //dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
+    /* Set expected response's timeout. (keep listening so timeout is 0) */
     dwt_setrxtimeout(0);
 
     // Init timekeeper from timer. unit: 1ms
@@ -843,6 +861,7 @@ int main(void)
     
 
     printf("Flash Configuration: \r\n");
+    /* Fetch ID and bootmode record from flash */
     fds_record_desc_t   record_desc_2;
     fds_find_token_t    ftok_2;
     memset(&ftok_2, 0x00, sizeof(fds_find_token_t));
@@ -874,8 +893,6 @@ int main(void)
           xSemaphoreGive(sus_init);
           bsp_board_led_on(BSP_BOARD_LED_2);
         }
-
-        //printf("%d %d\r\n", id, state);
 
     }
 
@@ -952,10 +969,7 @@ int main(void)
     vTaskStartScheduler();
     while(1) 
     {
-
-        APP_ERROR_HANDLER(NRF_ERROR_FORBIDDEN);
-        
-        
+        APP_ERROR_HANDLER(NRF_ERROR_FORBIDDEN);             
     }
 }
 

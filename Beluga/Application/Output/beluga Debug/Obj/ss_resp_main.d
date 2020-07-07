@@ -70,4 +70,5 @@ Output/beluga\ Debug/Obj/ss_resp_main.o: \
  ../nRF52-sdk/components/libraries/util/app_error.h \
  /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ss_init_main.h \
  ../nRF52-sdk/external/freertos/source/include/semphr.h \
- ../nRF52-sdk/external/freertos/source/include/queue.h
+ ../nRF52-sdk/external/freertos/source/include/queue.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/random.h

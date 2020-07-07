@@ -888,34 +888,6 @@ static void on_ble_peripheral_evt(ble_evt_t const * p_ble_evt)
 }
 
 
-/**@brief Function for handling advertising events.
- *
- * @param[in] ble_adv_evt  Advertising event.
- */
-static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
-{
-    switch (ble_adv_evt)
-    {
-        case BLE_ADV_EVT_FAST:
-        {
-            NRF_LOG_INFO("Fast advertising.");
-            //bsp_board_led_on(PERIPHERAL_ADVERTISING_LED);
-        } break;
-
-        case BLE_ADV_EVT_IDLE:
-        {
-            ret_code_t err_code = ble_advertising_start(&m_advertising, BLE_ADV_MODE_FAST);
-            //printf("ADV IDLE \r\n");
-            APP_ERROR_CHECK(err_code);
-        } break;
-
-        default:
-            // No implementation needed.
-            //printf("ADV Default \r\n");
-            break;
-    }
-}
-
 /**@brief Function for checking if a bluetooth stack event is an advertising timeout.
  *
  * @param[in] p_ble_evt Bluetooth stack event.
@@ -1109,6 +1081,35 @@ void conn_params_init(void)
 }
 
 
+/**@brief Function for handling advertising events.
+ *
+ * @param[in] ble_adv_evt  Advertising event.
+ */
+static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
+{
+    switch (ble_adv_evt)
+    {
+        case BLE_ADV_EVT_FAST:
+        {
+            NRF_LOG_INFO("Fast advertising.");
+            //bsp_board_led_on(PERIPHERAL_ADVERTISING_LED);
+        } break;
+
+        case BLE_ADV_EVT_IDLE:
+        {
+            ret_code_t err_code = ble_advertising_start(&m_advertising, BLE_ADV_MODE_FAST);
+            //printf("ADV IDLE \r\n");
+            APP_ERROR_CHECK(err_code);
+        } break;
+
+        default:
+            // No implementation needed.
+            //printf("ADV Default \r\n");
+            break;
+    }
+}
+
+
 /**@brief Function for initializing the Advertising functionality.
  */
 void advertising_init(void)
@@ -1137,6 +1138,7 @@ void advertising_init(void)
 
     ble_advertising_conn_cfg_tag_set(&m_advertising, APP_BLE_CONN_CFG_TAG);
 }
+
 
 /**@brief Function for initializing logging.
  */
@@ -1179,7 +1181,7 @@ static int get_seen_list_idx(uint16_t UUID) {
       
       return i;
       
-      }
+    }
   }
   return -1;
 }

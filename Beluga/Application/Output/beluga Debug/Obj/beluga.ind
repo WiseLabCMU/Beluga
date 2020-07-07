@@ -43,6 +43,7 @@
 "Output/beluga Debug/Obj/ss_resp_main.o"
 "Output/beluga Debug/Obj/flash.o"
 "Output/beluga Debug/Obj/ble_app.o"
+"Output/beluga Debug/Obj/random.o"
 "Output/beluga Debug/Obj/SEGGER_RTT.o"
 "Output/beluga Debug/Obj/SEGGER_RTT_printf.o"
 "Output/beluga Debug/Obj/SEGGER_RTT_Syscalls_SES.o"

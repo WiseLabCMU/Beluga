@@ -73,4 +73,5 @@ Output/beluga\ Debug/Obj/ss_init_main.o: \
  ../nRF52-sdk/external/freertos/source/include/queue.h \
  ../nRF52-sdk/components/libraries/timer/app_timer.h \
  ../nRF52-sdk/external/freertos/source/include/timers.h \
- ../nRF52-sdk/external/freertos/source/include/task.h
+ ../nRF52-sdk/external/freertos/source/include/task.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/random.h

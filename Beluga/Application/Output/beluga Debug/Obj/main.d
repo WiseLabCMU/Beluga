@@ -94,4 +94,5 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/components/libraries/fds/fds.h \
  /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/uart.h \
  /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ble_app.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/random.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_uarte.h
