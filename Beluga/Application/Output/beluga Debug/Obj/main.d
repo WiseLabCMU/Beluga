@@ -32,6 +32,11 @@ Output/beluga\ Debug/Obj/main.o: \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
+ ../nRF52-sdk/components/drivers_nrf/wdt/nrf_drv_wdt.h \
+ ../nRF52-sdk/components/libraries/util/sdk_errors.h \
+ ../nRF52-sdk/components/drivers_nrf/hal/nrf_wdt.h \
+ ../nRF52-sdk/components/libraries/fifo/app_fifo.h \
+ /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
  ../nRF52-sdk/external/freertos/source/include/FreeRTOS.h \
  ../nRF52-sdk/external/freertos/config/FreeRTOSConfig.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_soc.h \
@@ -57,11 +62,9 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpio.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_peripherals.h \
  ../nRF52-sdk/components/device/nrf52832_peripherals.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
  ../nRF52-sdk/components/boards/dw1001_dev.h \
  ../nRF52-sdk/components/libraries/button/app_button.h \
  ../nRF52-sdk/components/drivers_nrf/clock/nrf_drv_clock.h \
- ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_clock.h \
  ../nRF52-sdk/components/drivers_nrf/common/nrf_drv_common.h \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \

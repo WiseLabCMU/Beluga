@@ -35,6 +35,7 @@
 "Output/beluga Debug/Obj/nrf_drv_gpiote.o"
 "Output/beluga Debug/Obj/nrf_drv_spi.o"
 "Output/beluga Debug/Obj/nrf_drv_uart.o"
+"Output/beluga Debug/Obj/nrf_drv_wdt.o"
 "Output/beluga Debug/Obj/bsp.o"
 "Output/beluga Debug/Obj/bsp_nfc.o"
 "Output/beluga Debug/Obj/bsp_btn_ble.o"

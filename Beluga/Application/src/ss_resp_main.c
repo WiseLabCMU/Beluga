@@ -27,6 +27,7 @@
 #include "ss_init_main.h"
 #include "semphr.h"
 #include "random.h"
+#include "nrf_drv_wdt.h"
 
 #define APP_NAME "SS TWR INIT v1.3"
 
@@ -118,6 +119,7 @@ static double distance;
 #define FINAL_RX_TIMEOUT_UUS 4500
 
 uint32_t time_keeper;
+nrf_drv_wdt_channel_id m_channel_id;
 
 
 /*! ------------------------------------------------------------------------------------------------------------------
@@ -543,8 +545,9 @@ void ss_responder_task_function (void * pvParameter)
 
   while (true)
   {
-  if (debug_print == 1) printf("resp task in \r\n");
-  
+    if (debug_print == 1) printf("resp task in \r\n");
+    nrf_drv_wdt_channel_feed(m_channel_id);
+    
     
     int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); //Check if responding is suspended, return 0 means suspended
     if(suspend_start != 0) 

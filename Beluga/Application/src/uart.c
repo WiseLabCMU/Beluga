@@ -43,11 +43,11 @@ static void uart_event_handle(app_uart_evt_t * p_event)
             break;
 
         case APP_UART_COMMUNICATION_ERROR:
-            APP_ERROR_HANDLER(p_event->data.error_communication);
+            // If uart error occur, just keep moving on
             break;
 
         case APP_UART_FIFO_ERROR:
-            APP_ERROR_HANDLER(p_event->data.error_code);
+            // If uart error occur, just keep moving on
             break;
 
         default:
@@ -66,7 +66,7 @@ void uart_init(void)
     app_uart_comm_params_t const comm_params =
     {
         .rx_pin_no    = RX_PIN_NUMBER,
-        .tx_pin_no    = TX_PIN_NUMBER,
+        .tx_pin_no    = TX_PIN_NUMBER, 
         .rts_pin_no   = RTS_PIN_NUMBER,
         .cts_pin_no   = CTS_PIN_NUMBER,
         .flow_control = APP_UART_FLOW_CONTROL_DISABLED,

@@ -11,6 +11,8 @@
 #include "ble_types.h"
 #include "ble_gap.h"
 #include "app_timer.h"
+#include "nrf_drv_wdt.h"
+#include "app_fifo.h"
 
 /* Inlcudes for UWB library */
 #include "FreeRTOS.h"
@@ -84,6 +86,8 @@ QueueHandle_t uart_queue;
 static int initiator_freq = 100;
 static int time_out = 5000;
 
+// Watchdog channel 
+extern nrf_drv_wdt_channel_id m_channel_id;
 
 /*----------------- DW1000 Configuration ------------------*/
 
@@ -550,6 +554,7 @@ void uart_task_function(void * pvParameter){
 void ranging_task_function(void *pvParameter)
 {
   int drop_flag = 0;
+  int break_flag = 0;
   static int cur_index = 0;
 
   while(1){
@@ -589,43 +594,48 @@ void ranging_task_function(void *pvParameter)
 
         while (seen_list[cur_index].UUID == 0) {
           cur_index += 1;
+          
           // Back to the head of seen list
           if (cur_index == MAX_ANCHOR_COUNT) {
             cur_index = 0;
           }
           // Finish search for whole list, no found, then break
           if (search_count == MAX_ANCHOR_COUNT - 1) {
+            break_flag = 1;
             break;
           }
+          search_count += 1;
         }
 
-        // UWB ranging measurment
-        float range1 = ss_init_run(seen_list[cur_index].UUID);
-        if (range1 == -1) drop_flag = 1;
+        if (break_flag != 1) {
 
-        int numThru = 1;
-        if (range1 == -1) {
-          range1 = 0;
-          numThru -= 1;
-        }
+          // UWB ranging measurment
+          float range1 = ss_init_run(seen_list[cur_index].UUID);
+          if (range1 == -1) drop_flag = 1;
 
-        float range = (range1)/numThru;
+          int numThru = 1;
+          if (range1 == -1) {
+            range1 = 0;
+            numThru -= 1;
+          }
+
+          float range = (range1)/numThru;
           
-        if( (numThru != 0) && (range >= -5) && (range <= 100) ) {
-          seen_list[cur_index].update_flag = 1;
-          seen_list[cur_index].range = range;
-          seen_list[cur_index].time_stamp = time_keeper;
-          //printf("node: %d; range: %f; timestamp: %u \r\n",seen_list[cur_index].UUID, seen_list[cur_index].range, time_keeper);
-        }      
+          if( (numThru != 0) && (range >= -5) && (range <= 100) ) {
+            seen_list[cur_index].update_flag = 1;
+            seen_list[cur_index].range = range;
+            seen_list[cur_index].time_stamp = time_keeper;
+            //printf("node: %d; range: %f; timestamp: %u \r\n",seen_list[cur_index].UUID, seen_list[cur_index].range, time_keeper);
+          }      
 
 
-        cur_index += 1;
-        // Back to the head of seen list
-        if (cur_index == MAX_ANCHOR_COUNT) {
-          cur_index = 0;
+          cur_index += 1;
+          // Back to the head of seen list
+          if (cur_index == MAX_ANCHOR_COUNT) {
+            cur_index = 0;
+          }
         }
-
-
+        break_flag = 0;
 
 
 //        int i = 0;   
@@ -685,6 +695,7 @@ void monitor_task_function(void *pvParameter)
   uint32 count = 0;
 
   while(1) {
+    
 
     vTaskDelay(1000);
     if (debug_print == 1) printf("monitor task in \r\n");
@@ -736,6 +747,11 @@ void monitor_task_function(void *pvParameter)
 }
 
 
+void wdt_event_handler(void)
+{
+  printf("WDT expire! Reboot system. \r\n");
+}
+
 
 /**
  * @brief program main entrance.
@@ -747,6 +763,16 @@ int main(void)
     streaming_mode = 0;
     bool erase_bonds;
     int count = 0;
+
+    //Setup WDT 
+    uint32_t err_code = NRF_SUCCESS;
+    nrf_drv_wdt_config_t wdt_config = NRF_DRV_WDT_DEAFULT_CONFIG;
+    err_code = nrf_drv_wdt_init(&wdt_config, wdt_event_handler);
+    APP_ERROR_CHECK(err_code);
+    err_code = nrf_drv_wdt_channel_alloc(&m_channel_id);
+    APP_ERROR_CHECK(err_code);
+    nrf_drv_wdt_enable();
+
 
     // Init nodes in seen list
     for(int i = 0; i < MAX_ANCHOR_COUNT; i++)
@@ -760,29 +786,37 @@ int main(void)
   
     uart_init();
     timer_init();
-    buttons_leds_init(&erase_bonds);
-    ble_stack_init();
+    
+    buttons_leds_init(&erase_bonds);   
+    //uart_init();
+
+    ble_stack_init();   
     gap_params_init();
-    gatt_init();
+    gatt_init();  
     conn_params_init();
     peer_manager_init();
     advertising_init();
+    //uart_init();
+
 
     // Init flash data storage
     ret_code_t ret = fds_register(fds_evt_handler);
-    if (ret != FDS_SUCCESS)
-    {
+    if (ret != FDS_SUCCESS) {
         printf("reg error \r\n"); // Registering of the FDS event handler has failed.
     }
+
     ret = fds_init();
-    if (ret != FDS_SUCCESS)
-    {
+    if (ret != FDS_SUCCESS) {
        printf("init error \r\n");
     }
 
-    
+
+
+
+    // Logic Analyzer debug used
     nrf_gpio_cfg_output(12);
     nrf_gpio_cfg_output(27);
+
 
     /*------------ UWB config part ------------- */
     nrf_gpio_cfg_input(DW1000_IRQ, NRF_GPIO_PIN_NOPULL); 	
@@ -823,7 +857,6 @@ int main(void)
     ret_code_t create_timer = app_timer_create(&m_timestamp_keeper, APP_TIMER_MODE_REPEATED, timestamp_handler);
     ret_code_t start_timer =  app_timer_start(m_timestamp_keeper, APP_TIMER_TICKS(1) , NULL);
   
-    
     printf("Node On: Firmware version %s\r\n", FIRMWARE_VERSION);
     
     bsp_board_led_on(BSP_BOARD_LED_0);
