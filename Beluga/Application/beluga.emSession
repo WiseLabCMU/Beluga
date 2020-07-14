@@ -24,7 +24,11 @@
   <ProjectSessionItem path="beluga;beluga;Application"/>
   <ProjectSessionItem path="beluga;beluga;Board Definition"/>
   <ProjectSessionItem path="beluga;beluga;Board Support"/>
+  <ProjectSessionItem path="beluga;beluga;Decadriver"/>
+  <ProjectSessionItem path="beluga;beluga;Freertos"/>
   <ProjectSessionItem path="beluga;beluga;nRF_Drivers"/>
+  <ProjectSessionItem path="beluga;beluga;nRF_Libraries"/>
+  <ProjectSessionItem path="beluga;beluga;nRF_SoftDevice"/>
   <ProjectSessionItem path="beluga;beluga;UART"/>
  </Project>
  <Register1>
@@ -58,15 +62,16 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="33" y="779" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ss_resp_main.c" useBinaryEdit="0" left="0" path="src/main.c" selected="1" top="587" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="130" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="src/ss_init_main.c" selected="0" top="108" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="545" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ss_init_main.c" useBinaryEdit="0" left="0" path="src/ss_resp_main.c" selected="0" top="125" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="19" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ss_init_main.c" useBinaryEdit="0" left="0" path="src/ss_init_main.h" selected="0" top="8" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="195" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/main.c" useBinaryEdit="0" left="0" path="../nRF52-sdk/components/softdevice/s132/headers/ble_types.h" selected="0" top="172" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="69" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="src/uart.c" selected="0" top="49" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="618" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/main.c" useBinaryEdit="0" left="0" path="../nRF52-sdk/components/softdevice/s132/headers/ble_gap.h" selected="0" top="598" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="32" y="84" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ss_resp_main.c" useBinaryEdit="0" left="0" path="src/main.c" selected="1" top="99" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="130" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="src/ss_init_main.c" selected="0" top="76" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="4" y="550" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ss_init_main.c" useBinaryEdit="0" left="0" path="src/ss_resp_main.c" selected="0" top="581" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="19" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ss_init_main.c" useBinaryEdit="0" left="0" path="src/ss_init_main.h" selected="0" top="9" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="1" y="62" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/main.c" useBinaryEdit="0" left="0" path="src/uart.c" selected="0" top="18" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="28" y="4" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/uart.c" useBinaryEdit="0" left="0" path="src/uart.h" selected="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="4" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ble_app.c" useBinaryEdit="0" left="0" path="src/ble_app.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="77" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/main.c" useBinaryEdit="0" left="0" path="src/random.c" selected="0" top="45" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="222" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/main.c" useBinaryEdit="0" left="0" path="src/ble_app.c" selected="0" top="204" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="36" y="76" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/main.c" useBinaryEdit="0" left="0" path="src/random.c" selected="0" top="42" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="src/random.h" selected="0" top="0" codecName="Default"/>
  </Files>
  <ARMCrossStudioWindow activeProject="beluga" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/drivers_nrf/wdt" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>

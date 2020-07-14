@@ -91,18 +91,16 @@
     <folder Name="Application">
       <file file_name="../config/sdk_config.h" />
       <file file_name="src/main.c" />
-      <file file_name="src/ss_init_main.c" />
-      <file file_name="src/ss_init_main.h" />
-      <file file_name="src/ss_resp_main.c" />
-      <file file_name="src/ss_resp_main.h">
-        <configuration Name="Debug" build_exclude_from_build="No" />
-      </file>
       <file file_name="src/flash.c" />
       <file file_name="src/flash.h" />
       <file file_name="src/ble_app.c" />
       <file file_name="src/ble_app.h" />
       <file file_name="src/random.c" />
       <file file_name="src/random.h" />
+      <file file_name="src/init_main.c" />
+      <file file_name="src/resp_main.c" />
+      <file file_name="src/init_main.h" />
+      <file file_name="src/resp_main.h" />
     </folder>
     <folder Name="nRF_Segger_RTT">
       <file file_name="../nRF52-sdk/external/segger_rtt/SEGGER_RTT.c" />

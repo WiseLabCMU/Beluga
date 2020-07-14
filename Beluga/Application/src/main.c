@@ -12,7 +12,6 @@
 #include "ble_gap.h"
 #include "app_timer.h"
 #include "nrf_drv_wdt.h"
-#include "app_fifo.h"
 
 /* Inlcudes for UWB library */
 #include "FreeRTOS.h"
@@ -36,7 +35,8 @@
 #include "deca_device_api.h"
 
 #include "nrf_drv_gpiote.h"
-#include "ss_init_main.h"
+#include "init_main.h"
+#include "resp_main.h"
 #include "port_platform.h"
 #include "semphr.h"
 #include "nrf_fstorage_sd.h"
@@ -79,6 +79,7 @@ extern int node_added;
 
 int debug_print;
 int streaming_mode;
+int twr_mode;
 
 SemaphoreHandle_t rxSemaphore, txSemaphore, sus_resp, sus_init, print_list_sem;
 QueueHandle_t uart_queue;
@@ -89,9 +90,58 @@ static int time_out = 5000;
 // Watchdog channel 
 extern nrf_drv_wdt_channel_id m_channel_id;
 
-/*----------------- DW1000 Configuration ------------------*/
+enum pgdelay_ch {
+  ch1 = TC_PGDELAY_CH1,
+  ch2 = TC_PGDELAY_CH2,
+  ch3 = TC_PGDELAY_CH3,
+  ch4 = TC_PGDELAY_CH4,
+  ch5 = TC_PGDELAY_CH5,
+  ch7 = TC_PGDELAY_CH7,
+};
 
-/* DW1000 config function */
+enum pgdelay_ch uwb_pgdelay;
+
+
+/************************************************
+ *               Timer functions                *
+ ***********************************************/
+
+APP_TIMER_DEF(m_timestamp_keeper);    /**< Handler for repeated timer used to blink LED 1. */
+
+
+/**
+ * @brief Function for initializing the timer.
+ */
+static void timer_init(void)
+{
+
+    //APP_TIMER_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, false);
+    ret_code_t err_code = app_timer_init();
+    APP_ERROR_CHECK(err_code);
+}
+
+/**
+ * @brief Timeout handler for the repeated timer.
+ */
+static void timestamp_handler(void * p_context)
+{ 
+    time_keeper += 1; 
+}
+
+/**
+ * @brief Watchdog handler when watchdog timer expire.
+ */
+void wdt_event_handler(void)
+{
+  printf("WDT expire! Reboot system! \r\n");
+}
+
+
+/************************************************
+ *    UWB configuration & helper functions       *
+ ***********************************************/
+
+/* DW1000 config struct */
 dwt_config_t config = {
     5,                /* Channel number. */
     DWT_PRF_64M,      /* Pulse repetition frequency. */
@@ -113,39 +163,19 @@ dwt_txconfig_t config_tx = {
 };
 
 
-
-//---------------------- Timer Functions -------------------------//
-
-APP_TIMER_DEF(m_timestamp_keeper);    /**< Handler for repeated timer used to blink LED 1. */
-
-
-/**@brief Function for initializing the timer.
+/**
+ * @brief Reconfig UWB transmitter as an initiator
  */
-static void timer_init(void)
-{
-
-    //APP_TIMER_INIT(APP_TIMER_PRESCALER, APP_TIMER_OP_QUEUE_SIZE, false);
-    ret_code_t err_code = app_timer_init();
-    APP_ERROR_CHECK(err_code);
-}
-
-/**@brief Timeout handler for the repeated timer.
- */
-static void timestamp_handler(void * p_context)
-{ 
-    time_keeper += 1; 
-}
-
-
-//---------------------- UWB related Functions -------------------------//
-
 void init_reconfig() {
 
   dwt_setrxaftertxdelay(POLL_TX_TO_RESP_RX_DLY_UUS);
-  dwt_setrxtimeout(2000); // Maximum value timeout with DW1000 is 65ms  
+  dwt_setrxtimeout(2000);
 
 }
 
+/**
+ * @brief Reconfig UWB transmitter as a responder
+ */
 void resp_reconfig() {
 
   dwt_setrxaftertxdelay(0);
@@ -153,41 +183,19 @@ void resp_reconfig() {
 
 }
 
-//uint16_t get_rand_num(uint32_t freq) {
-//
-//      uint32_t lower = freq;
-//      uint32_t upper = freq + 50;
-//      uint8_t num_rand_bytes_available;
-//      int err_code = sd_rand_application_bytes_available_get(&num_rand_bytes_available);
-//      APP_ERROR_CHECK(err_code);
-//      uint8_t rand_number;
-//      if (num_rand_bytes_available > 0)
-//      {
-//          err_code = sd_rand_application_vector_get(&rand_number, 1);
-//          APP_ERROR_CHECK(err_code);
-//      }
-//
-//
-//      float rand = rand_number * 1.0;
-//
-//      float r =  (rand - 0) * (upper - lower) / (255 - 0) + lower;
-//      uint16_t ret = (uint16_t) r;
-//      
-//      return ret;
-//}
 
+/************************************************
+ *         FreeRTOS tasks functions             *
+ ***********************************************/
 
-//------------------------ Task Functions -------------------------------//
-
-TaskHandle_t ss_responder_task_handle; 
+TaskHandle_t responder_task_handle; 
 TaskHandle_t ranging_task_handle;
-TaskHandle_t ss_initiator_task_handle; 
 TaskHandle_t uart_task_handle;
 TaskHandle_t list_task_handle;
 TaskHandle_t monitor_task_handle;
 TaskHandle_t ble_task_handle;
 
-void ble_task_fuction() {
+void ble_task_fuction(void * pvParameter) {
 
   while(1) {
     if (debug_print == 1) printf("BLE task in \r\n");
@@ -200,9 +208,11 @@ void ble_task_fuction() {
 }
 
 /**
- * @brief Output visible nodes information
+ * @brief Task to print out visible nodes information
+ *
+ * @param[in] pvParameter   Pointer that will be used as the parameter for the task.
  */
-void list_task_function()
+void list_task_function(void * pvParameter)
 {
 
   while(1){
@@ -257,7 +267,9 @@ void list_task_function()
 
 
 /**
- * @brief UART parser
+ * @brief Task to receive UART message from freertos UART queue and parse
+ *
+ * @param[in] pvParameter   Pointer that will be used as the parameter for the task.
  */
 void uart_task_function(void * pvParameter){
 
@@ -391,9 +403,24 @@ void uart_task_function(void * pvParameter){
             }
             else {
               writeFlashID(channel, 4);
+              switch (channel) {
+                case 1: uwb_pgdelay = ch1;
+                        break;
+                case 2: uwb_pgdelay = ch2;
+                        break;
+                case 3: uwb_pgdelay = ch3;
+                        break;
+                case 4: uwb_pgdelay = ch4;
+                        break;
+                case 5: uwb_pgdelay = ch5;
+                        break;
+                case 7: uwb_pgdelay = ch7;
+                        break;
+              }
+              config_tx.PGdly = uwb_pgdelay;
               config.chan = channel;
               dwt_configure(&config);
-            
+              dwt_configuretxrf(&config_tx);
               printf("OK \r\n");
             }
 
@@ -525,8 +552,22 @@ void uart_task_function(void * pvParameter){
             }
         }
 
-        else if (0 == strncmp((const char *)incoming_message.data, (const char *)"AT+LIST", (size_t)7)) {
-            //print_seen_list();
+        else if (0 == strncmp((const char *)incoming_message.data, (const char *)"AT+TWRMODE", (size_t)10)) {
+            
+            char buf[100];
+            strcpy(buf, incoming_message.data);
+            char *uuid_char = strtok(buf, " ");
+            uuid_char = strtok(NULL, " ");
+            uint32_t ranging_mode = atoi(uuid_char);
+            
+            if (ranging_mode < 0 || ranging_mode > 1) {
+              printf("TWR mode parameter input error \r\n");
+            }
+            else {
+              writeFlashID(ranging_mode, 8);
+              twr_mode = ranging_mode;
+              printf("OK \r\n");
+            }
         }
 
         else printf("ERROR Invalid AT Command\r\n");
@@ -549,7 +590,9 @@ void uart_task_function(void * pvParameter){
 
 
 /**
- * @brief UWB ranging task.
+ * @brief Task to perform UWB ranging task.
+ * 
+ * @param[in] pvParameter   Pointer that will be used as the parameter for the task.
  */
 void ranging_task_function(void *pvParameter)
 {
@@ -562,15 +605,13 @@ void ranging_task_function(void *pvParameter)
       if(initiator_freq != 0)
       {
         
-        uint16_t rand = get_rand_num_exp(initiator_freq);
-        //printf("Big delay: %d \r\n", rand);
-        //vTaskDelay(rand);
         vTaskDelay(initiator_freq);
-
+//        uint16_t rand = get_rand_num_exp_collision(initiator_freq);
+//        printf("%d \r\n", rand);
         
-        // If previous polling drop, give some random delay
+        // If previous polling drop, give a random exponential distribution delay
         if (drop_flag != 0) {
-          uint16_t rand_small = get_rand_num_exp_collision();
+          uint16_t rand_small = get_rand_num_exp_collision(initiator_freq);
           //printf("Small delay: %d \r\n", rand_small);
           vTaskDelay(rand_small);
           drop_flag = 0;
@@ -591,6 +632,7 @@ void ranging_task_function(void *pvParameter)
 //------- separate ranging codes
 
         int search_count = 0;
+        float range1;
 
         while (seen_list[cur_index].UUID == 0) {
           cur_index += 1;
@@ -610,7 +652,13 @@ void ranging_task_function(void *pvParameter)
         if (break_flag != 1) {
 
           // UWB ranging measurment
-          float range1 = ss_init_run(seen_list[cur_index].UUID);
+          if (twr_mode == 1) {
+            range1 = ds_init_run(seen_list[cur_index].UUID);
+          }
+          if (twr_mode == 0) {
+            range1 = ss_init_run(seen_list[cur_index].UUID);
+          }
+          
           if (range1 == -1) drop_flag = 1;
 
           int numThru = 1;
@@ -637,38 +685,6 @@ void ranging_task_function(void *pvParameter)
         }
         break_flag = 0;
 
-
-//        int i = 0;   
-//        while(i < MAX_ANCHOR_COUNT) {
-//
-//          if (seen_list[i].UUID != 0) {
-//
-//            if (debug_print)printf("IN\r\n");
-//            
-//            // Do ranging task
-//            float range1 = ss_init_run(seen_list[i].UUID);
-//            // Check the message is dropped or not
-//            if (range1 == -1) drop_flag = 1;
-//
-//            if (debug_print)printf("OUT\r\n");
-//
-//            int numThru = 1;
-//            if (range1 == -1) {
-//              range1 = 0;
-//              numThru -= 1;
-//            }
-//
-//            float range = (range1)/numThru;
-//            
-//            if( (numThru != 0) && (range >= -5) && (range <= 100) ) {
-//              seen_list[i].update_flag = 1;
-//              seen_list[i].range = range;
-//              seen_list[i].time_stamp = time_keeper;
-//              printf("node: %d; range: %f; timestamp: %u \r\n",seen_list[i].UUID, seen_list[i].range, time_keeper);
-//            }
-//          }
-//          i++;     
-//        }
         
         resp_reconfig();
         dwt_forcetrxoff();
@@ -687,7 +703,9 @@ void ranging_task_function(void *pvParameter)
  }
 
 /**
- * @brief function to check nodes eviction and re-sorting
+ * @brief Task to check nodes eviction and re-sorting
+ *
+ * @param[in] pvParameter   Pointer that will be used as the parameter for the task.
  */
 void monitor_task_function(void *pvParameter)
 {
@@ -696,7 +714,6 @@ void monitor_task_function(void *pvParameter)
 
   while(1) {
     
-
     vTaskDelay(1000);
     if (debug_print == 1) printf("monitor task in \r\n");
 
@@ -733,8 +750,9 @@ void monitor_task_function(void *pvParameter)
           }
         }
       }
-
-      scan_start(); //Resume scanning/building up neighbor list
+      
+      //Resume scanning/building up neighbor list
+      scan_start(); 
       node_added = 0;
       removed = 0;
       count = 0;
@@ -747,11 +765,44 @@ void monitor_task_function(void *pvParameter)
 }
 
 
-void wdt_event_handler(void)
+/**
+ * @brief SS TWR Initiator task entry function.
+ *
+ * @param[in] pvParameter   Pointer that will be used as the parameter for the task.
+ */
+void responder_task_function (void * pvParameter)
 {
-  printf("WDT expire! Reboot system. \r\n");
+  UNUSED_PARAMETER(pvParameter);
+  
+  dwt_setleds(DWT_LEDS_ENABLE);
+
+
+  while(1) {
+
+    if (debug_print == 1) printf("resp task in \r\n");
+
+    // Feed the watchdog timer
+    nrf_drv_wdt_channel_feed(m_channel_id);
+    
+    //Check if responding is suspended, return 0 means suspended
+    int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); 
+
+    if(suspend_start != 0) 
+    {
+      if (twr_mode == 1) ds_resp_run();
+      if (twr_mode == 0) ss_resp_run();      
+    }
+
+    /* Delay a task for a given number of ticks */
+    //vTaskDelay(20);   
+    if (debug_print == 1) printf("resp task out \r\n");  
+  }
 }
 
+
+/************************************************
+ *            Program main function             *
+ ***********************************************/
 
 /**
  * @brief program main entrance.
@@ -761,10 +812,11 @@ int main(void)
 
     debug_print = 0;
     streaming_mode = 0;
+    twr_mode = 1;
+    uwb_pgdelay = ch5;
     bool erase_bonds;
-    int count = 0;
 
-    //Setup WDT 
+    // Setup WDT 
     uint32_t err_code = NRF_SUCCESS;
     nrf_drv_wdt_config_t wdt_config = NRF_DRV_WDT_DEAFULT_CONFIG;
     err_code = nrf_drv_wdt_init(&wdt_config, wdt_event_handler);
@@ -785,19 +837,14 @@ int main(void)
     }
   
     uart_init();
-    timer_init();
-    
+    timer_init();  
     buttons_leds_init(&erase_bonds);   
-    //uart_init();
-
     ble_stack_init();   
     gap_params_init();
     gatt_init();  
     conn_params_init();
     peer_manager_init();
     advertising_init();
-    //uart_init();
-
 
     // Init flash data storage
     ret_code_t ret = fds_register(fds_evt_handler);
@@ -809,9 +856,6 @@ int main(void)
     if (ret != FDS_SUCCESS) {
        printf("init error \r\n");
     }
-
-
-
 
     // Logic Analyzer debug used
     nrf_gpio_cfg_output(12);
@@ -846,9 +890,6 @@ int main(void)
     /* Apply default antenna delay value. See NOTE 2 below. */
     dwt_setrxantennadelay(RX_ANT_DLY);
     dwt_settxantennadelay(TX_ANT_DLY);
-
-    /* Set preamble timeout for expected frames. See NOTE 3 below. */
-    //dwt_setpreambledetecttimeout(0); // PRE_TIMEOUT
           
     /* Set expected response's timeout. (keep listening so timeout is 0) */
     dwt_setrxtimeout(0);
@@ -885,7 +926,7 @@ int main(void)
 
     uart_queue = xQueueCreate(25, sizeof(struct message));
 
-    UNUSED_VARIABLE(xTaskCreate(ss_responder_task_function, "SSTWR_RESP", configMINIMAL_STACK_SIZE+600, NULL,1, &ss_responder_task_handle));
+    UNUSED_VARIABLE(xTaskCreate(responder_task_function, "TWR_RESP", configMINIMAL_STACK_SIZE+600, NULL,1, &responder_task_handle));
     UNUSED_VARIABLE(xTaskCreate(ranging_task_function, "RNG", configMINIMAL_STACK_SIZE+200, NULL, 2, &ranging_task_handle));
     UNUSED_VARIABLE(xTaskCreate(uart_task_function, "UART", configMINIMAL_STACK_SIZE+1200, NULL, 2, &uart_task_handle));
     UNUSED_VARIABLE(xTaskCreate(list_task_function, "LIST", configMINIMAL_STACK_SIZE+600, NULL, 2, &list_task_handle));
@@ -929,14 +970,13 @@ int main(void)
 
     }
 
-    /* Fetch rate record from flash */
+    /* Fetch polling rate record from flash */
     fds_record_desc_t   record_desc_3;
     fds_find_token_t    ftok_3;
     memset(&ftok_3, 0x00, sizeof(fds_find_token_t));
-    if (fds_record_find(FILE_ID, RECORD_KEY_3, &record_desc_3, &ftok_3) == FDS_SUCCESS) //If there is a stored rate
+    if (fds_record_find(FILE_ID, RECORD_KEY_3, &record_desc_3, &ftok_3) == FDS_SUCCESS) 
     {
       uint32_t rate = getFlashID(3);
-
       initiator_freq = rate;
       printf("  UWB Polling Rate: %d\r\n", rate);
     }
@@ -945,11 +985,26 @@ int main(void)
     fds_record_desc_t   record_desc_4;
     fds_find_token_t    ftok_4;
     memset(&ftok_4, 0x00, sizeof(fds_find_token_t));
-    if (fds_record_find(FILE_ID, RECORD_KEY_4, &record_desc_4, &ftok_4) == FDS_SUCCESS) //If there is a stored channel
+    if (fds_record_find(FILE_ID, RECORD_KEY_4, &record_desc_4, &ftok_4) == FDS_SUCCESS)
     {
       uint32_t channel = getFlashID(4);
-
+      switch (channel) {
+        case 1: uwb_pgdelay = ch1;
+                break;
+        case 2: uwb_pgdelay = ch2;
+                break;
+        case 3: uwb_pgdelay = ch3;
+                break;
+        case 4: uwb_pgdelay = ch4;
+                break;
+        case 5: uwb_pgdelay = ch5;
+                break;
+        case 7: uwb_pgdelay = ch7;
+                break;
+      }
+      config_tx.PGdly = uwb_pgdelay;
       config.chan = channel;
+      dwt_configuretxrf(&config_tx);
       dwt_configure(&config);
       printf("  UWB Channel: %d \r\n", channel);
     }
@@ -958,11 +1013,9 @@ int main(void)
     fds_record_desc_t   record_desc_5;
     fds_find_token_t    ftok_5;
     memset(&ftok_5, 0x00, sizeof(fds_find_token_t));
-    if (fds_record_find(FILE_ID, RECORD_KEY_5, &record_desc_5, &ftok_5) == FDS_SUCCESS) //If there is a stored channel
+    if (fds_record_find(FILE_ID, RECORD_KEY_5, &record_desc_5, &ftok_5) == FDS_SUCCESS) 
     {
       uint32_t timeout = getFlashID(5);
-      //printf("fetch flash timeout: %d \r\n", timeout);
-
       time_out = timeout;
       printf("  BLE Timeout: %d \r\n", time_out);
     }
@@ -971,10 +1024,9 @@ int main(void)
     fds_record_desc_t   record_desc_6;
     fds_find_token_t    ftok_6;
     memset(&ftok_6, 0x00, sizeof(fds_find_token_t));
-    if (fds_record_find(FILE_ID, RECORD_KEY_6, &record_desc_6, &ftok_6) == FDS_SUCCESS) //If there is a stored channel
+    if (fds_record_find(FILE_ID, RECORD_KEY_6, &record_desc_6, &ftok_6) == FDS_SUCCESS)
     {
       uint32_t tx_power = getFlashID(6);
-      //printf("fetch flash timeout: %d \r\n", timeout);
       if (tx_power == 1) {
         config_tx.power = TX_POWER_MAX;
         printf("  TX Power: Max \r\n");
@@ -990,12 +1042,22 @@ int main(void)
     fds_record_desc_t   record_desc_7;
     fds_find_token_t    ftok_7;
     memset(&ftok_7, 0x00, sizeof(fds_find_token_t));
-    if (fds_record_find(FILE_ID, RECORD_KEY_7, &record_desc_7, &ftok_7) == FDS_SUCCESS) //If there is a stored channel
+    if (fds_record_find(FILE_ID, RECORD_KEY_7, &record_desc_7, &ftok_7) == FDS_SUCCESS)
     {
       uint32_t stream_mode = getFlashID(7);
-
       streaming_mode = stream_mode;
       printf("  Stream Mode: %d \r\n", stream_mode);
+    }
+
+    /* Fetch TWR mode from flash */
+    fds_record_desc_t   record_desc_8;
+    fds_find_token_t    ftok_8;
+    memset(&ftok_8, 0x00, sizeof(fds_find_token_t));
+    if (fds_record_find(FILE_ID, RECORD_KEY_8, &record_desc_8, &ftok_8) == FDS_SUCCESS)
+    {
+      uint32_t ranging_mode = getFlashID(8);
+      twr_mode = ranging_mode;
+      printf("  Ranging Mode: %d \r\n", ranging_mode);
     }
 
    

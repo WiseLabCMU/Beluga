@@ -1,12 +1,6 @@
 /*! ----------------------------------------------------------------------------
-*  @file    ss_init_main.c
-*  @brief   Single-sided two-way ranging (SS TWR) initiator example code
-*
-*           This is a simple code example which acts as the initiator in a SS TWR distance measurement exchange. This application sends a "poll"
-*           frame (recording the TX time-stamp of the poll), after which it waits for a "response" message from the "DS TWR responder" example
-*           code (companion to this application) to complete the exchange. The response message contains the remote responder's time-stamps of poll
-*           RX, and response TX. With this data and the local time-stamps, (of poll TX and response RX), this example application works out a value
-*           for the time-of-flight over-the-air and, thus, the estimated distance between the two devices, which it writes to the LCD.
+*  @file    init_main.c
+*  @brief   Double-sided and Single-sided two-way ranging (DS/SS TWR) initiator code
 *
 *
 *           Notes at the end of this file, expand on the inline comments.
@@ -27,7 +21,7 @@
 #include "deca_device_api.h"
 #include "deca_regs.h"
 #include "port_platform.h"
-#include "ss_init_main.h"
+#include "init_main.h"
 
 #include "app_timer.h"
 
@@ -35,9 +29,7 @@
 #include "semphr.h"
 #include "random.h"
 
-#define APP_NAME "SS TWR INIT v1.3"
-
-/* Frames used in the ranging process. See NOTE 1,2 below. */                //  After E0,  
+/* Frames used in the ranging process. See NOTE 1,2 below. */
 static uint8 tx_poll_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0x61, 0, 0};
 static uint8 rx_resp_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0x50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 static uint8 tx_final_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0x69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -96,15 +88,15 @@ static void tx_timer_function(void* p_context)
 }
 
 /*! ------------------------------------------------------------------------------------------------------------------
-* @fn main()
+* @fn ds_init_run()
 *
-* @brief Application entry point.
+* @brief Initiate UWB double-sided two way ranging
 *
-* @param  none
+* @param  node ID
 *
-* @return none
+* @return distance between sending nodes and id node
 */
-double ss_init_run(uint8 id)
+double ds_init_run(uint8 id)
 {
   static int total = 0;
   static int success = 0;
@@ -334,6 +326,100 @@ double ss_init_run(uint8 id)
 
   return -1;
 }
+
+
+/*! ------------------------------------------------------------------------------------------------------------------
+* @fn ss_init_run()
+*
+* @brief Initiate UWB single-sided two way ranging
+*
+* @param  node ID
+*
+* @return distance between sending nodes and id node
+*/
+double ss_init_run(uint8 id)
+{
+
+  /* Write frame data to DW1000 and prepare transmission. See NOTE 3 below. */
+  tx_poll_msg[ALL_MSG_SN_IDX] = id;
+  dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
+  dwt_writetxdata(sizeof(tx_poll_msg), tx_poll_msg, 0); /* Zero offset in TX buffer. */
+  dwt_writetxfctrl(sizeof(tx_poll_msg), 0, 1); /* Zero offset in TX buffer, ranging. */
+
+  /* Start transmission, indicating that a response is expected so that reception is enabled automatically after the frame is sent and the delay
+  * set by dwt_setrxaftertxdelay() has elapsed. */
+  int c = dwt_starttx(DWT_START_TX_IMMEDIATE | DWT_RESPONSE_EXPECTED);
+
+  if (debug_print) printf("sent tx\r\n");
+  
+
+  if (debug_print) printf("Waiting for rx\r\n");
+  while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
+  {};
+
+    if (status_reg & SYS_STATUS_RXFCG)
+    {   
+      uint32 frame_len;
+      dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG);
+
+      /* A frame has been received, read it into the local buffer. */
+      frame_len = dwt_read32bitreg(RX_FINFO_ID) & RX_FINFO_RXFLEN_MASK;
+      if (frame_len <= RX_BUF_LEN)
+      {
+        dwt_readrxdata(rx_buffer, frame_len, 0);
+      }
+
+    /* Check that the frame is the expected response from the companion "SS TWR responder" example.
+    * As the sequence number field of the frame is not relevant, it is cleared to simplify the validation of the frame. */   
+    int got = rx_buffer[ALL_MSG_SN_IDX];
+    rx_buffer[ALL_MSG_SN_IDX] = 0;
+    if ((got == id) && memcmp(rx_buffer, rx_resp_msg, ALL_MSG_COMMON_LEN) == 0)
+    { 
+      if (debug_print) printf("init rx succ\r\n");
+ 
+      uint32 poll_tx_ts, resp_rx_ts, poll_rx_ts, resp_tx_ts;
+      int32 rtd_init, rtd_resp;
+      float clockOffsetRatio ;
+
+      /* Retrieve poll transmission and response reception timestamps. See NOTE 4 below. */
+      poll_tx_ts = dwt_readtxtimestamplo32();
+      resp_rx_ts = dwt_readrxtimestamplo32();
+
+      /* Read carrier integrator value and calculate clock offset ratio. See NOTE 6 below. */
+      clockOffsetRatio = dwt_readcarrierintegrator() * (FREQ_OFFSET_MULTIPLIER * HERTZ_TO_PPM_MULTIPLIER_CHAN_5 / 1.0e6) ;
+
+      /* Get timestamps embedded in response message. */
+      resp_msg_get_ts(&rx_buffer[RESP_MSG_POLL_RX_TS_IDX], &poll_rx_ts);
+      resp_msg_get_ts(&rx_buffer[RESP_MSG_RESP_TX_TS_IDX], &resp_tx_ts);
+
+      /* Compute time of flight and distance, using clock offset ratio to correct for differing local and remote clock rates */
+      rtd_init = resp_rx_ts - poll_tx_ts;
+      rtd_resp = resp_tx_ts - poll_rx_ts;
+
+      tof = ((rtd_init - rtd_resp * (1.0f - clockOffsetRatio)) / 2.0f) * DWT_TIME_UNITS; // Specifying 1.0f and 2.0f are floats to clear warning 
+      distance = tof * SPEED_OF_LIGHT;   
+      return distance;
+      
+    }
+    else{
+      if (debug_print) printf("init rx fail\r\n");
+      dwt_rxreset();
+    }
+
+   }
+
+  else
+  {
+    /* Clear RX error/timeout events in the DW1000 status register. */
+    dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR);
+
+    /* Reset RX to properly reinitialise LDE operation. */
+    dwt_rxreset();
+  }
+
+    return -1;
+}
+
 
 
 /*! ------------------------------------------------------------------------------------------------------------------

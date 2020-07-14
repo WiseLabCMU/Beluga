@@ -1,11 +1,7 @@
 /*! ----------------------------------------------------------------------------
-*  @file    ss_resp_main.c
-*  @brief   Single-sided two-way ranging (SS TWR) responder example code
+*  @file    resp_main.c
+*  @brief   Double-sided and Single-sided two-way ranging (DS/SS TWR) responder code
 *
-*           This is a simple code example which acts as the responder in a SS TWR distance measurement exchange. 
-*           This application waits for a "poll" message (recording the RX time-stamp of the poll) expected from 
-*           the "SS TWR initiator" example code (companion to this application), and
-*           then sends a "response" message recording its TX time-stamp.
 *
 *           Notes at the end of this file, to expand on the inline comments.
 *
@@ -24,12 +20,10 @@
 #include "deca_device_api.h"
 #include "deca_regs.h"
 #include "port_platform.h"
-#include "ss_init_main.h"
+#include "init_main.h"
 #include "semphr.h"
 #include "random.h"
 #include "nrf_drv_wdt.h"
-
-#define APP_NAME "SS TWR INIT v1.3"
 
 /* Inter-ranging delay period, in milliseconds. */
 #define RNG_DELAY_MS 250
@@ -95,14 +89,6 @@ static uint64 poll_rx_ts;
 static uint64 resp_tx_ts;
 static uint64 final_rx_ts;
 
-///*Interrupt flag*/
-//static volatile int tx_int_flag = 0 ; // Transmit success interrupt flag
-//static volatile int rx_int_flag = 0 ; // Receive success interrupt flag
-//static volatile int to_int_flag = 0 ; // Timeout interrupt flag
-//static volatile int er_int_flag = 0 ; // Error interrupt flag 
-//SemaphoreHandle_t rxSemaphore, txSemaphore;
-
-
 /*Transactions Counters */
 static volatile int tx_count = 0 ; // Successful transmit counter
 static volatile int rx_count = 0 ; // Successful receive counter 
@@ -123,17 +109,15 @@ nrf_drv_wdt_channel_id m_channel_id;
 
 
 /*! ------------------------------------------------------------------------------------------------------------------
-* @fn main()
+* @fn ss_resp_run()
 *
-* @brief Application entry point.
+* @brief perform double-sided responses to signal initiator
 *
 * @param  none
 *
-* @return none
+* @return int represent task complete or abort
 */
-
-
-int ss_resp_run(void)
+int ds_resp_run(void)
 {
   //if (debug_print) printf("Waiting for suspend\r\n");
 
@@ -439,6 +423,163 @@ int ss_resp_run(void)
 
 }
 
+
+/*! ------------------------------------------------------------------------------------------------------------------
+* @fn ss_resp_run()
+*
+* @brief perform single-sided responses to signal initiator
+*
+* @param  none
+*
+* @return int represent task complete or abort
+*/
+int ss_resp_run(void)
+{
+  //printf("Waiting for suspend\r\n");
+  int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); //Check if responding is suspended
+  if(suspend_start == 0) return 1;
+
+  /* Activate reception immediately. */
+  dwt_rxenable(DWT_START_RX_IMMEDIATE);
+
+  while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
+  {
+    int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
+    if(suspend == 0) 
+    {
+      if (debug_print) printf("stopped from loop \r\n");
+      dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
+    
+      /* Reset RX to properly reinitialise LDE operation. */
+      dwt_rxreset();
+      return 1;
+    }
+  }
+
+   if (debug_print) printf("gotrx sem\r\n");
+
+    #if 0	  // Include to determine the type of timeout if required.
+    int temp = 0;
+    // (frame wait timeout and preamble detect timeout)
+    if(status_reg & SYS_STATUS_RXRFTO )
+    temp =1;
+    else if(status_reg & SYS_STATUS_RXPTO )
+    temp =2;
+    #endif
+
+  if (status_reg & SYS_STATUS_RXFCG)
+  //if(rx_int_flag)
+  {
+    if(debug_print) printf("rx good \r\n");
+    //printf("good\r\n");
+    uint32 frame_len;
+
+    /* Clear good RX frame event in the DW1000 status register. */
+    dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG);
+    //rx_int_flag = 0;
+
+
+
+    /* A frame has been received, read it into the local buffer. */
+    frame_len = dwt_read32bitreg(RX_FINFO_ID) & RX_FINFO_RXFL_MASK_1023;
+    if (frame_len <= RX_BUFFER_LEN)
+    {
+      dwt_readrxdata(rx_buffer, frame_len, 0);
+    }
+
+    /* Check that the frame is a poll sent by "SS TWR initiator" example.
+    * As the sequence number field of the frame is not relevant, it is cleared to simplify the validation of the frame. */
+    int id = rx_buffer[ALL_MSG_SN_IDX];
+    rx_buffer[ALL_MSG_SN_IDX] = 0;
+    
+   
+    if ((memcmp(rx_buffer, rx_poll_msg, ALL_MSG_COMMON_LEN) == 0) && (id == NODE_UUID))
+    {
+
+      if(debug_print) printf("match\r\n");
+      uint32 resp_tx_time;
+      int ret;
+
+      /* Retrieve poll reception timestamp. */
+      poll_rx_ts = get_rx_timestamp_u64();
+
+      /* Compute final message transmission time. See NOTE 7 below. */
+      resp_tx_time = (poll_rx_ts + (POLL_RX_TO_RESP_TX_DLY_UUS * UUS_TO_DWT_TIME)) >> 8;
+      dwt_setdelayedtrxtime(resp_tx_time);
+
+      /* Response TX timestamp is the transmission time we programmed plus the antenna delay. */
+      resp_tx_ts = (((uint64)(resp_tx_time & 0xFFFFFFFEUL)) << 8) + TX_ANT_DLY;
+
+      /* Write all timestamps in the final message. See NOTE 8 below. */
+      resp_msg_set_ts(&tx_resp_msg[RESP_MSG_POLL_RX_TS_IDX], poll_rx_ts);
+      resp_msg_set_ts(&tx_resp_msg[RESP_MSG_RESP_TX_TS_IDX], resp_tx_ts);
+
+      /* Write and send the response message. See NOTE 9 below. */
+      tx_resp_msg[ALL_MSG_SN_IDX] = NODE_UUID;
+      dwt_writetxdata(sizeof(tx_resp_msg), tx_resp_msg, 0); /* Zero offset in TX buffer. See Note 5 below.*/
+      dwt_writetxfctrl(sizeof(tx_resp_msg), 0, 1); /* Zero offset in TX buffer, ranging. */
+
+      ret = dwt_starttx(DWT_START_TX_DELAYED);
+      //
+      //ret = dwt_starttx(DWT_START_TX_IMMEDIATE);
+
+      /* If dwt_starttx() returns an error, abandon this ranging exchange and proceed to the next one. */
+      if (ret == DWT_SUCCESS)
+      {
+       if (debug_print) printf("succ\r\n");
+
+      while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
+      {
+        int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
+        if(suspend == 0) 
+        {
+          if (debug_print) printf("Left while waiting\r\n");
+          dwt_forcetrxoff();
+          return 1;
+         }
+      }
+
+      /* Clear TXFRS event. */
+      dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
+
+      /* Increment frame sequence number after transmission of the poll message (modulo 256). */
+      frame_seq_nb++;
+
+      if (debug_print) printf("sent tx \r\n");
+      }
+      else
+      {
+        if (debug_print) printf("fail\r\n");
+
+      /* Reset RX to properly reinitialise LDE operation. */
+      dwt_rxreset();
+      }
+    }
+    else
+    {
+      if(debug_print) printf("no match\r\n");
+      dwt_rxreset();
+    }
+    
+  }
+  else
+  {
+    if(debug_print) printf("rx err/to \r\n");
+    /* Clear RX error events in the DW1000 status register. */
+    dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
+    
+    /* Reset RX to properly reinitialise LDE operation. */
+    dwt_rxreset();
+
+  }
+ 
+  return(1);	
+
+}
+
+
+
+
 /*! ------------------------------------------------------------------------------------------------------------------
  * @fn get_tx_timestamp_u64()
  *
@@ -530,41 +671,6 @@ static void resp_msg_get_ts(uint8 *ts_field, uint32 *ts)
   }
 }
 
-
-
-/**@brief SS TWR Initiator task entry function.
-*
-* @param[in] pvParameter   Pointer that will be used as the parameter for the task.
-*/
-void ss_responder_task_function (void * pvParameter)
-{
-  UNUSED_PARAMETER(pvParameter);
-  
-  dwt_setleds(DWT_LEDS_ENABLE);
-
-
-  while (true)
-  {
-    if (debug_print == 1) printf("resp task in \r\n");
-    nrf_drv_wdt_channel_feed(m_channel_id);
-    
-    
-    int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); //Check if responding is suspended, return 0 means suspended
-    if(suspend_start != 0) 
-    {
-      //printf("in resp time keeper: %d \r\n", time_keeper);
-        ss_resp_run();
-      //printf("out resp time keeper: %d \r\n", time_keeper);
-    }
-
-    /* Delay a task for a given number of ticks */
-    //vTaskDelay(20);
-    
-  if (debug_print == 1) printf("resp task out \r\n");
-    
-    /* Tasks must be implemented to never return... */
-  }
-}
 /*****************************************************************************************************************************************************
 * NOTES:
 *

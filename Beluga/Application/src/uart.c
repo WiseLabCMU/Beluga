@@ -43,11 +43,11 @@ static void uart_event_handle(app_uart_evt_t * p_event)
             break;
 
         case APP_UART_COMMUNICATION_ERROR:
-            // If uart error occur, just keep moving on
+            // If uart error occur, keep moving on
             break;
 
         case APP_UART_FIFO_ERROR:
-            // If uart error occur, just keep moving on
+            // If uart error occur, keep moving on
             break;
 
         default:

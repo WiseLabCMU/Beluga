@@ -67,14 +67,16 @@ uint16_t get_rand_num_exp(uint32_t freq) {
 
 }
 
-uint16_t get_rand_num_exp_collision(void) {
+uint16_t get_rand_num_exp_collision(uint32_t freq) {
 
-      uint32_t lower = 10;
+      int lower = 10;
       
-      double lambda = 0.055;
+      double lambda  = 5.0 / (double)freq;
+      //double lambda = 0.055;
       double u;
       
       u = rand() / (RAND_MAX + 1.0);
+
       
-      return (-log(1- u) / lambda)+lower;
+      return (-log(1- u) / lambda)+lower; 
 }

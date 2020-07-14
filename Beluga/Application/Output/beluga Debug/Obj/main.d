@@ -35,8 +35,6 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/components/drivers_nrf/wdt/nrf_drv_wdt.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_wdt.h \
- ../nRF52-sdk/components/libraries/fifo/app_fifo.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
  ../nRF52-sdk/external/freertos/source/include/FreeRTOS.h \
  ../nRF52-sdk/external/freertos/config/FreeRTOSConfig.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_soc.h \
@@ -62,6 +60,7 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpio.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_peripherals.h \
  ../nRF52-sdk/components/device/nrf52832_peripherals.h \
+ /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
  ../nRF52-sdk/components/boards/dw1001_dev.h \
  ../nRF52-sdk/components/libraries/button/app_button.h \
  ../nRF52-sdk/components/drivers_nrf/clock/nrf_drv_clock.h \
@@ -88,9 +87,10 @@ Output/beluga\ Debug/Obj/main.o: \
  ../deca_driver/deca_version.h \
  ../nRF52-sdk/components/drivers_nrf/gpiote/nrf_drv_gpiote.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpiote.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ss_init_main.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/init_main.h \
  ../nRF52-sdk/external/freertos/source/include/semphr.h \
  ../nRF52-sdk/external/freertos/source/include/queue.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/resp_main.h \
  ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.h \
  ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage.h \
  /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/flash.h \
