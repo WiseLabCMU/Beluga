@@ -164,9 +164,12 @@ uint16_t NODE_UUID = 1;
 #define BLE_UWB_RANGE1 0x0000
 #define BLE_UWB_RANGE2 0x0000
 
+uint32_t time_keeper;
 int ble_started;
 int node_added;
 int last_seen_idx = 0;
+
+
 node seen_list[MAX_ANCHOR_COUNT];
 
 
@@ -557,6 +560,34 @@ static uint16_t find_adv_uuid_next(ble_gap_evt_adv_report_t const * p_adv_report
     return -1;
 }
 
+static uint8_t find_adv_manu(ble_gap_evt_adv_report_t const * p_adv_report)
+{
+    ret_code_t err_code;
+    data_t     adv_data;
+    data_t     type_data;
+
+    // Initialize advertisement report for parsing.
+    adv_data.p_data   = (uint8_t *)p_adv_report->data;
+    adv_data.data_len = p_adv_report->dlen;
+
+    err_code = adv_report_parse(BLE_GAP_AD_TYPE_MANUFACTURER_SPECIFIC_DATA,
+                                &adv_data,
+                                &type_data);
+
+    //uint16_t extracted_uuid;
+    //printf("data length: %d \r\n", type_data.data_len);
+    //for (uint32_t i = 0; i < type_data.data_len; i++)
+    //{
+        //printf("%x", type_data.p_data[2]);
+    return type_data.p_data[2];
+    //}
+    //printf("\r\n \n");
+
+    
+}
+
+
+
 /**@brief   Function for handling BLE events from central applications.
  *
  * @details This function parses scanning reports and initiates a connection to peripherals when a
@@ -668,6 +699,11 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
                      - Get RSSI
                      - Get Current Timestamp
                      */
+                     
+                     // Parse polling flag data from manufacturer data
+                     uint8_t found_pollflag = find_adv_manu(&p_gap_evt->params.adv_report);
+                     //printf("polling flag: %x, %c \r\n", found_pollflag, found_pollflag);
+                     //printf("== 1: %d \r\n", found_pollflag == '1');
 
                      
                      uint16_t found_UUID = find_adv_uuid_next(&p_gap_evt->params.adv_report);
@@ -681,6 +717,14 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
                        }
                        seen_list[last_seen_idx].UUID = found_UUID;
                        seen_list[last_seen_idx].RSSI = p_ble_evt->evt.gap_evt.params.adv_report.rssi;
+                       seen_list[last_seen_idx].ble_time_stamp = time_keeper;
+
+                       if (found_pollflag == '1') {
+                          seen_list[last_seen_idx].polling_flag = 1;
+                       }
+                       if (found_pollflag == '0') {
+                          seen_list[last_seen_idx].polling_flag = 0;
+                       }
                        //printf("%d \r\n",p_ble_evt->evt.gap_evt.params.adv_report.rssi); 
                        //seen_list[last_seen_idx].time_stamp = time_keeper;
 
@@ -694,10 +738,19 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
                      {
                        int index = get_seen_list_idx(found_UUID);
                        seen_list[index].RSSI = p_ble_evt->evt.gap_evt.params.adv_report.rssi;
+                       seen_list[index].ble_time_stamp = time_keeper;
+
+                       if (found_pollflag == '1') {
+                          seen_list[index].polling_flag = 1;
+                       }
+                       if (found_pollflag == '0') {
+                          seen_list[index].polling_flag = 0;
+                       }
                        //seen_list[index].time_stamp = time_keeper;
                        //printf("update time stamp \r\n");
 
                      }
+                     
 
 
 
@@ -1120,6 +1173,16 @@ void advertising_init(void)
     
     memset(&init, 0, sizeof(init));
 
+
+    //Set manufacturing data
+    ble_advdata_manuf_data_t                  manuf_data; //Variable to hold manufacturer specific data
+    uint8_t data[2]                           = "0"; //Our data to advertise
+    manuf_data.company_identifier             =  0x0059; //Nordics company ID
+    manuf_data.data.p_data                    = data;
+    manuf_data.data.size                      = sizeof(data);
+    init.advdata.p_manuf_specific_data = &manuf_data;
+
+
     init.advdata.name_type               = BLE_ADVDATA_FULL_NAME;
     init.advdata.include_appearance      = true;
     init.advdata.flags                   = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
@@ -1137,6 +1200,48 @@ void advertising_init(void)
     APP_ERROR_CHECK(err_code);
 
     ble_advertising_conn_cfg_tag_set(&m_advertising, APP_BLE_CONN_CFG_TAG);
+}
+
+
+/**@brief Function for re-config the Advertising package.
+ */
+void advertising_reconfig(int change)
+{
+
+    ret_code_t       err_code;
+    ble_advdata_t    advdata;
+
+    uint8_t data_0[2] = "0";
+    uint8_t data_1[2] = "1";
+    
+    memset(&advdata, 0, sizeof(advdata));
+
+    //Set manufacturing data
+    ble_advdata_manuf_data_t                  manuf_data; //Variable to hold manufacturer specific data
+
+    uint8_t data[2];                                     //Our data to advertise
+    if (change == 0) {
+      strcpy(data, data_0);
+    }
+    else {
+      strcpy(data, data_1);
+    }
+
+    manuf_data.company_identifier             = 0x0059; //Nordics company ID
+    manuf_data.data.p_data                    = data;
+    manuf_data.data.size                      = sizeof(data);
+    advdata.p_manuf_specific_data = &manuf_data;
+
+
+    advdata.name_type               = BLE_ADVDATA_FULL_NAME;
+    advdata.include_appearance      = true;
+    advdata.flags                   = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
+    advdata.uuids_complete.uuid_cnt =  sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
+    advdata.uuids_complete.p_uuids  = m_adv_uuids;
+
+    err_code = ble_advdata_set(&advdata, NULL);
+    APP_ERROR_CHECK(err_code);
+
 }
 
 

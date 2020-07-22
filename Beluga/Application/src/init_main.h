@@ -14,14 +14,9 @@
 
 #include "semphr.h"
 
-/* Declaration of static functions. */
-
 extern SemaphoreHandle_t rxSemaphore, txSemaphore, sus_resp, sus_init;
-
 extern int debug_print;
-
 extern uint16_t NODE_UUID;
-
 
 double ds_init_run(uint8 id);
 double ss_init_run(uint8 id);

@@ -26,6 +26,7 @@
   <ProjectSessionItem path="beluga;beluga;Board Support"/>
   <ProjectSessionItem path="beluga;beluga;Decadriver"/>
   <ProjectSessionItem path="beluga;beluga;Freertos"/>
+  <ProjectSessionItem path="beluga;beluga;nRF_BLE"/>
   <ProjectSessionItem path="beluga;beluga;nRF_Drivers"/>
   <ProjectSessionItem path="beluga;beluga;nRF_Libraries"/>
   <ProjectSessionItem path="beluga;beluga;nRF_SoftDevice"/>
@@ -62,16 +63,25 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="32" y="84" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ss_resp_main.c" useBinaryEdit="0" left="0" path="src/main.c" selected="1" top="99" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="130" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="src/ss_init_main.c" selected="0" top="76" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="4" y="550" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ss_init_main.c" useBinaryEdit="0" left="0" path="src/ss_resp_main.c" selected="0" top="581" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="19" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ss_init_main.c" useBinaryEdit="0" left="0" path="src/ss_init_main.h" selected="0" top="9" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="1" y="62" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/main.c" useBinaryEdit="0" left="0" path="src/uart.c" selected="0" top="18" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="28" y="4" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/uart.c" useBinaryEdit="0" left="0" path="src/uart.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="4" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ble_app.c" useBinaryEdit="0" left="0" path="src/ble_app.h" selected="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="222" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/main.c" useBinaryEdit="0" left="0" path="src/ble_app.c" selected="0" top="204" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="36" y="76" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/main.c" useBinaryEdit="0" left="0" path="src/random.c" selected="0" top="42" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="src/random.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="37" y="856" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ss_resp_main.c" useBinaryEdit="0" left="0" path="src/main.c" selected="1" top="834" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="10" y="26" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ble_app.c" useBinaryEdit="0" left="0" path="src/ble_app.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="21" y="701" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/main.c" useBinaryEdit="0" left="0" path="src/ble_app.c" selected="0" top="703" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/main.c" useBinaryEdit="0" left="0" path="src/random.c" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="7" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="src/random.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="5" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="src/init_main.c" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="15" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="src/init_main.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="15" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="src/resp_main.c" selected="0" top="3" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="15" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="src/resp_main.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="src/flash.h" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="7" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="src/flash.c" selected="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="74" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ble_app.c" useBinaryEdit="0" left="0" path="../nRF52-sdk/components/ble/common/ble_srv_common.h" selected="0" top="54" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="42" y="1436" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/common/ble_advdata.c" useBinaryEdit="0" left="0" path="../nRF52-sdk/components/softdevice/s132/headers/ble_gap.h" selected="0" top="1410" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="99" y="403" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ble_app.c" useBinaryEdit="0" left="0" path="../nRF52-sdk/components/ble/ble_advertising/ble_advertising.c" selected="0" top="371" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="660" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../nRF52-sdk/components/ble/common/ble_advdata.c" selected="0" top="654" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="164" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ble_app.c" useBinaryEdit="0" left="0" path="../nRF52-sdk/components/ble/common/ble_advdata.h" selected="0" top="138" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="203" useTextEdit="1" openedFrom="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ble_app.c" useBinaryEdit="0" left="0" path="../nRF52-sdk/components/ble/ble_advertising/ble_advertising.h" selected="0" top="188" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="1551" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../nRF52-sdk/external/freertos/source/queue.c" selected="0" top="1535" codecName=""/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="170" useTextEdit="1" openedFrom="" useBinaryEdit="0" left="0" path="../nRF52-sdk/components/drivers_nrf/wdt/nrf_drv_wdt.c" selected="0" top="153" codecName=""/>
  </Files>
- <ARMCrossStudioWindow activeProject="beluga" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/drivers_nrf/wdt" debugSearchPath="" autoConnectCapabilities="3711"/>
+ <ARMCrossStudioWindow activeProject="beluga" fileDialogDefaultFilter="*.h" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="/home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>

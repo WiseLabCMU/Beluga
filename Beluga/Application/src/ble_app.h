@@ -1,3 +1,12 @@
+/*! ----------------------------------------------------------------------------
+ *  @file   ble_app.h
+ *
+ *  @brief  Nordic BLE advertising and scanning application codes --Header file
+ *
+ *  @date   2020/07
+ *
+ *  @author WiseLab-CMU 
+ */
 
 #ifndef  _BLE_APP_
 #define _BLE_APP_
@@ -10,6 +19,8 @@ typedef struct node{
     int time_stamp;
     float range;
     int update_flag;
+    int polling_flag;
+    int ble_time_stamp;
 } node;
 
 #define MAX_ANCHOR_COUNT 12
@@ -26,6 +37,8 @@ void conn_params_init(void);
 void advertising_init(void);
 void log_init(void);
 void power_manage(void);
+
+void advertising_reconfig(int change);
 
 
 #endif

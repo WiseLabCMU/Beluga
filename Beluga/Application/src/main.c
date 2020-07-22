@@ -387,6 +387,15 @@ void uart_task_function(void * pvParameter){
             else {
               writeFlashID(rate, 3);
               initiator_freq = rate;
+
+              // reconfig BLE advertising data
+              if (rate == 0) {
+                advertising_reconfig(0);
+              }
+              else {
+                advertising_reconfig(1);
+              }
+
               printf("Rate: %d OK \r\n", rate);
             }
         }
@@ -601,7 +610,7 @@ void ranging_task_function(void *pvParameter)
   static int cur_index = 0;
 
   while(1){
-    
+      //printf("ranging task in \r\n\n");
       if(initiator_freq != 0)
       {
         
@@ -684,19 +693,58 @@ void ranging_task_function(void *pvParameter)
           }
         }
         break_flag = 0;
-
         
         resp_reconfig();
         dwt_forcetrxoff();
         
         xSemaphoreGive(sus_init);
         xSemaphoreGive(sus_resp); //Resume Responder Task
-
       }
       else {
         vTaskDelay(1000);
         if (debug_print == 1) printf("ranging task in \r\n");
       }
+
+    // Check polling flag of each node
+    int polling_count = 0;
+    for (int x = 0; x < MAX_ANCHOR_COUNT; x++) {
+      //printf("node %d: flag = %d \r\n", x, seen_list[x].polling_flag);
+      if(seen_list[x].UUID != 0 && seen_list[x].polling_flag != 0) {
+        polling_count += 1;
+      }
+    }
+    // If no polling nodes in the network, suspend UWB response (listening) 
+    if (polling_count == 0) {
+      //printf("resp take! \r\n\n");
+
+      xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
+      xSemaphoreTake(sus_init, portMAX_DELAY);
+      vTaskDelay(2);
+      dwt_forcetrxoff();
+      resp_reconfig();
+      dwt_forcetrxoff();
+      xSemaphoreGive(sus_init);
+      xSemaphoreGive(sus_resp);
+
+
+      xSemaphoreTake(sus_resp, 0);          
+    }
+    else {
+      //printf("resp give! \r\n\n");
+
+      xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
+      xSemaphoreTake(sus_init, portMAX_DELAY);
+      vTaskDelay(2);
+      dwt_forcetrxoff();
+      resp_reconfig();
+      dwt_forcetrxoff();
+      xSemaphoreGive(sus_init);
+      xSemaphoreGive(sus_resp);
+
+      xSemaphoreGive(sus_resp);     
+    }
+
+
       if (debug_print == 1) printf("ranging task out \r\n");
     }
 
@@ -717,6 +765,9 @@ void monitor_task_function(void *pvParameter)
     vTaskDelay(1000);
     if (debug_print == 1) printf("monitor task in \r\n");
 
+    // Feed the watchdog timer
+    //nrf_drv_wdt_channel_feed(m_channel_id);
+
     count += 1;
     
     xSemaphoreTake(sus_init, portMAX_DELAY);
@@ -725,13 +776,15 @@ void monitor_task_function(void *pvParameter)
     // Check for timeout eviction
     for(int x = 0; x < MAX_ANCHOR_COUNT; x++) {
       if(seen_list[x].UUID != 0) {
-        if( (time_keeper - seen_list[x].time_stamp) >= time_out) {
+        if( (time_keeper - seen_list[x].ble_time_stamp) >= time_out) {
           removed = 1;
           seen_list[x].UUID = 0;
           seen_list[x].range = 0;
           seen_list[x].time_stamp = 0;
           seen_list[x].RSSI = 0;
           seen_list[x].update_flag = 0;
+          seen_list[x].polling_flag = 0;
+          seen_list[x].ble_time_stamp = 0;
         }
       }
     }
@@ -752,11 +805,13 @@ void monitor_task_function(void *pvParameter)
       }
       
       //Resume scanning/building up neighbor list
-      scan_start(); 
+      scan_start();
       node_added = 0;
       removed = 0;
       count = 0;
     }
+
+    
       
     xSemaphoreGive(sus_init);
 
@@ -782,13 +837,15 @@ void responder_task_function (void * pvParameter)
     if (debug_print == 1) printf("resp task in \r\n");
 
     // Feed the watchdog timer
-    nrf_drv_wdt_channel_feed(m_channel_id);
+    //nrf_drv_wdt_channel_feed(m_channel_id);
+    
     
     //Check if responding is suspended, return 0 means suspended
     int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); 
 
     if(suspend_start != 0) 
     {
+      
       if (twr_mode == 1) ds_resp_run();
       if (twr_mode == 0) ss_resp_run();      
     }
@@ -817,13 +874,13 @@ int main(void)
     bool erase_bonds;
 
     // Setup WDT 
-    uint32_t err_code = NRF_SUCCESS;
-    nrf_drv_wdt_config_t wdt_config = NRF_DRV_WDT_DEAFULT_CONFIG;
-    err_code = nrf_drv_wdt_init(&wdt_config, wdt_event_handler);
-    APP_ERROR_CHECK(err_code);
-    err_code = nrf_drv_wdt_channel_alloc(&m_channel_id);
-    APP_ERROR_CHECK(err_code);
-    nrf_drv_wdt_enable();
+//    uint32_t err_code = NRF_SUCCESS;
+//    nrf_drv_wdt_config_t wdt_config = NRF_DRV_WDT_DEAFULT_CONFIG;
+//    err_code = nrf_drv_wdt_init(&wdt_config, wdt_event_handler);
+//    APP_ERROR_CHECK(err_code);
+//    err_code = nrf_drv_wdt_channel_alloc(&m_channel_id);
+//    APP_ERROR_CHECK(err_code);
+//    nrf_drv_wdt_enable();
 
 
     // Init nodes in seen list
@@ -834,6 +891,8 @@ int main(void)
       seen_list[i].time_stamp = 0;
       seen_list[i].range = 0;
       seen_list[i].update_flag = 0;
+      seen_list[i].polling_flag = 0;
+      seen_list[i].ble_time_stamp = 0;
     }
   
     uart_init();
@@ -978,6 +1037,15 @@ int main(void)
     {
       uint32_t rate = getFlashID(3);
       initiator_freq = rate;
+
+      // reconfig BLE advertising data
+      if (rate == 0) {
+        advertising_reconfig(0);
+      }
+      else {
+        advertising_reconfig(1);
+      }
+
       printf("  UWB Polling Rate: %d\r\n", rate);
     }
 

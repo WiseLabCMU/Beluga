@@ -13,6 +13,7 @@
 *
 * @author Decawave
 */
+
 #include "nrf_gpio.h"
 #include <stdio.h>
 #include <string.h>

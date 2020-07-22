@@ -1,3 +1,12 @@
+/*! ----------------------------------------------------------------------------
+ *  @file   uart.c
+ *
+ *  @brief  An implementation of uart init and uart event handler --Header file
+ *
+ *  @date   2020/06
+ *
+ *  @author WiseLab-CMU 
+ */
 
 #ifndef _UART_H_
 #define _UART_H_

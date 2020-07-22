@@ -13,6 +13,7 @@
 *
 * @author Decawave
 */
+
 #include <stdio.h>
 #include <string.h>
 #include "FreeRTOS.h"
@@ -104,7 +105,6 @@ static double distance;
 /* Receive final timeout. See NOTE 5 below. */
 #define FINAL_RX_TIMEOUT_UUS 4500
 
-uint32_t time_keeper;
 nrf_drv_wdt_channel_id m_channel_id;
 
 

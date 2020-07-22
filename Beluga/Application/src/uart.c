@@ -1,4 +1,5 @@
-/** @file   uart.c
+/*! ----------------------------------------------------------------------------
+ *  @file   uart.c
  *
  *  @brief  An implementation of uart init and uart event handler
  *

@@ -1,4 +1,5 @@
-/** @file   flash.c
+/*! ----------------------------------------------------------------------------
+ *  @file   flash.c
  *
  *  @brief  An implementation of modify and retrive data through flash data storage
  *

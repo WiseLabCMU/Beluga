@@ -1,3 +1,12 @@
+/*! ----------------------------------------------------------------------------
+ *  @file   flash.h
+ *
+ *  @brief  An implementation of modify and retrive data through flash data storage --Header file
+ *
+ *  @date   2020/06
+ *
+ *  @author WiseLab-CMU 
+ */
 
 #ifndef _FLASH_H_
 #define _FLASH_H_
