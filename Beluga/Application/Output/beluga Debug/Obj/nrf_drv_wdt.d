@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/nrf_drv_wdt.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/drivers_nrf/wdt/nrf_drv_wdt.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/drivers_nrf/wdt/nrf_drv_wdt.c \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
@@ -26,7 +26,7 @@ Output/beluga\ Debug/Obj/nrf_drv_wdt.o: \
  ../nRF52-sdk/components/device/nrf52_name_change.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/sdk_macros.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/drivers_nrf/wdt/nrf_drv_wdt.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/drivers_nrf/wdt/nrf_drv_wdt.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_wdt.h \
  ../nRF52-sdk/components/drivers_nrf/common/nrf_drv_common.h \

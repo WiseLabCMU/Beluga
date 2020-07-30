@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/main.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/main.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/main.c \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gap.h \
@@ -87,15 +87,15 @@ Output/beluga\ Debug/Obj/main.o: \
  ../deca_driver/deca_version.h \
  ../nRF52-sdk/components/drivers_nrf/gpiote/nrf_drv_gpiote.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpiote.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/init_main.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/init_main.h \
  ../nRF52-sdk/external/freertos/source/include/semphr.h \
  ../nRF52-sdk/external/freertos/source/include/queue.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/resp_main.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/resp_main.h \
  ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.h \
  ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/flash.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/flash.h \
  ../nRF52-sdk/components/libraries/fds/fds.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/uart.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ble_app.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/random.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/uart.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/ble_app.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/random.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_uarte.h

@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/resp_main.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/resp_main.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/resp_main.c \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
@@ -68,9 +68,9 @@ Output/beluga\ Debug/Obj/resp_main.o: \
  ../nRF52-sdk/components/boards/boards.h \
  ../nRF52-sdk/components/boards/dw1001_dev.h \
  ../nRF52-sdk/components/libraries/util/app_error.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/init_main.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/init_main.h \
  ../nRF52-sdk/external/freertos/source/include/semphr.h \
  ../nRF52-sdk/external/freertos/source/include/queue.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/random.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/random.h \
  ../nRF52-sdk/components/drivers_nrf/wdt/nrf_drv_wdt.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_wdt.h

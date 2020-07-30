@@ -1,6 +1,6 @@
 Output/beluga\ Debug/Obj/flash.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/flash.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/flash.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/flash.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/flash.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  ../nRF52-sdk/components/libraries/fds/fds.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \

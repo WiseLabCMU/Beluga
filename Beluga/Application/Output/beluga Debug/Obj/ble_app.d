@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/ble_app.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ble_app.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/ble_app.c \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
@@ -100,5 +100,5 @@ Output/beluga\ Debug/Obj/ble_app.o: \
  ../nRF52-sdk/components/libraries/experimental_memobj/nrf_memobj.h \
  ../nRF52-sdk/components/libraries/balloc/nrf_balloc.h \
  ../nRF52-sdk/components/libraries/experimental_log/nrf_log_default_backends.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/ble_app.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/ble_app.h \
  ../deca_driver/deca_device_api.h

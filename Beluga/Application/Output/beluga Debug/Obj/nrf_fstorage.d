@@ -1,7 +1,7 @@
 Output/beluga\ Debug/Obj/nrf_fstorage.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/fstorage/nrf_fstorage.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/fstorage/nrf_fstorage.c \
  ../config/sdk_config.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/fstorage/nrf_fstorage.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/fstorage/nrf_fstorage.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \

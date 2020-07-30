@@ -1,11 +1,11 @@
 Output/beluga\ Debug/Obj/bsp_nfc.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/bsp/bsp_nfc.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/bsp/bsp_nfc.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/bsp/bsp_nfc.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/bsp/bsp_nfc.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/bsp/bsp.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/bsp/bsp.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
  ../nRF52-sdk/components/boards/boards.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpio.h \

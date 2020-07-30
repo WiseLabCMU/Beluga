@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/init_main.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/init_main.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/init_main.c \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpio.h \
  ../nRF52-sdk/components/device/nrf.h \
  ../nRF52-sdk/components/device/nrf52.h \
@@ -68,10 +68,10 @@ Output/beluga\ Debug/Obj/init_main.o: \
  ../nRF52-sdk/components/boards/boards.h \
  ../nRF52-sdk/components/boards/dw1001_dev.h \
  ../nRF52-sdk/components/libraries/util/app_error.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/init_main.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/init_main.h \
  ../nRF52-sdk/external/freertos/source/include/semphr.h \
  ../nRF52-sdk/external/freertos/source/include/queue.h \
  ../nRF52-sdk/components/libraries/timer/app_timer.h \
  ../nRF52-sdk/external/freertos/source/include/timers.h \
  ../nRF52-sdk/external/freertos/source/include/task.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/Application/src/random.h
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/random.h

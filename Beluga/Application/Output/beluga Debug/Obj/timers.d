@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/timers.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/external/freertos/source/timers.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/external/freertos/source/timers.c \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
  ../nRF52-sdk/external/freertos/source/include/FreeRTOS.h \

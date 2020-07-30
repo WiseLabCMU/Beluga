@@ -80,12 +80,13 @@ extern int node_added;
 int debug_print;
 int streaming_mode;
 int twr_mode;
+int leds_mode;
 
 SemaphoreHandle_t rxSemaphore, txSemaphore, sus_resp, sus_init, print_list_sem;
 QueueHandle_t uart_queue;
 
 static int initiator_freq = 100;
-static int time_out = 5000;
+static int time_out = 9000;
 
 // Watchdog channel 
 extern nrf_drv_wdt_channel_id m_channel_id;
@@ -294,7 +295,7 @@ void uart_task_function(void * pvParameter){
             // Give the suspension semaphore so UWB can continue
             xSemaphoreGive(sus_resp);
             xSemaphoreGive(sus_init);
-            bsp_board_led_on(BSP_BOARD_LED_2);
+            if (leds_mode == 0) bsp_board_led_on(BSP_BOARD_LED_2);
             printf("OK \r\n");
            
         }
@@ -305,7 +306,7 @@ void uart_task_function(void * pvParameter){
             // Take UWB suspension semaphore
             xSemaphoreTake(sus_resp, portMAX_DELAY);
             xSemaphoreTake(sus_init, portMAX_DELAY);
-            bsp_board_led_off(BSP_BOARD_LED_2);
+            if (leds_mode == 0) bsp_board_led_off(BSP_BOARD_LED_2);
             printf("OK \r\n");
             
         }
@@ -316,7 +317,7 @@ void uart_task_function(void * pvParameter){
             // Give print list semaphore
             xSemaphoreGive(print_list_sem);
             adv_scan_start();
-            bsp_board_led_on(BSP_BOARD_LED_1);
+            if (leds_mode == 0) bsp_board_led_on(BSP_BOARD_LED_1);
             printf("OK \r\n");
                     
         }
@@ -328,7 +329,7 @@ void uart_task_function(void * pvParameter){
             sd_ble_gap_scan_stop();
             // Take print list semaphore to stop printing
             xSemaphoreTake(print_list_sem, portMAX_DELAY);
-            bsp_board_led_off(BSP_BOARD_LED_1);
+            if (leds_mode == 0) bsp_board_led_off(BSP_BOARD_LED_1);
             printf("OK \r\n");
         }
 
@@ -437,64 +438,107 @@ void uart_task_function(void * pvParameter){
 
         else if (0 == strncmp((const char *)incoming_message.data, (const char *)"AT+RESET", (size_t)8)) {
 
+          // Delete ID record
           fds_record_desc_t   record_desc_1;
           fds_find_token_t    ftok_1;
           memset(&ftok_1, 0x00, sizeof(fds_find_token_t));
-          if (fds_record_find(FILE_ID, RECORD_KEY_1, &record_desc_1, &ftok_1) == FDS_SUCCESS) //If there is a stored rate
-            {};
-          ret_code_t ret = fds_record_delete(&record_desc_1);
-          if (ret != FDS_SUCCESS)
-          {
+          if (fds_record_find(FILE_ID, RECORD_KEY_1, &record_desc_1, &ftok_1) == FDS_SUCCESS) {
+            ret_code_t ret = fds_record_delete(&record_desc_1);
+            if (ret != FDS_SUCCESS) {
              printf("FDS Delete error \r\n");
+            }
           }
 
           // Delete rate record
           fds_record_desc_t   record_desc_2;
           fds_find_token_t    ftok_2;
           memset(&ftok_2, 0x00, sizeof(fds_find_token_t));
-          if (fds_record_find(FILE_ID, RECORD_KEY_3, &record_desc_2, &ftok_2) == FDS_SUCCESS) //If there is a stored rate
-            {};
-          ret_code_t ret2 = fds_record_delete(&record_desc_2);
-          if (ret2 != FDS_SUCCESS)
-          {
+          if (fds_record_find(FILE_ID, RECORD_KEY_3, &record_desc_2, &ftok_2) == FDS_SUCCESS) {
+            ret_code_t ret2 = fds_record_delete(&record_desc_2);
+            if (ret2 != FDS_SUCCESS) {
              printf("FDS Delete error \r\n");
+            }
           }
-
+          
           // Delete channel record
           fds_record_desc_t   record_desc_3;
           fds_find_token_t    ftok_3;
           memset(&ftok_3, 0x00, sizeof(fds_find_token_t));
-          if (fds_record_find(FILE_ID, RECORD_KEY_4, &record_desc_3, &ftok_3) == FDS_SUCCESS) //If there is a stored rate
-            {};
-          ret_code_t ret3 = fds_record_delete(&record_desc_3);
-          if (ret3 != FDS_SUCCESS)
-          {
-             printf("FDS Delete error \r\n");
+          if (fds_record_find(FILE_ID, RECORD_KEY_4, &record_desc_3, &ftok_3) == FDS_SUCCESS) { 
+            ret_code_t ret3 = fds_record_delete(&record_desc_3);
+            if (ret3 != FDS_SUCCESS) {
+              printf("FDS Delete error \r\n");
+            }
           }
-
+          
           // Delete timeout record
           fds_record_desc_t   record_desc_4;
           fds_find_token_t    ftok_4;
           memset(&ftok_4, 0x00, sizeof(fds_find_token_t));
-          if (fds_record_find(FILE_ID, RECORD_KEY_5, &record_desc_4, &ftok_4) == FDS_SUCCESS) //If there is a stored rate
-            {};
-          ret_code_t ret4 = fds_record_delete(&record_desc_4);
-          if (ret4 != FDS_SUCCESS)
-          {
-             printf("FDS Delete error \r\n");
+          if (fds_record_find(FILE_ID, RECORD_KEY_5, &record_desc_4, &ftok_4) == FDS_SUCCESS) {
+            ret_code_t ret4 = fds_record_delete(&record_desc_4);
+            if (ret4 != FDS_SUCCESS) {
+              printf("FDS Delete error \r\n");
+            }
           }
+          
+
           // Delete Tx power record
           fds_record_desc_t   record_desc_5;
           fds_find_token_t    ftok_5;
           memset(&ftok_5, 0x00, sizeof(fds_find_token_t));
-          if (fds_record_find(FILE_ID, RECORD_KEY_6, &record_desc_5, &ftok_5) == FDS_SUCCESS) //If there is a stored rate
-            {};
-          ret_code_t ret5 = fds_record_delete(&record_desc_5);
-          if (ret5 != FDS_SUCCESS)
-          {
-             printf("FDS Delete error \r\n");
+          if (fds_record_find(FILE_ID, RECORD_KEY_6, &record_desc_5, &ftok_5) == FDS_SUCCESS) {
+            ret_code_t ret5 = fds_record_delete(&record_desc_5);
+            if (ret5 != FDS_SUCCESS) {
+              printf("FDS Delete error \r\n");
+            }
+          }
+          
+
+          // Delete stream mode record
+          fds_record_desc_t   record_desc_6;
+          fds_find_token_t    ftok_6;
+          memset(&ftok_6, 0x00, sizeof(fds_find_token_t));
+          if (fds_record_find(FILE_ID, RECORD_KEY_7, &record_desc_6, &ftok_6) == FDS_SUCCESS) {
+            ret_code_t ret6 = fds_record_delete(&record_desc_6);
+            if (ret6 != FDS_SUCCESS) {
+              printf("FDS Delete error \r\n");
+            }
           }
 
+          // Delete TWR mode record
+          fds_record_desc_t   record_desc_7;
+          fds_find_token_t    ftok_7;
+          memset(&ftok_7, 0x00, sizeof(fds_find_token_t));
+          if (fds_record_find(FILE_ID, RECORD_KEY_8, &record_desc_7, &ftok_7) == FDS_SUCCESS) {
+            ret_code_t ret7 = fds_record_delete(&record_desc_7);
+            if (ret7 != FDS_SUCCESS) {
+              printf("FDS Delete error \r\n");
+            }
+          }
+          
+          // Delete LED mode record
+          fds_record_desc_t   record_desc_8;
+          fds_find_token_t    ftok_8;
+          memset(&ftok_8, 0x00, sizeof(fds_find_token_t));
+          if (fds_record_find(FILE_ID, RECORD_KEY_9, &record_desc_8, &ftok_8) == FDS_SUCCESS) {
+            ret_code_t ret8 = fds_record_delete(&record_desc_8);
+            if (ret8 != FDS_SUCCESS) {
+              printf("FDS Delete error \r\n");
+            }
+          }
+
+          // Delete BOOT mode record
+          fds_record_desc_t   record_desc_9;
+          fds_find_token_t    ftok_9;
+          memset(&ftok_9, 0x00, sizeof(fds_find_token_t));
+          if (fds_record_find(FILE_ID, RECORD_KEY_2, &record_desc_9, &ftok_9) == FDS_SUCCESS) {
+            ret_code_t ret9 = fds_record_delete(&record_desc_9);
+            if (ret9 != FDS_SUCCESS) {
+              printf("FDS Delete error \r\n");
+            }
+          };
+          
           printf("Reset OK \r\n");
         }
 
@@ -579,6 +623,44 @@ void uart_task_function(void * pvParameter){
             }
         }
 
+        else if (0 == strncmp((const char *)incoming_message.data, (const char *)"AT+LEDMODE", (size_t)10)) {
+            
+            char buf[100];
+            strcpy(buf, incoming_message.data);
+            char *uuid_char = strtok(buf, " ");
+            uuid_char = strtok(NULL, " ");
+            uint32_t led_mode = atoi(uuid_char);
+            
+            if (led_mode < 0 || led_mode > 1) {
+              printf("LED mode parameter input error \r\n");
+            }
+            else {
+              writeFlashID(led_mode, 9);
+              leds_mode = led_mode;
+              // Turn off all LEDs
+              if (leds_mode == 1) {
+                bsp_board_leds_off();
+                dwt_setleds(DWT_LEDS_DISABLE);
+              }
+
+              // Turn on LEDs from flash records
+              if (leds_mode == 0) {
+                bsp_board_led_on(BSP_BOARD_LED_0);
+                dwt_setleds(DWT_LEDS_ENABLE);
+
+                uint32_t state = getFlashID(2); 
+                if( (state == 1) || (state == 2) ) {
+                  bsp_board_led_on(BSP_BOARD_LED_1);
+                }
+                if (state == 2) {
+                  bsp_board_led_on(BSP_BOARD_LED_2);
+                }  
+              }
+
+              printf("OK \r\n");
+            }
+        }
+
         else printf("ERROR Invalid AT Command\r\n");
       }
 
@@ -611,6 +693,8 @@ void ranging_task_function(void *pvParameter)
 
   while(1){
       //printf("ranging task in \r\n\n");
+      nrf_drv_wdt_channel_feed(m_channel_id);
+
       if(initiator_freq != 0)
       {
         
@@ -642,6 +726,11 @@ void ranging_task_function(void *pvParameter)
 
         int search_count = 0;
         float range1;
+
+//        for (int a = 0; a < MAX_ANCHOR_COUNT; a++) {
+//          printf("%d ", seen_list[a].UUID);
+//        }
+//        printf("\n");
 
         while (seen_list[cur_index].UUID == 0) {
           cur_index += 1;
@@ -766,7 +855,7 @@ void monitor_task_function(void *pvParameter)
     if (debug_print == 1) printf("monitor task in \r\n");
 
     // Feed the watchdog timer
-    //nrf_drv_wdt_channel_feed(m_channel_id);
+    nrf_drv_wdt_channel_feed(m_channel_id);
 
     count += 1;
     
@@ -829,7 +918,8 @@ void responder_task_function (void * pvParameter)
 {
   UNUSED_PARAMETER(pvParameter);
   
-  dwt_setleds(DWT_LEDS_ENABLE);
+  if (leds_mode == 0) dwt_setleds(DWT_LEDS_ENABLE);
+  if (leds_mode == 1) dwt_setleds(DWT_LEDS_DISABLE);
 
 
   while(1) {
@@ -837,7 +927,7 @@ void responder_task_function (void * pvParameter)
     if (debug_print == 1) printf("resp task in \r\n");
 
     // Feed the watchdog timer
-    //nrf_drv_wdt_channel_feed(m_channel_id);
+    nrf_drv_wdt_channel_feed(m_channel_id);
     
     
     //Check if responding is suspended, return 0 means suspended
@@ -870,17 +960,18 @@ int main(void)
     debug_print = 0;
     streaming_mode = 0;
     twr_mode = 1;
+    leds_mode = 0;
     uwb_pgdelay = ch5;
     bool erase_bonds;
 
     // Setup WDT 
-//    uint32_t err_code = NRF_SUCCESS;
-//    nrf_drv_wdt_config_t wdt_config = NRF_DRV_WDT_DEAFULT_CONFIG;
-//    err_code = nrf_drv_wdt_init(&wdt_config, wdt_event_handler);
-//    APP_ERROR_CHECK(err_code);
-//    err_code = nrf_drv_wdt_channel_alloc(&m_channel_id);
-//    APP_ERROR_CHECK(err_code);
-//    nrf_drv_wdt_enable();
+    uint32_t err_code = NRF_SUCCESS;
+    nrf_drv_wdt_config_t wdt_config = NRF_DRV_WDT_DEAFULT_CONFIG;
+    err_code = nrf_drv_wdt_init(&wdt_config, wdt_event_handler);
+    APP_ERROR_CHECK(err_code);
+    err_code = nrf_drv_wdt_channel_alloc(&m_channel_id);
+    APP_ERROR_CHECK(err_code);
+    nrf_drv_wdt_enable();
 
 
     // Init nodes in seen list
@@ -958,8 +1049,6 @@ int main(void)
     ret_code_t start_timer =  app_timer_start(m_timestamp_keeper, APP_TIMER_TICKS(1) , NULL);
   
     printf("Node On: Firmware version %s\r\n", FIRMWARE_VERSION);
-    
-    bsp_board_led_on(BSP_BOARD_LED_0);
 
  
     if (erase_bonds == true)
@@ -994,39 +1083,73 @@ int main(void)
     
 
     printf("Flash Configuration: \r\n");
+
+    
+    /* Fetch LED mode from flash */
+    fds_record_desc_t   record_desc_9;
+    fds_find_token_t    ftok_9;
+    memset(&ftok_9, 0x00, sizeof(fds_find_token_t));
+    if (fds_record_find(FILE_ID, RECORD_KEY_9, &record_desc_9, &ftok_9) == FDS_SUCCESS)
+    {
+      uint32_t led_mode = getFlashID(9);
+      leds_mode = led_mode;
+      if (leds_mode == 0) {
+        bsp_board_led_on(BSP_BOARD_LED_0);
+      }
+      printf("  LED Mode: %d \r\n", led_mode);
+    }
+    else {
+      printf("  LED Mode: Default \r\n");
+      bsp_board_led_on(BSP_BOARD_LED_0);
+    }
+
+
+
     /* Fetch ID and bootmode record from flash */
     fds_record_desc_t   record_desc_2;
     fds_find_token_t    ftok_2;
     memset(&ftok_2, 0x00, sizeof(fds_find_token_t));
     if (fds_record_find(FILE_ID, RECORD_KEY_1, &record_desc_2, &ftok_2) == FDS_SUCCESS) //If there is a stored ID
+    {      
+      uint32_t id = getFlashID(1); //Get ID
+      NODE_UUID = id;
+      m_adv_uuids[1].uuid = NODE_UUID; 
+      advertising_init(); //Set UUID
+      printf("  Node ID: %d \r\n", id);
+    }
+    else {
+       printf("  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n");
+       printf("  !Warning! Please setup node ID!\r\n");
+       printf("  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n");
+    }
+
+    /* Fetch polling rate record from flash */
+    fds_record_desc_t   record_desc_1;
+    fds_find_token_t    ftok_1;
+    memset(&ftok_1, 0x00, sizeof(fds_find_token_t));
+    if (fds_record_find(FILE_ID, RECORD_KEY_2, &record_desc_1, &ftok_1) == FDS_SUCCESS) 
     {
-        
-        uint32_t id = getFlashID(1); //Get ID
-        NODE_UUID = id;
-        m_adv_uuids[1].uuid = NODE_UUID; 
-        advertising_init(); //Set UUID
-        printf("  Node ID: %d \r\n", id);
+      uint32_t state = getFlashID(2); //Get State
+      printf("  Boot Mode: %d \r\n", state);
 
-        uint32_t state = getFlashID(2); //Get State
+      if( (state == 1) || (state == 2) ) //Start BLE
+      {
+        ble_started = 1;
+        xSemaphoreGive(print_list_sem);
+        adv_scan_start();
+        if (leds_mode == 0) bsp_board_led_on(BSP_BOARD_LED_1);
+      }
 
-        printf("  Boot Mode: %d \r\n", state);
-
-        if( (state == 1) || (state == 2) ) //Start BLE
-        {
-          ble_started = 1;
-          xSemaphoreGive(print_list_sem);
-          adv_scan_start();
-          bsp_board_led_on(BSP_BOARD_LED_1);
-        }
-
-        if (state == 2) //Start UWB
-        {
-          uwb_started = 1;
-          xSemaphoreGive(sus_resp);
-          xSemaphoreGive(sus_init);
-          bsp_board_led_on(BSP_BOARD_LED_2);
-        }
-
+      if (state == 2) //Start UWB
+      {
+        uwb_started = 1;
+        xSemaphoreGive(sus_resp);
+        xSemaphoreGive(sus_init);
+        if (leds_mode == 0) bsp_board_led_on(BSP_BOARD_LED_2);
+      } 
+    }
+    else {
+      printf("  Boot Mode: Default \r\n");
     }
 
     /* Fetch polling rate record from flash */
@@ -1047,6 +1170,9 @@ int main(void)
       }
 
       printf("  UWB Polling Rate: %d\r\n", rate);
+    }
+    else {
+      printf("  UWB Polling Rate: Default \r\n");
     }
 
     /* Fetch channel record from flash */
@@ -1076,6 +1202,9 @@ int main(void)
       dwt_configure(&config);
       printf("  UWB Channel: %d \r\n", channel);
     }
+    else {
+      printf("  UWB Channel: Defalut \r\n");
+    }
 
     /* Fetch timeout record from flash */
     fds_record_desc_t   record_desc_5;
@@ -1086,6 +1215,9 @@ int main(void)
       uint32_t timeout = getFlashID(5);
       time_out = timeout;
       printf("  BLE Timeout: %d \r\n", time_out);
+    }
+    else {
+      printf("  BLE Timeout: Default \r\n");
     }
 
     /* Fetch TX power record from flash */
@@ -1105,6 +1237,9 @@ int main(void)
       }
       dwt_configuretxrf(&config_tx);
     }
+    else {
+      printf("  TX Power: Default \r\n");
+    }
 
     /* Fetch streaming mode from flash */
     fds_record_desc_t   record_desc_7;
@@ -1115,6 +1250,9 @@ int main(void)
       uint32_t stream_mode = getFlashID(7);
       streaming_mode = stream_mode;
       printf("  Stream Mode: %d \r\n", stream_mode);
+    }
+    else {
+      printf("  Stream Mode: Defalut \r\n");
     }
 
     /* Fetch TWR mode from flash */
@@ -1127,6 +1265,11 @@ int main(void)
       twr_mode = ranging_mode;
       printf("  Ranging Mode: %d \r\n", ranging_mode);
     }
+    else {
+      printf("  Ranging Mode: Default \r\n");
+    }
+
+
 
    
     vTaskStartScheduler();

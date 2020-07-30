@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/nrf_fprintf_format.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/external/fprintf/nrf_fprintf_format.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/external/fprintf/nrf_fprintf_format.c \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
@@ -31,5 +31,5 @@ Output/beluga\ Debug/Obj/nrf_fprintf_format.o: \
  ../nRF52-sdk/components/libraries/util/app_error.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
  ../nRF52-sdk/components/libraries/util/app_error_weak.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/external/fprintf/nrf_fprintf.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/external/fprintf/nrf_fprintf_format.h
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/external/fprintf/nrf_fprintf.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/external/fprintf/nrf_fprintf_format.h

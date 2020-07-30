@@ -1,6 +1,6 @@
 Output/beluga\ Debug/Obj/ble_advdata.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/common/ble_advdata.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/common/ble_advdata.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/common/ble_advdata.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/common/ble_advdata.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
@@ -33,7 +33,7 @@ Output/beluga\ Debug/Obj/ble_advdata.o: \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gap.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/common/ble_srv_common.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/common/ble_srv_common.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gatt.h \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \

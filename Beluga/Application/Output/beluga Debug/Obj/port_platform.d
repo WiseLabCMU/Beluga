@@ -1,6 +1,6 @@
 Output/beluga\ Debug/Obj/port_platform.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/deca_driver/port/port_platform.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/deca_driver/port/port_platform.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/deca_driver/port/port_platform.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/deca_driver/port/port_platform.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \

@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/nrf_sdh_soc.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/softdevice/common/nrf_sdh_soc.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/softdevice/common/nrf_sdh_soc.c \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
@@ -26,7 +26,7 @@ Output/beluga\ Debug/Obj/nrf_sdh_soc.o: \
  ../nRF52-sdk/components/device/nrf52_name_change.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/sdk_macros.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/softdevice/common/nrf_sdh_soc.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/softdevice/common/nrf_sdh_soc.h \
  ../nRF52-sdk/components/libraries/util/app_util.h \
  ../nRF52-sdk/components/libraries/experimental_section_vars/nrf_section_iter.h \
  ../nRF52-sdk/components/libraries/experimental_section_vars/nrf_section.h \
@@ -39,7 +39,7 @@ Output/beluga\ Debug/Obj/nrf_sdh_soc.o: \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_svc.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error_soc.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/softdevice/common/nrf_sdh.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/softdevice/common/nrf_sdh.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/libraries/util/app_error.h \
  ../nRF52-sdk/components/libraries/experimental_log/nrf_log.h \

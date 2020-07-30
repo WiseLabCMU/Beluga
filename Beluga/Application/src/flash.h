@@ -22,6 +22,7 @@
 #define RECORD_KEY_6    0x6666  /* A key for the sixth record. (TX Power)*/
 #define RECORD_KEY_7    0x7777  /* A key for the seventh record. (STREAMMODE)*/
 #define RECORD_KEY_8    0x8888  /* A key for the eighth record. (TWRMODE)*/
+#define RECORD_KEY_9    0x9999  /* A key for the ninth record. (LEDMODE)*/
 
 void fds_evt_handler(fds_evt_t const * p_fds_evt);
 void writeFlashID(uint32_t id, int record);

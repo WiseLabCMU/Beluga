@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/gatts_cache_manager.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/peer_manager/gatts_cache_manager.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/peer_manager/gatts_cache_manager.c \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
@@ -26,7 +26,7 @@ Output/beluga\ Debug/Obj/gatts_cache_manager.o: \
  ../nRF52-sdk/components/device/nrf52_name_change.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/sdk_macros.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/peer_manager/gatts_cache_manager.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/peer_manager/gatts_cache_manager.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_ranges.h \
@@ -40,7 +40,7 @@ Output/beluga\ Debug/Obj/gatts_cache_manager.o: \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gattc.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gatts.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gap.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/peer_manager/peer_manager_types.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/peer_manager/peer_manager_types.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_hci.h \
  ../nRF52-sdk/components/ble/common/ble_gatt_db.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gattc.h \
@@ -54,6 +54,6 @@ Output/beluga\ Debug/Obj/gatts_cache_manager.o: \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
  ../nRF52-sdk/components/libraries/util/app_error_weak.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_err.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/peer_manager/peer_manager_internal.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/peer_manager/peer_database.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/ble/peer_manager/id_manager.h
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/peer_manager/peer_manager_internal.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/peer_manager/peer_database.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/peer_manager/id_manager.h

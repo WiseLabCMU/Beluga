@@ -1,6 +1,6 @@
 Output/beluga\ Debug/Obj/nrf_memobj.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/experimental_memobj/nrf_memobj.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/experimental_memobj/nrf_memobj.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/experimental_memobj/nrf_memobj.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/experimental_memobj/nrf_memobj.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \

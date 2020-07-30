@@ -1,5 +1,5 @@
 Output/beluga\ Debug/Obj/nrf_atfifo.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/atomic_fifo/nrf_atfifo.c \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/atomic_fifo/nrf_atfifo.c \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
  /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
  ../nRF52-sdk/components/libraries/util/app_util.h \
@@ -20,7 +20,7 @@ Output/beluga\ Debug/Obj/nrf_atfifo.o: \
  ../nRF52-sdk/components/device/nrf51_to_nrf52.h \
  ../nRF52-sdk/components/device/nrf52_name_change.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/atomic_fifo/nrf_atfifo.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/atomic_fifo/nrf_atfifo.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
  ../nRF52-sdk/components/libraries/util/nrf_assert.h \
  ../nRF52-sdk/components/libraries/util/app_error.h \
@@ -29,4 +29,4 @@ Output/beluga\ Debug/Obj/nrf_atfifo.o: \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \
  ../nRF52-sdk/components/libraries/util/app_error_weak.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/decawave-ble/Beluga/nRF52-sdk/components/libraries/atomic_fifo/nrf_atfifo_internal.h
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/atomic_fifo/nrf_atfifo_internal.h

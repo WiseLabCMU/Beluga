@@ -13,7 +13,7 @@ These features enable users to customize their own network setup and meet the re
 Beluga can be applied in the area of localization, robotics, and infrastructure sensing.
 
 <p float="left">
-  <img src="https://github.com/kcccode/uwb-BLE/blob/master/node.jpg" width="300">
+  <img src="https://github.com/WiseLabCMU/Beluga/blob/master/images/node.jpg" width="300">
   <img src="https://media.giphy.com/media/lRk7qp7jkLeplFetnn/giphy.gif" width="300">
 </p>
 
@@ -154,7 +154,7 @@ There are total 13 commands and command 1, 6, 7, 8, 9, 10, 11, 12 can be stored 
     
     AT+TIMEOUT <number>  Determines the timeout parameter to evict nearby nodes
     
-    Defualt setting: 5000 (units: ms)
+    Default setting: 5000 (units: ms)
 
     NOTE: This parameter indicates that if a nearby node does not update in <number> ms, the node will be evicted from another node's neighbor list. 
 
@@ -166,7 +166,7 @@ There are total 13 commands and command 1, 6, 7, 8, 9, 10, 11, 12 can be stored 
     <mode> = 1  -  Update ranges mode
         This mode only displays when nodes updated the ranges
     
-    Defualt setting: 0
+    Default setting: 0
 
 
 #### 12. AT+TWRMODE 
@@ -175,12 +175,23 @@ There are total 13 commands and command 1, 6, 7, 8, 9, 10, 11, 12 can be stored 
     <mode> = 0  -  Single-sided TWR (SS-TWR)
     <mode> = 1  -  Double-sided TWR (DS-TWR)
     
-    Defualt setting: 1
+    Default setting: 1
 
-    NOTE: DS-TWR is more accurate and can reduce clock drift effect. SS-TWR can be used for a network needed faster transmission.
+    NOTE: DS-TWR is more accurate and can reduce clock drift effect. SS-TWR can be used for a network that needs faster transmission.
 
 
-#### 13. AT+RESET 
+#### 13. AT+LEDMODE 
+    
+    AT+LEDMODE <mode>  Determines the LED display mode
+    <mode> = 0  -  LEDs support mode (turn on all LEDs)
+    <mode> = 1  -  No LEDs support mode (turn off all LEDs)
+    
+    Default setting: 0
+
+    NOTE: LEDs support mode can be used for debugging, and another mode can be used for saving power.
+
+
+#### 14. AT+RESET 
     
     AT+RESET   Clear flash memory configuration
     This command will reset all user configuration including node's ID, BOOTMODE, RATE, CHANNEL, TXPOWER
@@ -189,7 +200,11 @@ There are total 13 commands and command 1, 6, 7, 8, 9, 10, 11, 12 can be stored 
 
 
 ## Additional Notes
-  
+
+### Developer Documentation:
+
+   ![Beluga developer documentation](https://drive.google.com/file/d/11h-TcP2NU7l8mzmQgQuOIbqR6ngZbJkD/view?usp=sharing)
+
 ### LED Layout: 
 
    ![LED Layout](https://github.com/WiseLabCMU/decawave-ble/blob/master/images/decawaveLED.png?raw=true)

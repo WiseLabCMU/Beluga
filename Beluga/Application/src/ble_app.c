@@ -98,7 +98,7 @@
 #define SEC_PARAM_MIN_KEY_SIZE          7                                           /**< Minimum encryption key size in octets. */
 #define SEC_PARAM_MAX_KEY_SIZE          16                                          /**< Maximum encryption key size in octets. */
 
-#define SCAN_INTERVAL                   0x00140                                      /**< Determines scan interval in units of 0.625 millisecond. 0x00A0 */ 
+#define SCAN_INTERVAL                   0x00140                                      /**< Determines scan interval in units of 0.625 millisecond. 0x00A0 140*/ 
 #define SCAN_WINDOW                     0x00140                                      /**< Determines scan window in units of 0.625 millisecond. 0x0050*/
 #define SCAN_TIMEOUT                    0
 
@@ -784,7 +784,7 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
                     err_code = sd_ble_gap_connect(&p_gap_evt->params.adv_report.peer_addr,
                                                   &m_scan_params,
                                                   &m_connection_param,
-                                                  APP_BLE_CONN_CFG_TAG);
+                                                  APP_BLE_CONN_CFG_TAG);;
                     if (err_code != NRF_SUCCESS)
                     {
                         NRF_LOG_WARNING("Connection Request Failed, reason %d", err_code);
@@ -863,11 +863,13 @@ static void on_ble_peripheral_evt(ble_evt_t const * p_ble_evt)
             NRF_LOG_INFO("Peripheral connected");
             bsp_board_led_off(PERIPHERAL_ADVERTISING_LED);
             //bsp_board_led_on(PERIPHERAL_CONNECTED_LED);
+            printf("Peripheral connected \n");
             break;
 
         case BLE_GAP_EVT_DISCONNECTED:
             NRF_LOG_INFO("Peripheral disconnected");
             bsp_board_led_off(PERIPHERAL_CONNECTED_LED);
+            printf("Peripheral disconnected \n");
             break;
 
 #ifndef S140
