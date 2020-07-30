@@ -203,7 +203,7 @@ There are total 13 commands and command 1, 6, 7, 8, 9, 10, 11, 12 can be stored 
 
 ### Developer Documentation:
 
-   ![Beluga developer documentation](https://drive.google.com/file/d/11h-TcP2NU7l8mzmQgQuOIbqR6ngZbJkD/view?usp=sharing)
+   [Beluga developer documentation](https://drive.google.com/file/d/11h-TcP2NU7l8mzmQgQuOIbqR6ngZbJkD/view?usp=sharing)
 
 ### LED Layout: 
 
