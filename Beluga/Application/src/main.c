@@ -12,6 +12,9 @@
 #include "ble_gap.h"
 #include "app_timer.h"
 #include "nrf_drv_wdt.h"
+#include "ble_cus.h"
+#include "ble_gatt.h"
+#include "ble_advdata.h"
 
 /* Inlcudes for UWB library */
 #include "FreeRTOS.h"
@@ -48,6 +51,7 @@
 #include "ble_app.h"
 #include "random.h"
 
+
 #if defined (UART_PRESENT)
 #include "nrf_uart.h"
 #endif
@@ -67,10 +71,13 @@
 /* Delay between frames, in UWB microseconds. See NOTE 1 below. */
 #define POLL_TX_TO_RESP_RX_DLY_UUS 100 
 
+/* Dummy buffer for DW1000 wake-up SPI read. See NOTE 2 below. */
+#define DUMMY_BUFFER_LEN 600
+static uint8 dummy_buffer[DUMMY_BUFFER_LEN];
 
 static int mode;
 
-extern ble_uuid_t m_adv_uuids[2];
+extern ble_uuid_t m_adv_uuids[3];
 extern node seen_list[MAX_ANCHOR_COUNT];
 extern int ble_started;
 static int uwb_started;
@@ -81,6 +88,8 @@ int debug_print;
 int streaming_mode;
 int twr_mode;
 int leds_mode;
+
+int sleep_mode;
 
 SemaphoreHandle_t rxSemaphore, txSemaphore, sus_resp, sus_init, print_list_sem;
 QueueHandle_t uart_queue;
@@ -225,6 +234,18 @@ void list_task_function(void * pvParameter)
       
       message new_message = {0};
 
+      ///////////////////////////////////
+      // Temp change BLE chara for testing
+      static int interval = 0;
+      if (interval % 20 == 0) {
+        //change_char_value();
+        update_char_value(1, 1.37568);
+        interval = 0;
+      }
+      interval++;
+      // End of BLE test
+      ///////////////////////////////////
+
       /* Normal mode to print all neighbor nodes */
       if (streaming_mode == 0) {
         printf("# ID, RANGE, RSSI, TIMESTAMP\r\n");
@@ -345,6 +366,24 @@ void uart_task_function(void * pvParameter){
 
             // Setup UUID into BLE 
             advertising_init();
+
+            // Change the advertising name on BLE package
+            char name[] = "BN ";
+            char id_attach[2];
+            itoa(NODE_UUID, id_attach, 10);
+            strncat(name, id_attach , strlen(id_attach));
+            gap_params_init(name);
+
+
+            ble_advdata_t    advdata;
+            memset(&advdata, 0, sizeof(advdata));
+            advdata.name_type               = BLE_ADVDATA_FULL_NAME;
+            advdata.include_appearance      = true;
+            advdata.flags                   = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
+            ble_advdata_set(&advdata, NULL);
+
+
+
             writeFlashID(rec_uuid, 1);
             printf("OK\r\n");
             
@@ -771,6 +810,8 @@ void ranging_task_function(void *pvParameter)
             seen_list[cur_index].update_flag = 1;
             seen_list[cur_index].range = range;
             seen_list[cur_index].time_stamp = time_keeper;
+            // Update BLE transfer value
+            //update_char_value(seen_list[cur_index].UUID, seen_list[cur_index].range);
             //printf("node: %d; range: %f; timestamp: %u \r\n",seen_list[cur_index].UUID, seen_list[cur_index].range, time_keeper);
           }      
 
@@ -802,6 +843,7 @@ void ranging_task_function(void *pvParameter)
         polling_count += 1;
       }
     }
+
     // If no polling nodes in the network, suspend UWB response (listening) 
     if (polling_count == 0) {
       //printf("resp take! \r\n\n");
@@ -812,6 +854,13 @@ void ranging_task_function(void *pvParameter)
       dwt_forcetrxoff();
       resp_reconfig();
       dwt_forcetrxoff();
+
+      /* Put DW1000 to sleep. */
+//      if (sleep_mode == 0) {
+//        dwt_entersleep();
+//        sleep_mode = 1;
+//      }
+
       xSemaphoreGive(sus_init);
       xSemaphoreGive(sus_resp);
 
@@ -827,6 +876,13 @@ void ranging_task_function(void *pvParameter)
       dwt_forcetrxoff();
       resp_reconfig();
       dwt_forcetrxoff();
+
+      /* Wake DW1000 up. See NOTE 2 below. */
+//      if (sleep_mode == 1) {
+//        dwt_spicswakeup(dummy_buffer, DUMMY_BUFFER_LEN);
+//        sleep_mode = 0;
+//      }
+
       xSemaphoreGive(sus_init);
       xSemaphoreGive(sus_resp);
 
@@ -961,6 +1017,7 @@ int main(void)
     streaming_mode = 0;
     twr_mode = 1;
     leds_mode = 0;
+    sleep_mode = 0;
     uwb_pgdelay = ch5;
     bool erase_bonds;
 
@@ -985,15 +1042,17 @@ int main(void)
       seen_list[i].polling_flag = 0;
       seen_list[i].ble_time_stamp = 0;
     }
+
   
     uart_init();
     timer_init();  
     buttons_leds_init(&erase_bonds);   
     ble_stack_init();   
-    gap_params_init();
+    gap_params_init("Default");
     gatt_init();  
     conn_params_init();
     peer_manager_init();
+    services_init();
     advertising_init();
 
     // Init flash data storage
@@ -1043,6 +1102,11 @@ int main(void)
           
     /* Set expected response's timeout. (keep listening so timeout is 0) */
     dwt_setrxtimeout(0);
+
+
+    /* Configure sleep and wake-up parameters. */
+//    dwt_configuresleep(DWT_PRESRV_SLEEP | DWT_CONFIG, DWT_WAKE_CS | DWT_SLP_EN);
+
 
     // Init timekeeper from timer. unit: 1ms
     ret_code_t create_timer = app_timer_create(&m_timestamp_keeper, APP_TIMER_MODE_REPEATED, timestamp_handler);
@@ -1115,6 +1179,28 @@ int main(void)
       NODE_UUID = id;
       m_adv_uuids[1].uuid = NODE_UUID; 
       advertising_init(); //Set UUID
+
+      char name[] = "BN ";
+      char id_attach[2];
+      itoa(id, id_attach, 10);
+      strncat(name, id_attach , strlen(id_attach));
+      gap_params_init(name);
+
+//      ble_gap_conn_sec_mode_t sec_mode;
+//      BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
+//      err_code = sd_ble_gap_device_name_set(&sec_mode,
+//                    (const uint8_t *)id_attach,
+//                     strlen(id_attach));
+//      APP_ERROR_CHECK(err_code);
+      ble_advdata_t    advdata;
+      memset(&advdata, 0, sizeof(advdata));
+      advdata.name_type               = BLE_ADVDATA_FULL_NAME;
+      advdata.include_appearance      = true;
+      advdata.flags                   = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
+      err_code = ble_advdata_set(&advdata, NULL);
+
+      //printf("%d \n", err_code);
+
       printf("  Node ID: %d \r\n", id);
     }
     else {

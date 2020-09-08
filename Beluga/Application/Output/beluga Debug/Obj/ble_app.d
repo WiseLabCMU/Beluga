@@ -80,18 +80,16 @@ Output/beluga\ Debug/Obj/ble_app.o: \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gatt.h \
  ../nRF52-sdk/components/ble/ble_db_discovery/ble_db_discovery.h \
- ../nRF52-sdk/components/ble/ble_services/ble_hrs/ble_hrs.h \
- ../nRF52-sdk/components/ble/common/ble_srv_common.h \
- ../nRF52-sdk/components/ble/nrf_ble_gatt/nrf_ble_gatt.h \
- ../nRF52-sdk/components/ble/ble_services/ble_rscs/ble_rscs.h \
- ../nRF52-sdk/components/ble/ble_services/ble_hrs_c/ble_hrs_c.h \
- ../nRF52-sdk/components/ble/ble_services/ble_rscs_c/ble_rscs_c.h \
  ../nRF52-sdk/components/ble/ble_services/ble_nus/ble_nus.h \
+ ../nRF52-sdk/components/ble/common/ble_srv_common.h \
  ../nRF52-sdk/components/ble/common/ble_conn_state.h \
  ../nRF52-sdk/components/libraries/util/sdk_mapped_flags.h \
  ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage.h \
  ../nRF52-sdk/components/libraries/experimental_section_vars/nrf_section.h \
  ../nRF52-sdk/components/libraries/fds/fds.h \
+ ../nRF52-sdk/components/ble/nrf_ble_gatt/nrf_ble_gatt.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/ble_cus.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/ble_gatts.h \
  ../nRF52-sdk/components/libraries/experimental_log/nrf_log.h \
  ../nRF52-sdk/components/libraries/experimental_log/src/nrf_log_internal.h \
  ../nRF52-sdk/components/libraries/experimental_log/nrf_log_ctrl.h \

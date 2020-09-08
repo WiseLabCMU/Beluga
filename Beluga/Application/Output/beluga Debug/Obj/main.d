@@ -35,11 +35,24 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/components/drivers_nrf/wdt/nrf_drv_wdt.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_wdt.h \
+ /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/ble_cus.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/ble_gatts.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/ble_l2cap.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/ble_err.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/ble_gap.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/ble_gatt.h \
+ ../nRF52-sdk/components/ble/common/ble_srv_common.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/ble.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/ble_gattc.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/ble_gatts.h \
+ ../nRF52-sdk/components/softdevice/s132/headers/ble_gatt.h \
+ ../nRF52-sdk/components/ble/common/ble_advdata.h \
+ /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
  ../nRF52-sdk/external/freertos/source/include/FreeRTOS.h \
  ../nRF52-sdk/external/freertos/config/FreeRTOSConfig.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_soc.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error_soc.h \
- ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../nRF52-sdk/components/libraries/util/app_util_platform.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_nvic.h \
  ../nRF52-sdk/components/libraries/util/nrf_assert.h \
@@ -67,7 +80,6 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_clock.h \
  ../nRF52-sdk/components/drivers_nrf/common/nrf_drv_common.h \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
  ../nRF52-sdk/components/libraries/util/sdk_os.h \
  ../nRF52-sdk/components/libraries/util/app_util.h \
  ../nRF52-sdk/components/libraries/util/sdk_macros.h \

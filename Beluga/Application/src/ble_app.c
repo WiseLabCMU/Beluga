@@ -53,22 +53,16 @@
 #include "ble_advertising.h"
 #include "ble_conn_params.h"
 #include "ble_db_discovery.h"
-#include "ble_hrs.h"
-#include "ble_rscs.h"
-#include "ble_hrs_c.h"
-#include "ble_rscs_c.h"
 #include "ble_nus.h"
 #include "ble_conn_state.h"
 #include "nrf_fstorage.h"
 #include "fds.h"
 #include "nrf_ble_gatt.h"
-
+#include "ble_cus.h"
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
-
 #include "ble_app.h"
-
 
 
 #define PERIPHERAL_ADVERTISING_LED      BSP_BOARD_LED_2
@@ -110,6 +104,12 @@
 
 #define UUID16_SIZE                     2                                           /**< Size of a UUID, in bytes. */
 
+#define NON_CONNECTABLE_SET             0
+#define NON_CONNECTABLE_RECOVER         1
+
+#define NODE_UUID_START                 0x00FF
+#define UUID_INDICATOR                  0x1800 
+
 /**@brief   Priority of the application BLE event handler.
  * @note    You shouldn't need to modify this value.
  */
@@ -126,6 +126,12 @@
     } while (0)
 
 
+// Create CUS instance
+BLE_CUS_DEF(m_cus);
+NRF_BLE_GATT_DEF(m_gatt);                                           /**< GATT module instance. */
+BLE_ADVERTISING_DEF(m_advertising);                                 /**< Advertising module instance. */
+BLE_DB_DISCOVERY_ARRAY_DEF(m_db_discovery, 2);                      /**< Database discovery module instances. */
+
 /**@brief Variable length data encapsulation in terms of length and pointer to data. */
 typedef struct
 {
@@ -138,52 +144,29 @@ static bool in_seen_list(uint16_t UUID);
 static int get_seen_list_idx(uint16_t UUID);
 
 
-static ble_hrs_t m_hrs;                                             /**< Heart rate service instance. */
-static ble_rscs_t m_rscs;                                           /**< Running speed and cadence service instance. */
-static ble_hrs_c_t m_hrs_c;                                         /**< Heart rate service client instance. */
-static ble_rscs_c_t m_rscs_c;                                       /**< Running speed and cadence service client instance. */
-
-NRF_BLE_GATT_DEF(m_gatt);                                           /**< GATT module instance. */
-BLE_ADVERTISING_DEF(m_advertising);                                 /**< Advertising module instance. */
-BLE_DB_DISCOVERY_ARRAY_DEF(m_db_discovery, 2);                      /**< Database discovery module instances. */
-
-static uint16_t m_conn_handle_hrs_c  = BLE_CONN_HANDLE_INVALID;     /**< Connection handle for the HRS central application */
-static uint16_t m_conn_handle_rscs_c = BLE_CONN_HANDLE_INVALID;     /**< Connection handle for the RSC central application */
-
 /**@brief names which the central applications will scan for, and which will be advertised by the peripherals.
  *  if these are set to empty strings, the UUIDs defined below will be used
  */
 static char const m_target_periph_name[] = "Node";
 
 
-
 uint16_t NODE_UUID = 1;
-#define NODE_UUID_START     0x00FF
-#define UUID_INDICATOR 0x1800 
-#define BLE_UWB_RANGE0 0x0000
-#define BLE_UWB_RANGE1 0x0000
-#define BLE_UWB_RANGE2 0x0000
-
 uint32_t time_keeper;
 int ble_started;
 int node_added;
 int last_seen_idx = 0;
-
-
 node seen_list[MAX_ANCHOR_COUNT];
+ble_uuid_t m_adv_uuids[3];
 
 
-ble_uuid_t m_adv_uuids[2];
-
-ble_uuid_t m_adv_uuids[2] =
+/**@brief Advertising UUID list */
+ble_uuid_t m_adv_uuids[3] =
 {
     {UUID_INDICATOR              , BLE_UUID_TYPE_BLE},
-    {NODE_UUID_START             , BLE_UUID_TYPE_BLE}
-    //{BLE_UWB_RANGE0             , BLE_UUID_TYPE_BLE},
-    //{BLE_UWB_RANGE1             , BLE_UUID_TYPE_BLE},
-    //{BLE_UWB_RANGE2             , BLE_UUID_TYPE_BLE}
-     
+    {NODE_UUID_START             , BLE_UUID_TYPE_BLE},
+    {CUSTOM_SERVICE_UUID           , BLE_UUID_TYPE_VENDOR_BEGIN},
 };
+
 
 /**@brief Parameters used when scanning. */
 static ble_gap_scan_params_t const m_scan_params =
@@ -201,6 +184,7 @@ static ble_gap_scan_params_t const m_scan_params =
     #endif
 };
 
+
 /**@brief Connection parameters requested for connection. */
 static ble_gap_conn_params_t const m_connection_param =
 {
@@ -209,6 +193,7 @@ static ble_gap_conn_params_t const m_connection_param =
     SLAVE_LATENCY,
     SUPERVISION_TIMEOUT
 };
+
 
 /**@brief Function to handle asserts in the SoftDevice.
  *
@@ -303,9 +288,6 @@ void adv_scan_start(void)
         if(ble_started == 1) 
         {
           scan_start();
-
-          // Turn on the LED to signal scanning.
-          //bsp_board_led_on(CENTRAL_SCANNING_LED);
 
           // Start advertising.
           err_code = ble_advertising_start(&m_advertising, BLE_ADV_MODE_FAST);
@@ -439,6 +421,7 @@ static bool find_adv_name(ble_gap_evt_adv_report_t const * p_adv_report, char co
     err_code = adv_report_parse(BLE_GAP_AD_TYPE_COMPLETE_LOCAL_NAME, &adv_data, &dev_name);
     if (err_code == NRF_SUCCESS)
     {
+        // NOTE TODO: This line needs to be modified after change advertising name
         if (memcmp(name_to_find, dev_name.p_data, dev_name.data_len)== 0)
         {
             
@@ -515,6 +498,9 @@ static bool find_adv_uuid(ble_gap_evt_adv_report_t const * p_adv_report, uint16_
     return false;
 }
 
+
+/**@brief Function to find UUID value in advertising package
+ */
 static uint16_t find_adv_uuid_next(ble_gap_evt_adv_report_t const * p_adv_report)
 {
     ret_code_t err_code;
@@ -560,6 +546,9 @@ static uint16_t find_adv_uuid_next(ble_gap_evt_adv_report_t const * p_adv_report
     return -1;
 }
 
+
+/**@brief Function to find polling rate bit encodeed in manufactor data 
+ */
 static uint8_t find_adv_manu(ble_gap_evt_adv_report_t const * p_adv_report)
 {
     ret_code_t err_code;
@@ -573,17 +562,7 @@ static uint8_t find_adv_manu(ble_gap_evt_adv_report_t const * p_adv_report)
     err_code = adv_report_parse(BLE_GAP_AD_TYPE_MANUFACTURER_SPECIFIC_DATA,
                                 &adv_data,
                                 &type_data);
-
-    //uint16_t extracted_uuid;
-    //printf("data length: %d \r\n", type_data.data_len);
-    //for (uint32_t i = 0; i < type_data.data_len; i++)
-    //{
-        //printf("%x", type_data.p_data[2]);
     return type_data.p_data[2];
-    //}
-    //printf("\r\n \n");
-
-    
 }
 
 
@@ -603,82 +582,19 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
 
     switch (p_ble_evt->header.evt_id)
     {
-        // Upon connection, check which peripheral has connected (HR or RSC), initiate DB
-        // discovery, update LEDs status and resume scanning if necessary.
+        // No peripheral devices will connect to node
         case BLE_GAP_EVT_CONNECTED:
         {
-            NRF_LOG_INFO("Central connected");
-            // If no Heart Rate sensor or RSC sensor is currently connected, try to find them on this peripheral.
-            if (   (m_conn_handle_hrs_c  == BLE_CONN_HANDLE_INVALID)
-                || (m_conn_handle_rscs_c == BLE_CONN_HANDLE_INVALID))
-            {
-                NRF_LOG_INFO("Attempt to find HRS or RSC on conn_handle 0x%x", p_gap_evt->conn_handle);
-
-                err_code = ble_db_discovery_start(&m_db_discovery[0], p_gap_evt->conn_handle);
-                if (err_code == NRF_ERROR_BUSY)
-                {
-                    err_code = ble_db_discovery_start(&m_db_discovery[1], p_gap_evt->conn_handle);
-                    APP_ERROR_CHECK(err_code);
-                }
-                else
-                {
-                    APP_ERROR_CHECK(err_code);
-                }
-            }
-
-            // Update LEDs status, and check if we should be looking for more peripherals to connect to.
-            bsp_board_led_on(CENTRAL_CONNECTED_LED);
-            if (ble_conn_state_n_centrals() == NRF_SDH_BLE_CENTRAL_LINK_COUNT)
-            {
-                //sp_board_led_off(CENTRAL_SCANNING_LED);
-            }
-            else
-            {
-                // Resume scanning.
-                //bsp_board_led_on(CENTRAL_SCANNING_LED);
-                scan_start();
-            }
         } break; // BLE_GAP_EVT_CONNECTED
 
-        // Upon disconnection, reset the connection handle of the peer which disconnected,
-        // update the LEDs status and start scanning again.
+        
         case BLE_GAP_EVT_DISCONNECTED:
         {
-            if (p_gap_evt->conn_handle == m_conn_handle_hrs_c)
-            {
-                NRF_LOG_INFO("HRS central disconnected (reason: %d)",
-                             p_gap_evt->params.disconnected.reason);
-
-                m_conn_handle_hrs_c = BLE_CONN_HANDLE_INVALID;
-            }
-            if (p_gap_evt->conn_handle == m_conn_handle_rscs_c)
-            {
-                NRF_LOG_INFO("RSC central disconnected (reason: %d)",
-                             p_gap_evt->params.disconnected.reason);
-
-                m_conn_handle_rscs_c = BLE_CONN_HANDLE_INVALID;
-            }
-
-            if (   (m_conn_handle_rscs_c == BLE_CONN_HANDLE_INVALID)
-                || (m_conn_handle_hrs_c  == BLE_CONN_HANDLE_INVALID))
-            {
-                // Start scanning
-                scan_start();
-
-                // Update LEDs status.
-                //bsp_board_led_on(CENTRAL_SCANNING_LED);
-            }
-
-            if (ble_conn_state_n_centrals() == 0)
-            {
-                //bsp_board_led_off(CENTRAL_CONNECTED_LED);
-            }
         } break; // BLE_GAP_EVT_DISCONNECTED
 
 
         case BLE_GAP_EVT_RSSI_CHANGED:
         {
-    
             NRF_LOG_INFO("%d",&p_gap_evt->params.rssi_changed.rssi);
         } break;
 
@@ -702,94 +618,56 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
                      
                      // Parse polling flag data from manufacturer data
                      uint8_t found_pollflag = find_adv_manu(&p_gap_evt->params.adv_report);
-                     //printf("polling flag: %x, %c \r\n", found_pollflag, found_pollflag);
-                     //printf("== 1: %d \r\n", found_pollflag == '1');
 
-                     
+                     // Find UUID in advertising package
                      uint16_t found_UUID = find_adv_uuid_next(&p_gap_evt->params.adv_report);
+
+                     // Check found UUID already in neighbor list or not
                      if(found_UUID != NODE_UUID && !in_seen_list(found_UUID)){
                        
-
-                       uint16_t index = get_seen_list_idx(0); //Get empty index
-                       if(index == -1) //If list is full
+                       uint16_t index = get_seen_list_idx(0); // Get empty index
+                       if(index == -1) // If list is full
                        {
-                        index = MAX_ANCHOR_COUNT-1; //Evict least RSSI
+                         index = MAX_ANCHOR_COUNT-1; // Evict least RSSI
                        }
                        seen_list[last_seen_idx].UUID = found_UUID;
                        seen_list[last_seen_idx].RSSI = p_ble_evt->evt.gap_evt.params.adv_report.rssi;
                        seen_list[last_seen_idx].ble_time_stamp = time_keeper;
 
+                       // Update rate flag of the node in neighbor list 
                        if (found_pollflag == '1') {
                           seen_list[last_seen_idx].polling_flag = 1;
                        }
                        if (found_pollflag == '0') {
                           seen_list[last_seen_idx].polling_flag = 0;
                        }
-                       //printf("%d \r\n",p_ble_evt->evt.gap_evt.params.adv_report.rssi); 
-                       //seen_list[last_seen_idx].time_stamp = time_keeper;
 
                        last_seen_idx += 1;
                        last_seen_idx %= MAX_ANCHOR_COUNT;
                        node_added = 1;
-
                      }
-
-                     if((found_UUID != NODE_UUID) && in_seen_list(found_UUID) ) //Update
+                     
+                     // Update neighbor list node value if found node already in list
+                     if((found_UUID != NODE_UUID) && in_seen_list(found_UUID) ) 
                      {
                        int index = get_seen_list_idx(found_UUID);
                        seen_list[index].RSSI = p_ble_evt->evt.gap_evt.params.adv_report.rssi;
                        seen_list[index].ble_time_stamp = time_keeper;
-
+                       
+                       // Update rate flag of the node in neighbor list 
                        if (found_pollflag == '1') {
                           seen_list[index].polling_flag = 1;
                        }
                        if (found_pollflag == '0') {
                           seen_list[index].polling_flag = 0;
                        }
-                       //seen_list[index].time_stamp = time_keeper;
-                       //printf("update time stamp \r\n");
 
                      }
-                     
-
-
-
-
-                   
-                    // Initiate connection.
-                    /*
-                    err_code = sd_ble_gap_connect(&p_gap_evt->params.adv_report.peer_addr,
-                                                  &m_scan_params,
-                                                  &m_connection_param,
-                                                  APP_BLE_CONN_CFG_TAG);
-                    
-                    if (err_code != NRF_SUCCESS)
-                    {
-                        NRF_LOG_INFO("Connection Request Failed, reason %d", err_code);
-                    }
-                    */
                 }
             }
             else
             {
-                // We do not want to connect to two peripherals offering the same service, so when
-                // a UUID is matched, we check that we are not already connected to a peer which
-                // offers the same service.
-                if (   (find_adv_uuid(&p_gap_evt->params.adv_report, BLE_UUID_HEART_RATE_SERVICE)
-                        && (m_conn_handle_hrs_c == BLE_CONN_HANDLE_INVALID))
-                    || (find_adv_uuid(&p_gap_evt->params.adv_report, BLE_UUID_RUNNING_SPEED_AND_CADENCE)
-                        && (m_conn_handle_rscs_c == BLE_CONN_HANDLE_INVALID)))
-                {
-                    // Initiate connection.
-                    err_code = sd_ble_gap_connect(&p_gap_evt->params.adv_report.peer_addr,
-                                                  &m_scan_params,
-                                                  &m_connection_param,
-                                                  APP_BLE_CONN_CFG_TAG);;
-                    if (err_code != NRF_SUCCESS)
-                    {
-                        NRF_LOG_WARNING("Connection Request Failed, reason %d", err_code);
-                    }
-                }
+
             }
         } break; // BLE_GAP_ADV_REPORT
 
@@ -856,19 +734,34 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
 static void on_ble_peripheral_evt(ble_evt_t const * p_ble_evt)
 {
     ret_code_t err_code;
+    ble_gap_evt_t const * p_gap_evt = &p_ble_evt->evt.gap_evt;
 
     switch (p_ble_evt->header.evt_id)
     {
         case BLE_GAP_EVT_CONNECTED:
-            NRF_LOG_INFO("Peripheral connected");
-            bsp_board_led_off(PERIPHERAL_ADVERTISING_LED);
-            //bsp_board_led_on(PERIPHERAL_CONNECTED_LED);
+            
+            // Update service connection handle
+            m_cus.conn_handle = p_ble_evt->evt.gap_evt.conn_handle;
+
+            // Set gatts to enable create connection
+            sd_ble_gatts_sys_attr_set(m_cus.conn_handle, NULL, 0, 0);
+            
+            // Keep advertising but with non-connectable package
+            non_connectable_advertising_init(NON_CONNECTABLE_SET);
+            scan_start();
+            
             printf("Peripheral connected \n");
             break;
 
         case BLE_GAP_EVT_DISCONNECTED:
-            NRF_LOG_INFO("Peripheral disconnected");
-            bsp_board_led_off(PERIPHERAL_CONNECTED_LED);
+            
+            // Update service connection handle to invalid
+            m_cus.conn_handle = BLE_CONN_HANDLE_INVALID;
+
+            // Stop non-connectable advertising and begin original/connectable advertising
+            sd_ble_gap_adv_stop();
+            adv_scan_start();
+
             printf("Peripheral disconnected \n");
             break;
 
@@ -963,20 +856,15 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
 {
     uint16_t conn_handle = p_ble_evt->evt.gap_evt.conn_handle;
     uint16_t role        = ble_conn_state_role(conn_handle);
-    //printf("%d \r\b\n", role);
 
     // Based on the role this device plays in the connection, dispatch to the right handler.
     if (role == BLE_GAP_ROLE_PERIPH || ble_evt_is_advertising_timeout(p_ble_evt))
     {
-        //ble_hrs_on_ble_evt(p_ble_evt, &m_hrs);
-        //ble_rscs_on_ble_evt(p_ble_evt, &m_rscs);
         //printf("peripheral \r\n");
         on_ble_peripheral_evt(p_ble_evt);
     }
     else if ((role == BLE_GAP_ROLE_CENTRAL) || (p_ble_evt->header.evt_id == BLE_GAP_EVT_ADV_REPORT))
     {
-        //ble_hrs_c_on_ble_evt(p_ble_evt, &m_hrs_c);
-        //ble_rscs_c_on_ble_evt(p_ble_evt, &m_rscs_c);
         //printf("central \r\n");
         on_ble_central_evt(p_ble_evt);
     }
@@ -1079,7 +967,7 @@ void buttons_leds_init(bool * p_erase_bonds)
  * @details This function sets up all the necessary GAP (Generic Access Profile) parameters of the
  *          device including the device name, appearance, and the preferred connection parameters.
  */
-void gap_params_init(void)
+void gap_params_init(char* device_name)
 {
     ret_code_t              err_code;
     ble_gap_conn_params_t   gap_conn_params;
@@ -1088,8 +976,8 @@ void gap_params_init(void)
     BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
 
     err_code = sd_ble_gap_device_name_set(&sec_mode,
-                                          (const uint8_t *)DEVICE_NAME,
-                                          strlen(DEVICE_NAME));
+                                          (const uint8_t *)device_name,
+                                          strlen(device_name));
     APP_ERROR_CHECK(err_code);
 
     memset(&gap_conn_params, 0, sizeof(gap_conn_params));
@@ -1188,10 +1076,30 @@ void advertising_init(void)
     init.advdata.name_type               = BLE_ADVDATA_FULL_NAME;
     init.advdata.include_appearance      = true;
     init.advdata.flags                   = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
-    init.advdata.uuids_complete.uuid_cnt =  sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
-    init.advdata.uuids_complete.p_uuids  = m_adv_uuids;
 
-  
+    // Edit service data section
+//    ble_advdata_service_data_t           service_data;
+//    uint8_array_t               data_array;
+//    uint8_t                     data_input[6];
+//    data_input[0] = 0xAA;
+//    data_input[1] = 0xBB;
+//    data_input[2] = 0xCC;
+//    data_input[3] = 0xDD;
+//    data_input[4] = 0xEE;
+//    data_input[5] = 0xFF;
+//    data_array.p_data = data_input;
+//    data_array.size = sizeof(data_input);
+//    service_data.service_uuid = CUSTOM_SERVICE_UUID;
+//    service_data.data = data_array;
+//    init.advdata.service_data_count = 1;
+//    init.advdata.p_service_data_array = &service_data;
+
+    //init.advdata.uuids_complete.uuid_cnt =  sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
+    //init.advdata.uuids_complete.p_uuids  = m_adv_uuids;
+    init.srdata.uuids_complete.uuid_cnt = sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
+    init.srdata.uuids_complete.p_uuids  = m_adv_uuids;
+
+
     init.config.ble_adv_fast_enabled  = true;
     init.config.ble_adv_fast_interval = APP_ADV_INTERVAL;
     init.config.ble_adv_fast_timeout  = APP_ADV_TIMEOUT_IN_SECONDS;
@@ -1212,6 +1120,21 @@ void advertising_reconfig(int change)
 
     ret_code_t       err_code;
     ble_advdata_t    advdata;
+
+    ble_advdata_service_data_t           service_data;
+    uint8_array_t               data_array;
+    uint8_t                     data_input[6];
+    data_input[0] = 0xAA;
+    data_input[1] = 0xBB;
+    data_input[2] = 0xCC;
+    data_input[3] = 0xDD;
+    data_input[4] = 0xEE;
+    data_input[5] = 0xFF;
+    data_array.p_data = data_input;
+    data_array.size = sizeof(data_input);
+    service_data.service_uuid = CUSTOM_SERVICE_UUID;
+    service_data.data = data_array;
+ 
 
     uint8_t data_0[2] = "0";
     uint8_t data_1[2] = "1";
@@ -1238,12 +1161,43 @@ void advertising_reconfig(int change)
     advdata.name_type               = BLE_ADVDATA_FULL_NAME;
     advdata.include_appearance      = true;
     advdata.flags                   = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
-    advdata.uuids_complete.uuid_cnt =  sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
-    advdata.uuids_complete.p_uuids  = m_adv_uuids;
+    //advdata.uuids_complete.uuid_cnt =  sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
+    //advdata.uuids_complete.p_uuids  = m_adv_uuids;
+
+    //init.srdata.uuids_complete.uuid_cnt = sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
+    //init.srdata.uuids_complete.p_uuids  = m_adv_uuids
+
+    advdata.service_data_count = 1;
+    advdata.p_service_data_array = &service_data;
 
     err_code = ble_advdata_set(&advdata, NULL);
     APP_ERROR_CHECK(err_code);
 
+}
+
+/**@brief Function to start non-connectable advertising
+ */
+void non_connectable_advertising_init(int mode)
+{
+
+  uint32_t             err_code;    
+  ble_gap_adv_params_t adv_params;
+
+  memset(&adv_params, 0, sizeof(ble_gap_adv_params_t));
+  if (mode == NON_CONNECTABLE_SET) {
+    adv_params.type        = BLE_GAP_ADV_TYPE_ADV_NONCONN_IND;
+  }
+  if (mode == NON_CONNECTABLE_RECOVER) {
+    adv_params.type        = BLE_GAP_ADV_TYPE_ADV_IND;
+  }
+  adv_params.p_peer_addr = NULL;
+  adv_params.fp          = BLE_GAP_ADV_FP_ANY;
+  adv_params.interval    = 200 ;
+  adv_params.timeout     = 0;
+		
+  err_code = sd_ble_gap_adv_start(&adv_params, BLE_CONN_CFG_TAG_DEFAULT);
+  APP_ERROR_CHECK(err_code);
+		
 }
 
 
@@ -1257,6 +1211,7 @@ void log_init(void)
     NRF_LOG_DEFAULT_BACKENDS_INIT();
 }
 
+
 /** @brief Function to sleep until a BLE event is received by the application.
  */
 void power_manage(void)
@@ -1266,7 +1221,8 @@ void power_manage(void)
 }
 
 
-
+/** @brief Function to check the given UUID in neighbor list
+ */
 static bool in_seen_list(uint16_t UUID) {
 
   for(int i = 0; i < MAX_ANCHOR_COUNT; i++){
@@ -1280,6 +1236,9 @@ static bool in_seen_list(uint16_t UUID) {
   return false;
 }
 
+
+/** @brief Function to retrive the corresponding neighbor list index by UUID
+ */
 static int get_seen_list_idx(uint16_t UUID) {
 
   for(int i = 0; i < MAX_ANCHOR_COUNT; i++){
@@ -1292,3 +1251,154 @@ static int get_seen_list_idx(uint16_t UUID) {
   }
   return -1;
 }
+
+
+/**@brief Function for initializing services that will be used by the application.
+ */
+void services_init(void)
+{
+    ret_code_t                         err_code;
+    ble_cus_init_t                     cus_init;
+
+     // Initialize CUS Service init structure to zero.
+    memset(&cus_init, 0, sizeof(cus_init));
+	
+    err_code = ble_cus_init(&m_cus, &cus_init);
+    APP_ERROR_CHECK(err_code);	
+}
+
+
+void change_char_value(void) {
+    ble_gatts_value_t gatts_value;
+    static uint8_t value[14];
+    static uint16_t length = 14;
+    memset(&gatts_value, 0, sizeof(gatts_value));
+
+    static int x = 1;
+    if (x == 1) {
+      value[0] = 1;   // Distance type
+      value[1] = 1;   // Distance count
+      value[2] = 0x1;   //
+      value[3] = 0;   // Node 1 ID
+      value[4] = 0xdc;   //
+      value[5] = 0x5;   //
+      value[6] = 0;   //
+      value[7] = 0;   // node 1 range
+      value[8] = 10;   // node 1 quality 
+      value[9] = 0; 
+      value[10] = 0; //
+      value[11] = 0; //
+      value[12] = 0; //
+      value[13] = 0; 
+    }
+    if (x == 2) {
+      value[0] = 1;   // Distance type
+      value[1] = 1;   // Distance count
+      value[2] = 0x2;   //
+      value[3] = 0;   // Node 2 ID
+      value[4] = 0xd0;   //
+      value[5] = 0x7;   //
+      value[6] = 0;   //
+      value[7] = 0;   // node 2 range
+      value[8] = 20;   // node 2 quality 
+      value[9] = 0; 
+      value[10] = 0; //
+      value[11] = 0; //
+      value[12] = 0; //
+      value[13] = 0; 
+    }
+    if (x == 3) {
+      value[0] = 1;   // Distance type
+      value[1] = 1;   // Distance count
+      value[2] = 0x3;   //
+      value[3] = 0;   // Node 3 ID
+      value[4] = 0xb8;   //
+      value[5] = 0xb;   //
+      value[6] = 0;   //
+      value[7] = 0;   // node 3 range
+      value[8] = 30;   // node 3 quality 
+      value[9] = 0; 
+      value[10] = 0; //
+      value[11] = 0; //
+      value[12] = 0; //
+      value[13] = 0; 
+    }
+
+    gatts_value.len = 14;
+    gatts_value.offset  = 0;
+    gatts_value.p_value = value;
+
+    int err = sd_ble_gatts_value_set(BLE_CONN_HANDLE_INVALID, m_cus.dt_handles.value_handle, &gatts_value);
+    //printf("%x \r", err);
+
+    ble_gatts_hvx_params_t hvx_params;
+    memset(&hvx_params, 0, sizeof(hvx_params));
+
+    hvx_params.handle = m_cus.dt_handles.value_handle;
+    hvx_params.p_data = NULL;
+    hvx_params.offset = 0;
+    hvx_params.p_len  = &length;
+    hvx_params.type   = BLE_GATT_HVX_NOTIFICATION;
+
+    sd_ble_gatts_hvx(m_cus.conn_handle, &hvx_params);
+
+    x += 1;
+    if (x == 4) x = 1;
+}
+
+
+/** @brief Function to change characteristic value in BLE service and notify
+ */
+void update_char_value(uint8 UUID, float range) {
+
+    ble_gatts_value_t gatts_value;
+    static uint8_t value[14];
+    static uint16_t length = 14;
+    memset(&gatts_value, 0, sizeof(gatts_value));
+
+    int32 range_int = range*1000;
+    uint8_t *array;
+    array = (uint8_t*)&range_int;
+
+    value[0] = 1;   // Distance type
+    value[1] = 1;   // Distance count
+    value[2] = UUID;   //
+    value[3] = 0;   // Node ID
+    value[4] = *(array+0);   //
+    value[5] = *(array+1);   //
+    value[6] = *(array+2);   //
+    value[7] = *(array+3);   // node range
+    value[8] = 10;   // node quality 
+    value[9] = 0; 
+    value[10] = 0; 
+    value[11] = 0; 
+    value[12] = 0; 
+    value[13] = 0; 
+
+    //printf("value[4]: %x \n", array[0]);
+    //printf("value[5]: %x \n", array[1]);
+    //printf("value[6]: %x \n", array[2]);
+    //printf("value[7]: %x \n", array[3]);
+
+    gatts_value.len = 14;
+    gatts_value.offset  = 0;
+    gatts_value.p_value = value;
+
+    int err = sd_ble_gatts_value_set(BLE_CONN_HANDLE_INVALID, m_cus.dt_handles.value_handle, &gatts_value);
+    //printf("%x \r", err);
+
+    ble_gatts_hvx_params_t hvx_params;
+    memset(&hvx_params, 0, sizeof(hvx_params));
+
+    hvx_params.handle = m_cus.dt_handles.value_handle;
+    hvx_params.p_data = NULL;
+    hvx_params.offset = 0;
+    hvx_params.p_len  = &length;
+    hvx_params.type   = BLE_GATT_HVX_NOTIFICATION;
+
+    sd_ble_gatts_hvx(m_cus.conn_handle, &hvx_params);
+
+}
+
+
+

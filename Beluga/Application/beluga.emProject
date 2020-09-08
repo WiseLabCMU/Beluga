@@ -35,14 +35,6 @@
     <folder Name="Segger Startup Files">
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
-    <folder Name="nRF_Log">
-      <file file_name="../nRF52-sdk/components/libraries/experimental_log/src/nrf_log_backend_serial.c" />
-      <file file_name="../nRF52-sdk/components/libraries/experimental_log/src/nrf_log_backend_rtt.c" />
-      <file file_name="../nRF52-sdk/components/libraries/experimental_log/src/nrf_log_backend_uart.c" />
-      <file file_name="../nRF52-sdk/components/libraries/experimental_log/src/nrf_log_default_backends.c" />
-      <file file_name="../nRF52-sdk/components/libraries/experimental_log/src/nrf_log_frontend.c" />
-      <file file_name="../nRF52-sdk/components/libraries/experimental_log/src/nrf_log_str_formatter.c" />
-    </folder>
     <folder Name="nRF_Libraries">
       <file file_name="../../../../../../../components/libraries/timer/app_timer_freertos.c">
         <configuration Name="Debug" build_exclude_from_build="Yes" />
@@ -89,23 +81,24 @@
       <file file_name="../nRF52-sdk/components/libraries/bsp/bsp_btn_ble.c" />
     </folder>
     <folder Name="Application">
-      <file file_name="../config/sdk_config.h" />
-      <file file_name="src/main.c" />
+      <file file_name="src/main.c">
+        <configuration Name="Debug" build_exclude_from_build="No" />
+      </file>
       <file file_name="src/flash.c" />
       <file file_name="src/flash.h" />
       <file file_name="src/ble_app.c" />
       <file file_name="src/ble_app.h" />
-      <file file_name="src/random.c" />
+      <file file_name="src/random.c">
+        <configuration Name="Debug" build_exclude_from_build="No" />
+      </file>
       <file file_name="src/random.h" />
       <file file_name="src/init_main.c" />
       <file file_name="src/resp_main.c" />
       <file file_name="src/init_main.h" />
       <file file_name="src/resp_main.h" />
-    </folder>
-    <folder Name="nRF_Segger_RTT">
-      <file file_name="../nRF52-sdk/external/segger_rtt/SEGGER_RTT.c" />
-      <file file_name="../nRF52-sdk/external/segger_rtt/SEGGER_RTT_printf.c" />
-      <file file_name="../nRF52-sdk/external/segger_rtt/SEGGER_RTT_Syscalls_SES.c" />
+      <file file_name="src/ble_cus.c" />
+      <file file_name="src/ble_cus.h" />
+      <file file_name="../config/sdk_config.h" />
     </folder>
     <folder Name="Device">
       <configuration Name="Debug" build_exclude_from_build="No" />
@@ -117,14 +110,14 @@
       </file>
     </folder>
     <folder Name="nRF_BLE_Services">
-      <file file_name="../nRF52-sdk/components/ble/ble_services/ble_hrs/ble_hrs.c" />
-      <file file_name="../nRF52-sdk/components/ble/ble_services/ble_hrs_c/ble_hrs_c.c" />
-      <file file_name="../nRF52-sdk/components/ble/ble_services/ble_rscs/ble_rscs.c" />
-      <file file_name="../nRF52-sdk/components/ble/ble_services/ble_rscs_c/ble_rscs_c.c" />
-      <file file_name="../nRF52-sdk/components/ble/peer_manager/security_dispatcher.c" />
+      <file file_name="../nRF52-sdk/components/ble/peer_manager/security_dispatcher.c">
+        <configuration Name="Debug" build_exclude_from_build="No" />
+      </file>
     </folder>
     <folder Name="nRF_SoftDevice">
-      <file file_name="../nRF52-sdk/components/softdevice/common/nrf_sdh_ble.c" />
+      <file file_name="../nRF52-sdk/components/softdevice/common/nrf_sdh_ble.c">
+        <configuration Name="Debug" build_exclude_from_build="No" />
+      </file>
       <file file_name="../nRF52-sdk/components/softdevice/common/nrf_sdh.c">
         <configuration Name="Debug" build_exclude_from_build="No" />
       </file>
@@ -163,7 +156,9 @@
       <file file_name="../nRF52-sdk/external/freertos/source/queue.c" />
       <file file_name="../nRF52-sdk/external/freertos/source/tasks.c" />
       <file file_name="../nRF52-sdk/external/freertos/source/timers.c" />
-      <file file_name="../nRF52-sdk/external/freertos/source/portable/MemMang/heap_1.c" />
+      <file file_name="../nRF52-sdk/external/freertos/source/portable/MemMang/heap_1.c">
+        <configuration Name="Debug" build_exclude_from_build="No" />
+      </file>
       <file file_name="../nRF52-sdk/external/freertos/config/FreeRTOSConfig.h" />
       <file file_name="../nRF52-sdk/external/freertos/source/include/FreeRTOS.h" />
       <file file_name="../nRF52-sdk/external/freertos/source/include/semphr.h" />
@@ -202,4 +197,5 @@
     c_preprocessor_definitions="DEBUG; DEBUG_NRF"
     gcc_debugging_level="Level 3"
     gcc_optimization_level="None" />
+  <configuration Name="Common" linker_section_placement_macros="" />
 </solution>
