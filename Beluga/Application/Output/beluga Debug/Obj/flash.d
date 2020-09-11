@@ -1,9 +1,9 @@
 Output/beluga\ Debug/Obj/flash.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/flash.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/flash.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/Application/src/flash.c \
+ /Users/raewynduvall/Developer/Beluga/Beluga/Application/src/flash.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdint.h \
  ../nRF52-sdk/components/libraries/fds/fds.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdbool.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \
@@ -28,10 +28,10 @@ Output/beluga\ Debug/Obj/flash.o: \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_nvic.h \
  ../nRF52-sdk/components/libraries/util/nrf_assert.h \
  ../nRF52-sdk/components/libraries/util/app_error.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdio.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/__crossworks.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
  ../nRF52-sdk/components/libraries/util/app_error_weak.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdlib.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/string.h

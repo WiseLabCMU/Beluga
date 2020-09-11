@@ -225,13 +225,16 @@ void list_task_function(void * pvParameter)
       
       message new_message = {0};
 
+ // RT - RAD added message handling
+
       /* Normal mode to print all neighbor nodes */
       if (streaming_mode == 0) {
-        printf("# ID, RANGE, RSSI, TIMESTAMP\r\n");
+        printf("# ID, RANGE, RSSI, TIMESTAMP, REPORT \r\n");
 
         for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
         {
-          if(seen_list[j].UUID != 0) printf("%d, %f, %d, %d \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp); 
+          if(seen_list[j].UUID != 0) printf("%d, %f, %d, %d, %s \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp);
+          //if(seen_list[j].UUID != 0) printf("%d, %f, %d, %d, %s \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp, seen_list[j].report);
           //if(seen_list[j].UUID != 0) printf("%f \r\n", seen_list[j].range); 
         }
       }
@@ -249,11 +252,12 @@ void list_task_function(void * pvParameter)
         }
         // If one of node has update flag, print it
         if (count_flag != 0) {
-          printf("# ID, RANGE, RSSI, TIMESTAMP\r\n");
+          printf("# ID, RANGE, RSSI, TIMESTAMP, REPORT \r\n");
 
           for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
           {
-            if(seen_list[j].UUID != 0 && seen_list[j].update_flag == 1) printf("%d, %f, %d, %d \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp); 
+            if(seen_list[j].UUID != 0 && seen_list[j].update_flag == 1) printf("%d, %f, %d, %d, %s \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp);
+            //if(seen_list[j].UUID != 0 && seen_list[j].update_flag == 1) printf("%d, %f, %d, %d, %s \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp, seen_list[j].report); 
             
             // Reset update flag of the node
             seen_list[j].update_flag = 0;
@@ -382,6 +386,7 @@ void uart_task_function(void * pvParameter){
             uuid_char = strtok(NULL, " ");
             uint32_t rate = atoi(uuid_char);
             
+            // RT - RAD changed MAX_RATE to 5000 from 500
             if (rate < 0 || rate > 500) {
               printf("Invalid rate parameter \r\n"); 
             }
@@ -749,12 +754,16 @@ void ranging_task_function(void *pvParameter)
 
         if (break_flag != 1) {
 
+          // RT - RAD adding messages
+
           // UWB ranging measurment
           if (twr_mode == 1) {
             range1 = ds_init_run(seen_list[cur_index].UUID);
+            //range1 = ds_init_run(seen_list[cur_index].UUID, seen_list[cur_index].report);
           }
           if (twr_mode == 0) {
             range1 = ss_init_run(seen_list[cur_index].UUID);
+            //range1 = ss_init_run(seen_list[cur_index].UUID, seen_list[cur_index].report);
           }
           
           if (range1 == -1) drop_flag = 1;
@@ -771,7 +780,8 @@ void ranging_task_function(void *pvParameter)
             seen_list[cur_index].update_flag = 1;
             seen_list[cur_index].range = range;
             seen_list[cur_index].time_stamp = time_keeper;
-            //printf("node: %d; range: %f; timestamp: %u \r\n",seen_list[cur_index].UUID, seen_list[cur_index].range, time_keeper);
+            printf("node: %d; range: %f; timestamp: %u report: %s \r\n",seen_list[cur_index].UUID, seen_list[cur_index].range, time_keeper);
+            //printf("node: %d; range: %f; timestamp: %u report: %s \r\n",seen_list[cur_index].UUID, seen_list[cur_index].range, time_keeper, (const) seen_list[cur_index].report);
           }      
 
 
@@ -874,6 +884,7 @@ void monitor_task_function(void *pvParameter)
           seen_list[x].update_flag = 0;
           seen_list[x].polling_flag = 0;
           seen_list[x].ble_time_stamp = 0;
+          //seen_list[x].report = NULL;
         }
       }
     }
@@ -984,6 +995,7 @@ int main(void)
       seen_list[i].update_flag = 0;
       seen_list[i].polling_flag = 0;
       seen_list[i].ble_time_stamp = 0;
+      //seen_list[i].report = NULL;
     }
   
     uart_init();

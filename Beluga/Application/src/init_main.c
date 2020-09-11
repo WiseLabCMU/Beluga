@@ -31,13 +31,19 @@
 #include "random.h"
 
 /* Frames used in the ranging process. See NOTE 1,2 below. */
+// RT - RAD added set size to messages with potential data
 static uint8 tx_poll_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0x61, 0, 0};
 static uint8 rx_resp_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0x50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//static uint8 rx_ds_resp_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0x50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//static uint8 rx_ss_resp_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0x50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//static uint8 rx_ss_resp_msg[128] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0x50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 static uint8 tx_final_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'W', 'A', 'V', 'E', 0x69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 static uint8 rx_report_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0xE3, 0, 0, 0, 0, 0, 0};
+//static uint8 rx_report_msg[128] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0xE3, 0, 0, 0, 0, 0, 0};
 
 /* Length of the common part of the message (up to and including the function code, see NOTE 1 below). */
 #define ALL_MSG_COMMON_LEN 10
+
 /* Indexes to access some of the fields in the frames defined above. */
 #define ALL_MSG_SN_IDX 2
 #define RESP_MSG_POLL_RX_TS_IDX 10
@@ -45,8 +51,16 @@ static uint8 rx_report_msg[] = {0x41, 0x88, 0, 0xCA, 0xDE, 'V', 'E', 'W', 'A', 0
 #define FINAL_MSG_FINAL_TX_TS_IDX 18
 #define RESP_MSG_TS_LEN 4
 
+// RT - RAD added these field indexes
+#define REPORT_MSG_DIST_IDX 10
+#define REPORT_MSG_DATA_IDX 14
+#define REPORT_MSG_DIST_LEN 4
+#define RESP_MSG_DATA_IDX 18
+
 /* Buffer to store received response message.
 * Its size is adjusted to longest frame that this example code is supposed to handle. */
+// RT - RAD updated BUF_LEN 20 to 126
+// RAD TODO check what this really should be
 #define RX_BUF_LEN 20
 static uint8 rx_buffer[RX_BUF_LEN];
 
@@ -73,6 +87,12 @@ static void resp_msg_set_ts(uint8 *ts_field, const uint64 ts);
 static uint64 get_tx_timestamp_u64(void);
 static uint64 get_rx_timestamp_u64(void);
 
+// RT - RAD added these static functions
+static void report_msg_set_dist(uint8 *dist_field, const uint32 dist);
+static void report_msg_set_data(uint8 *data_field, const char* data);
+static void report_msg_get_dist(uint8 *dist_field, uint32 *dist);
+static void report_msg_get_data(uint8 *data_field, char* data);
+
 /* Delay between frames, in UWB microseconds. See NOTE 1 below. */
 //#define POLL_TX_TO_RESP_RX_DLY_UUS 100 
 #define POLL_TX_TO_RESP_RX_DLY_UUS 300
@@ -80,6 +100,8 @@ static uint64 get_rx_timestamp_u64(void);
 #define RESP_TX_TO_FINAL_RX_DLY_UUS 500
 #define FINAL_RX_TIMEOUT_UUS 4500
 
+// RT - RAD added these frame delays
+#define FINAL_TX_TO_REPORT_RX_DLY_UUS 500
 
 APP_TIMER_DEF(tx_timekeeper);
 static int tx_time;
@@ -98,6 +120,7 @@ static void tx_timer_function(void* p_context)
 * @return distance between sending nodes and id node
 */
 double ds_init_run(uint8 id)
+//double ds_init_run(uint8 id, char* rx_data_msg)
 {
   static int total = 0;
   static int success = 0;
@@ -136,7 +159,9 @@ double ds_init_run(uint8 id)
   }
   else
   {
-    if (debug_print) printf("Poll msg send fail! \r\n");
+    // RAD TODO revert
+    //if (debug_print) printf("Poll msg send fail! \r\n");
+    printf("Poll msg send fail! \r\n");
     nrf_gpio_pin_clear(12);
     //dwt_rxreset();
     return -1;
@@ -170,9 +195,12 @@ double ds_init_run(uint8 id)
     /* Check that the frame is the expected response from the companion frame and extract ID from sender's message */
     int got = rx_buffer[ALL_MSG_SN_IDX];
     rx_buffer[ALL_MSG_SN_IDX] = 0;
+    // RT - RAD changed rx_resp_msg to rx_ds_resp_msg for message handling
     if ((got == id) && memcmp(rx_buffer, rx_resp_msg, ALL_MSG_COMMON_LEN) == 0)
     { 
-      if (debug_print) printf("Second msg receive \r\n");
+      // RAD TODO revert
+      //if (debug_print) printf("Second msg receive \r\n");
+      printf("Second msg receive \r\n");
 
       /* Retrieve poll transmission and response reception timestamps. See NOTE 4 below. */
       uint64 poll_tx_ts, resp_rx_ts;
@@ -213,7 +241,9 @@ double ds_init_run(uint8 id)
       /* If dwt_starttx() returns an error, abandon this ranging exchange and proceed to the next one. */
       if (ret == DWT_SUCCESS)
       {
-        if (debug_print) printf("Final message sent! \r\n");
+        // RAD TODO revert
+        //if (debug_print) printf("Final message sent! \r\n");
+        printf("Final message sent! \r\n");
 
         /* Poll DW1000 until TX frame sent event set. See NOTE 5 below. */
         while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
@@ -274,20 +304,27 @@ double ds_init_run(uint8 id)
         rx_buffer[ALL_MSG_SN_IDX] = 0;
         if ((got == id) && memcmp(rx_buffer, rx_report_msg, ALL_MSG_COMMON_LEN) == 0)
         {
-          if (debug_print) printf("Report msg receive \r\n");
+          // RAD TODO revert
+          //if (debug_print) printf("Report msg receive \r\n");
+          printf("Report msg receive \r\n");
 
+// RT - RAD refactored Report Message handling
           uint32 msg_tof_dtu;
 
-          /* Get timestamps embedded in response message. */
+          /* Get tof embedded in response message. */
           resp_msg_get_ts(&rx_buffer[RESP_MSG_POLL_RX_TS_IDX], &msg_tof_dtu);
 
-          /* Compute time of flight and distance, using clock offset ratio to correct for differing local and remote clock rates */
+         /* Convert tof to distance */
           tof = msg_tof_dtu * DWT_TIME_UNITS;
           distance = tof * SPEED_OF_LIGHT;
-          
+
+          /* Get message embedded in response message. */
+//          report_msg_get_data(&rx_buffer[REPORT_MSG_DATA_IDX], rx_data_msg);
+
           //printf("SDS-TWR Distance : %f\r\n", distance);
           success++;
           return distance; 
+
         }
         else
         {
@@ -339,6 +376,7 @@ double ds_init_run(uint8 id)
 * @return distance between sending nodes and id node
 */
 double ss_init_run(uint8 id)
+//double ss_init_run(uint8 id, char* rx_data_msg)
 {
 
   /* Write frame data to DW1000 and prepare transmission. See NOTE 3 below. */
@@ -374,6 +412,7 @@ double ss_init_run(uint8 id)
     * As the sequence number field of the frame is not relevant, it is cleared to simplify the validation of the frame. */   
     int got = rx_buffer[ALL_MSG_SN_IDX];
     rx_buffer[ALL_MSG_SN_IDX] = 0;
+// RT - RAD changed to rx_ss_resp_msg for message handling
     if ((got == id) && memcmp(rx_buffer, rx_resp_msg, ALL_MSG_COMMON_LEN) == 0)
     { 
       if (debug_print) printf("init rx succ\r\n");
@@ -399,6 +438,12 @@ double ss_init_run(uint8 id)
 
       tof = ((rtd_init - rtd_resp * (1.0f - clockOffsetRatio)) / 2.0f) * DWT_TIME_UNITS; // Specifying 1.0f and 2.0f are floats to clear warning 
       distance = tof * SPEED_OF_LIGHT;   
+
+// RT - RAD added data handling
+
+      /* Get message embedded in response message. */
+//      report_msg_get_data(&rx_buffer[RESP_MSG_DATA_IDX], rx_data_msg);
+
       return distance;
       
     }
@@ -421,7 +466,78 @@ double ss_init_run(uint8 id)
     return -1;
 }
 
+// RT - RAD added report functions
+/*! ------------------------------------------------------------------------------------------------------------------
+* @fn report_msg_get_dist()
+* 
+* @brief Read a given distance value from the report message. In the distance field of the report message, the least
+*        least significant byte is at the lower address.
+*
+* @param  dist_field  pointer on the first byte of the distance field to get
+*         dist        distance value
+*
+* @return none
+*/
+static void report_msg_get_dist(uint8 *dist_field, uint32 *dist)
+{
+  int i;
+  *dist = 0;
+  for (i = 0; i < REPORT_MSG_DIST_LEN; i++)
+  {
+    *dist += dist_field[i] << (i * 8);
+  }
+}
 
+/*! ------------------------------------------------------------------------------------------------------------------
+* @fn report_msg_get_data()
+* 
+* @brief Read the given data value from the report message. The data field of the report message is all the remaining
+         bytes in the frame.
+*
+* @param  data_field  pointer on the first byte of the data field to get
+*         data        data value
+*
+* @return none
+*/
+static void report_msg_get_data(uint8 *data_field, char* data)
+{
+  data = data_field;
+}
+
+/*! ------------------------------------------------------------------------------------------------------------------
+* @fn report_msg_set_dist()
+*
+* @brief Fill a given distance field in the report message with the given value. In the distance fields of the
+*        report message, the least significant byte is at the lower address.
+*
+* @param  dist_field  pointer on the first byte of the distance field to fill
+*         dist        distance value
+*
+* @return none
+*/
+static void report_msg_set_dist(uint8 *dist_field, const uint32 dist)
+{
+  int i;
+  for (i = 0; i < REPORT_MSG_DIST_LEN; i++)
+  {
+    dist_field[i] = (dist >> (i * 8)) & 0xFF;
+  }
+}
+
+/*! ------------------------------------------------------------------------------------------------------------------
+* @fn report_msg_set_data()
+*
+* @brief Fill the given data field in the report message. The data field of the report message is all the remaining
+         bytes in the frame.
+*
+* @param  data_field  pointer on the first byte of the data field to fill
+*         data        data value
+*
+* @return none
+*/
+static void report_msg_set_data(uint8 *data_field, const char* data){
+  data_field = data;
+}
 
 /*! ------------------------------------------------------------------------------------------------------------------
 * @fn resp_msg_get_ts()

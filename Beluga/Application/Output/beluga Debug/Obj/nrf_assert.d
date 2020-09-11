@@ -1,7 +1,7 @@
 Output/beluga\ Debug/Obj/nrf_assert.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/util/nrf_assert.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/util/nrf_assert.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/libraries/util/nrf_assert.c \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/libraries/util/nrf_assert.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdint.h \
  ../nRF52-sdk/components/device/nrf.h \
  ../nRF52-sdk/components/device/nrf52.h \
  ../nRF52-sdk/components/toolchain/cmsis/include/core_cm4.h \
@@ -14,12 +14,12 @@ Output/beluga\ Debug/Obj/nrf_assert.o: \
  ../nRF52-sdk/components/device/nrf51_to_nrf52.h \
  ../nRF52-sdk/components/device/nrf52_name_change.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/util/app_error.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/util/sdk_errors.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/libraries/util/app_error.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdio.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/__crossworks.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdbool.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/util/nordic_common.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/util/app_error_weak.h
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/libraries/util/nordic_common.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/libraries/util/app_error_weak.h

@@ -1,12 +1,12 @@
 Output/beluga\ Debug/Obj/port.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/external/freertos/portable/GCC/nrf52/port.c \
+ /Users/raewynduvall/Beluga/Beluga/nRF52-sdk/external/freertos/portable/GCC/nrf52/port.c \
  ../nRF52-sdk/external/freertos/source/include/FreeRTOS.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stddef.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/__crossworks.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdint.h \
  ../nRF52-sdk/external/freertos/config/FreeRTOSConfig.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_soc.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdbool.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_svc.h \
  ../nRF52-sdk/components/device/nrf.h \
  ../nRF52-sdk/components/device/nrf52.h \
@@ -27,7 +27,7 @@ Output/beluga\ Debug/Obj/port.o: \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_nvic.h \
  ../nRF52-sdk/components/libraries/util/nrf_assert.h \
  ../nRF52-sdk/components/libraries/util/app_error.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdio.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \

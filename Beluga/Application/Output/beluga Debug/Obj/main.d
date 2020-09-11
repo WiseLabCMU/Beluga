@@ -1,7 +1,7 @@
 Output/beluga\ Debug/Obj/main.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/main.c \
+ /Users/raewynduvall/Developer/Beluga/Beluga/Application/src/main.c \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdint.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gap.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_ranges.h \
@@ -9,9 +9,9 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/components/libraries/timer/app_timer.h \
  ../config/sdk_config.h \
  ../nRF52-sdk/components/libraries/util/app_error.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdio.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/__crossworks.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdbool.h \
  ../nRF52-sdk/components/device/nrf.h \
  ../nRF52-sdk/components/device/nrf52.h \
  ../nRF52-sdk/components/toolchain/cmsis/include/core_cm4.h \
@@ -29,7 +29,7 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
  ../nRF52-sdk/components/libraries/util/app_error_weak.h \
  ../nRF52-sdk/components/libraries/util/app_util.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stddef.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
  ../nRF52-sdk/components/drivers_nrf/wdt/nrf_drv_wdt.h \
@@ -60,14 +60,14 @@ Output/beluga\ Debug/Obj/main.o: \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpio.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_peripherals.h \
  ../nRF52-sdk/components/device/nrf52832_peripherals.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdlib.h \
  ../nRF52-sdk/components/boards/dw1001_dev.h \
  ../nRF52-sdk/components/libraries/button/app_button.h \
  ../nRF52-sdk/components/drivers_nrf/clock/nrf_drv_clock.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_clock.h \
  ../nRF52-sdk/components/drivers_nrf/common/nrf_drv_common.h \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/string.h \
  ../nRF52-sdk/components/libraries/util/sdk_os.h \
  ../nRF52-sdk/components/libraries/util/app_util.h \
  ../nRF52-sdk/components/libraries/util/sdk_macros.h \
@@ -87,15 +87,15 @@ Output/beluga\ Debug/Obj/main.o: \
  ../deca_driver/deca_version.h \
  ../nRF52-sdk/components/drivers_nrf/gpiote/nrf_drv_gpiote.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpiote.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/init_main.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/Application/src/init_main.h \
  ../nRF52-sdk/external/freertos/source/include/semphr.h \
  ../nRF52-sdk/external/freertos/source/include/queue.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/resp_main.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/Application/src/resp_main.h \
  ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.h \
  ../nRF52-sdk/components/libraries/fstorage/nrf_fstorage.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/flash.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/Application/src/flash.h \
  ../nRF52-sdk/components/libraries/fds/fds.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/uart.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/ble_app.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/random.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/Application/src/uart.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/Application/src/ble_app.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/Application/src/random.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_uarte.h

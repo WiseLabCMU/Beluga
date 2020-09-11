@@ -1,7 +1,7 @@
 Output/beluga\ Debug/Obj/app_util_platform.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/util/app_util_platform.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/util/app_util_platform.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/libraries/util/app_util_platform.c \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/libraries/util/app_util_platform.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdint.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/device/nrf.h \
  ../nRF52-sdk/components/device/nrf52.h \
@@ -16,17 +16,17 @@ Output/beluga\ Debug/Obj/app_util_platform.o: \
  ../nRF52-sdk/components/device/nrf52_name_change.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_soc.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdbool.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_svc.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error_soc.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_nvic.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/util/nrf_assert.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/util/app_error.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/util/sdk_errors.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/libraries/util/nrf_assert.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/libraries/util/app_error.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdio.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/__crossworks.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/util/nordic_common.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/util/app_error_weak.h
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/libraries/util/nordic_common.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/libraries/util/app_error_weak.h

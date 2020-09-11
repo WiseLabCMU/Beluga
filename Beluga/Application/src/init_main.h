@@ -20,6 +20,8 @@ extern uint16_t NODE_UUID;
 
 double ds_init_run(uint8 id);
 double ss_init_run(uint8 id);
+//double ds_init_run(uint8 id, char* report_data);
+//double ss_init_run(uint8 id, char* report_data);
 
 
 

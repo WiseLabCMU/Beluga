@@ -1,10 +1,10 @@
 Output/beluga\ Debug/Obj/ble_db_discovery.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/ble_db_discovery/ble_db_discovery.c \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/ble/ble_db_discovery/ble_db_discovery.c \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdint.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdbool.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/string.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/__crossworks.h \
  ../config/sdk_config.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
@@ -12,7 +12,7 @@ Output/beluga\ Debug/Obj/ble_db_discovery.o: \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../nRF52-sdk/components/libraries/util/app_util.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stddef.h \
  ../nRF52-sdk/components/device/nrf.h \
  ../nRF52-sdk/components/device/nrf52.h \
  ../nRF52-sdk/components/toolchain/cmsis/include/core_cm4.h \
@@ -26,7 +26,7 @@ Output/beluga\ Debug/Obj/ble_db_discovery.o: \
  ../nRF52-sdk/components/device/nrf52_name_change.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/sdk_macros.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/ble_db_discovery/ble_db_discovery.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/ble/ble_db_discovery/ble_db_discovery.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_ranges.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
@@ -40,7 +40,7 @@ Output/beluga\ Debug/Obj/ble_db_discovery.o: \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gatts.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gattc.h \
  ../nRF52-sdk/components/ble/common/ble_gatt_db.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdlib.h \
  ../nRF52-sdk/components/ble/common/ble_srv_common.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
  ../nRF52-sdk/components/libraries/util/app_util.h \

@@ -1,10 +1,10 @@
 Output/beluga\ Debug/Obj/ble_advdata.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/common/ble_advdata.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/common/ble_advdata.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/ble/common/ble_advdata.c \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/ble/common/ble_advdata.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdint.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdbool.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/string.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/__crossworks.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_ranges.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
@@ -29,11 +29,11 @@ Output/beluga\ Debug/Obj/ble_advdata.o: \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gatts.h \
  ../nRF52-sdk/components/libraries/util/app_util.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stddef.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gap.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/common/ble_srv_common.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/ble/common/ble_srv_common.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gatt.h \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \

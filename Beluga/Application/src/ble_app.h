@@ -21,6 +21,7 @@ typedef struct node{
     int update_flag;
     int polling_flag;
     int ble_time_stamp;
+    //char* report;
 } node;
 
 #define MAX_ANCHOR_COUNT 12

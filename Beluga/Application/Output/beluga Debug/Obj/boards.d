@@ -1,11 +1,11 @@
 Output/beluga\ Debug/Obj/boards.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/boards/boards.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/boards/boards.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/boards/boards.c \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/boards/boards.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpio.h \
  ../nRF52-sdk/components/device/nrf.h \
  ../nRF52-sdk/components/device/nrf52.h \
  ../nRF52-sdk/components/toolchain/cmsis/include/core_cm4.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdint.h \
  ../nRF52-sdk/components/toolchain/cmsis/include/core_cmInstr.h \
  ../nRF52-sdk/components/toolchain/cmsis/include/cmsis_gcc.h \
  ../nRF52-sdk/components/toolchain/cmsis/include/core_cmFunc.h \
@@ -19,13 +19,13 @@ Output/beluga\ Debug/Obj/boards.o: \
  ../nRF52-sdk/components/device/nrf52832_peripherals.h \
  ../nRF52-sdk/components/libraries/util/nrf_assert.h \
  ../nRF52-sdk/components/libraries/util/app_error.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdio.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/__crossworks.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdbool.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
  ../nRF52-sdk/components/libraries/util/app_error_weak.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/boards/dw1001_dev.h
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdlib.h \
+ /Users/raewynduvall/Developer/Beluga/Beluga/nRF52-sdk/components/boards/dw1001_dev.h
