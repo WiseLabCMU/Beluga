@@ -77,7 +77,7 @@ static uint8 dummy_buffer[DUMMY_BUFFER_LEN];
 
 static int mode;
 
-extern ble_uuid_t m_adv_uuids[3];
+extern ble_uuid_t m_adv_uuids[2];
 extern node seen_list[MAX_ANCHOR_COUNT];
 extern int ble_started;
 static int uwb_started;
@@ -239,7 +239,7 @@ void list_task_function(void * pvParameter)
       static int interval = 0;
       if (interval % 20 == 0) {
         //change_char_value();
-        update_char_value(1, 1.37568);
+        //update_char_value(1, 1.37568);
         interval = 0;
       }
       interval++;
@@ -788,6 +788,7 @@ void ranging_task_function(void *pvParameter)
 
         if (break_flag != 1) {
 
+
           // UWB ranging measurment
           if (twr_mode == 1) {
             range1 = ds_init_run(seen_list[cur_index].UUID);
@@ -811,7 +812,7 @@ void ranging_task_function(void *pvParameter)
             seen_list[cur_index].range = range;
             seen_list[cur_index].time_stamp = time_keeper;
             // Update BLE transfer value
-            //update_char_value(seen_list[cur_index].UUID, seen_list[cur_index].range);
+            update_char_value(seen_list[cur_index].UUID, seen_list[cur_index].range);
             //printf("node: %d; range: %f; timestamp: %u \r\n",seen_list[cur_index].UUID, seen_list[cur_index].range, time_keeper);
           }      
 
@@ -1194,6 +1195,8 @@ int main(void)
 //      APP_ERROR_CHECK(err_code);
       ble_advdata_t    advdata;
       memset(&advdata, 0, sizeof(advdata));
+      advdata.uuids_complete.uuid_cnt =  sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
+      advdata.uuids_complete.p_uuids  =  m_adv_uuids;
       advdata.name_type               = BLE_ADVDATA_FULL_NAME;
       advdata.include_appearance      = true;
       advdata.flags                   = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;

@@ -147,7 +147,8 @@ static int get_seen_list_idx(uint16_t UUID);
 /**@brief names which the central applications will scan for, and which will be advertised by the peripherals.
  *  if these are set to empty strings, the UUIDs defined below will be used
  */
-static char const m_target_periph_name[] = "Node";
+//static char const m_target_periph_name[] = "Node";
+static char const m_target_periph_name[] = "BN ";
 
 
 uint16_t NODE_UUID = 1;
@@ -156,15 +157,15 @@ int ble_started;
 int node_added;
 int last_seen_idx = 0;
 node seen_list[MAX_ANCHOR_COUNT];
-ble_uuid_t m_adv_uuids[3];
+ble_uuid_t m_adv_uuids[2];
 
 
 /**@brief Advertising UUID list */
-ble_uuid_t m_adv_uuids[3] =
+ble_uuid_t m_adv_uuids[2] =
 {
     {UUID_INDICATOR              , BLE_UUID_TYPE_BLE},
     {NODE_UUID_START             , BLE_UUID_TYPE_BLE},
-    {CUSTOM_SERVICE_UUID           , BLE_UUID_TYPE_VENDOR_BEGIN},
+    //{CUSTOM_SERVICE_UUID           , BLE_UUID_TYPE_VENDOR_BEGIN},
 };
 
 
@@ -422,7 +423,10 @@ static bool find_adv_name(ble_gap_evt_adv_report_t const * p_adv_report, char co
     if (err_code == NRF_SUCCESS)
     {
         // NOTE TODO: This line needs to be modified after change advertising name
-        if (memcmp(name_to_find, dev_name.p_data, dev_name.data_len)== 0)
+        //printf("data len: %d \n", dev_name.data_len);
+        //if (memcmp(name_to_find, dev_name.p_data, dev_name.data_len)== 0)
+
+        if (memcmp(name_to_find, dev_name.p_data, 2)== 0)
         {
             
             return true;
@@ -438,7 +442,8 @@ static bool find_adv_name(ble_gap_evt_adv_report_t const * p_adv_report, char co
         {
             return false;
         }
-        if (memcmp(m_target_periph_name, dev_name.p_data, dev_name.data_len)== 0)
+        //if (memcmp(m_target_periph_name, dev_name.p_data, dev_name.data_len)== 0)
+        if (memcmp(m_target_periph_name, dev_name.p_data, 2)== 0)
         {
             return true;
         }
@@ -621,6 +626,7 @@ static void on_ble_central_evt(ble_evt_t const * p_ble_evt)
 
                      // Find UUID in advertising package
                      uint16_t found_UUID = find_adv_uuid_next(&p_gap_evt->params.adv_report);
+                     //printf("found UUID: %d \n", found_UUID);
 
                      // Check found UUID already in neighbor list or not
                      if(found_UUID != NODE_UUID && !in_seen_list(found_UUID)){
@@ -1094,10 +1100,10 @@ void advertising_init(void)
 //    init.advdata.service_data_count = 1;
 //    init.advdata.p_service_data_array = &service_data;
 
-    //init.advdata.uuids_complete.uuid_cnt =  sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
-    //init.advdata.uuids_complete.p_uuids  = m_adv_uuids;
-    init.srdata.uuids_complete.uuid_cnt = sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
-    init.srdata.uuids_complete.p_uuids  = m_adv_uuids;
+    init.advdata.uuids_complete.uuid_cnt =  sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
+    init.advdata.uuids_complete.p_uuids  =  m_adv_uuids;
+    //init.srdata.uuids_complete.uuid_cnt = sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
+    //init.srdata.uuids_complete.p_uuids  = m_adv_uuids;
 
 
     init.config.ble_adv_fast_enabled  = true;
@@ -1123,13 +1129,8 @@ void advertising_reconfig(int change)
 
     ble_advdata_service_data_t           service_data;
     uint8_array_t               data_array;
-    uint8_t                     data_input[6];
-    data_input[0] = 0xAA;
-    data_input[1] = 0xBB;
-    data_input[2] = 0xCC;
-    data_input[3] = 0xDD;
-    data_input[4] = 0xEE;
-    data_input[5] = 0xFF;
+    uint8_t                     data_input[1];
+    data_input[0] = 0xFF;
     data_array.p_data = data_input;
     data_array.size = sizeof(data_input);
     service_data.service_uuid = CUSTOM_SERVICE_UUID;
@@ -1161,8 +1162,8 @@ void advertising_reconfig(int change)
     advdata.name_type               = BLE_ADVDATA_FULL_NAME;
     advdata.include_appearance      = true;
     advdata.flags                   = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
-    //advdata.uuids_complete.uuid_cnt =  sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
-    //advdata.uuids_complete.p_uuids  = m_adv_uuids;
+    advdata.uuids_complete.uuid_cnt =  sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
+    advdata.uuids_complete.p_uuids  = m_adv_uuids;
 
     //init.srdata.uuids_complete.uuid_cnt = sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
     //init.srdata.uuids_complete.p_uuids  = m_adv_uuids

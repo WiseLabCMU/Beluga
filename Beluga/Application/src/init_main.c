@@ -101,8 +101,10 @@ double ds_init_run(uint8 id)
 {
   static int total = 0;
   static int success = 0;
-  printf("total: %d \r\n", total);
-  printf("success: %d \r\n", success);
+  
+  //printf("id: %d \r\n", id);
+  //printf("total: %d \r\n", total);
+  //printf("success: %d \r\n", success);
   
 
 //--
@@ -169,6 +171,7 @@ double ds_init_run(uint8 id)
 
     /* Check that the frame is the expected response from the companion frame and extract ID from sender's message */
     int got = rx_buffer[ALL_MSG_SN_IDX];
+
     rx_buffer[ALL_MSG_SN_IDX] = 0;
     if ((got == id) && memcmp(rx_buffer, rx_resp_msg, ALL_MSG_COMMON_LEN) == 0)
     { 
