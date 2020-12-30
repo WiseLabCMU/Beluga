@@ -28,6 +28,8 @@ Beluga can be applied in the area of localization, robotics, and infrastructure 
     │   ├── config         // nRF52-sdk configuration file
     │   ├── deca_driver    // Decawave UWB API package
     │   └── nRF52-sdk      // nRF52 software development kit
+    ├── SLAM_app/          // Folder contains Beluga phone SLAM app
+    ├── RPi_interface/     // Folder contains Beluga RPi interface program
     ├── images
     └── README.md
 

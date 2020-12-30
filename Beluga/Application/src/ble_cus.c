@@ -70,10 +70,6 @@ static uint32_t dt_char_add(ble_cus_t * p_nus, const ble_cus_init_t * p_nus_init
     attr_char_value.init_offs = 0;
     attr_char_value.max_len   = BLE_MAX_DT_CHAR_LEN;  // Maximum data length can be transmitted
 
-    // Add init characteristic value
-    //uint8_t char_value = 0xFF;
-    //attr_char_value.p_value   = &char_value;
-
     return sd_ble_gatts_characteristic_add(p_nus->service_handle,
                                            &char_md,
                                            &attr_char_value,

@@ -1,14 +1,14 @@
 Output/beluga\ Debug/Obj/resp_main.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/resp_main.c \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
+ /Users/chenkocheng/Desktop/CMU/wiseLab/BN_Final/Beluga/Beluga/Application/src/resp_main.c \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdio.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/__crossworks.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/string.h \
  ../nRF52-sdk/external/freertos/source/include/FreeRTOS.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stddef.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdint.h \
  ../nRF52-sdk/external/freertos/config/FreeRTOSConfig.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_soc.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdbool.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_svc.h \
  ../nRF52-sdk/components/device/nrf.h \
  ../nRF52-sdk/components/device/nrf52.h \
@@ -56,7 +56,7 @@ Output/beluga\ Debug/Obj/resp_main.o: \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_peripherals.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_spim.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpio.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdlib.h \
  ../nRF52-sdk/components/drivers_nrf/delay/nrf_delay.h \
  ../nRF52-sdk/components/libraries/experimental_log/nrf_log.h \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \
@@ -68,9 +68,9 @@ Output/beluga\ Debug/Obj/resp_main.o: \
  ../nRF52-sdk/components/boards/boards.h \
  ../nRF52-sdk/components/boards/dw1001_dev.h \
  ../nRF52-sdk/components/libraries/util/app_error.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/init_main.h \
+ /Users/chenkocheng/Desktop/CMU/wiseLab/BN_Final/Beluga/Beluga/Application/src/init_main.h \
  ../nRF52-sdk/external/freertos/source/include/semphr.h \
  ../nRF52-sdk/external/freertos/source/include/queue.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/random.h \
+ /Users/chenkocheng/Desktop/CMU/wiseLab/BN_Final/Beluga/Beluga/Application/src/random.h \
  ../nRF52-sdk/components/drivers_nrf/wdt/nrf_drv_wdt.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_wdt.h

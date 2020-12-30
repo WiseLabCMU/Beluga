@@ -1,16 +1,16 @@
 Output/beluga\ Debug/Obj/ble_app.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/ble_app.c \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
+ /Users/chenkocheng/Desktop/CMU/wiseLab/BN_Final/Beluga/Beluga/Application/src/ble_app.c \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdint.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdio.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/__crossworks.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/string.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
  ../nRF52-sdk/components/softdevice/common/nrf_sdh.h \
  ../config/sdk_config.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../nRF52-sdk/components/libraries/experimental_section_vars/nrf_section_iter.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stddef.h \
  ../nRF52-sdk/components/libraries/experimental_section_vars/nrf_section.h \
  ../nRF52-sdk/components/libraries/util/nrf_assert.h \
  ../nRF52-sdk/components/device/nrf.h \
@@ -26,7 +26,7 @@ Output/beluga\ Debug/Obj/ble_app.o: \
  ../nRF52-sdk/components/device/nrf52_name_change.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/app_error.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdbool.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
  ../nRF52-sdk/components/libraries/util/app_error_weak.h \
@@ -70,7 +70,7 @@ Output/beluga\ Debug/Obj/ble_app.o: \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_gpio.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_peripherals.h \
  ../nRF52-sdk/components/device/nrf52832_peripherals.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdlib.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdlib.h \
  ../nRF52-sdk/components/boards/dw1001_dev.h \
  ../nRF52-sdk/components/libraries/button/app_button.h \
  ../nRF52-sdk/components/ble/common/ble_advdata.h \
@@ -88,7 +88,7 @@ Output/beluga\ Debug/Obj/ble_app.o: \
  ../nRF52-sdk/components/libraries/experimental_section_vars/nrf_section.h \
  ../nRF52-sdk/components/libraries/fds/fds.h \
  ../nRF52-sdk/components/ble/nrf_ble_gatt/nrf_ble_gatt.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/ble_cus.h \
+ /Users/chenkocheng/Desktop/CMU/wiseLab/BN_Final/Beluga/Beluga/Application/src/ble_cus.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gatts.h \
  ../nRF52-sdk/components/libraries/experimental_log/nrf_log.h \
  ../nRF52-sdk/components/libraries/experimental_log/src/nrf_log_internal.h \
@@ -98,5 +98,5 @@ Output/beluga\ Debug/Obj/ble_app.o: \
  ../nRF52-sdk/components/libraries/experimental_memobj/nrf_memobj.h \
  ../nRF52-sdk/components/libraries/balloc/nrf_balloc.h \
  ../nRF52-sdk/components/libraries/experimental_log/nrf_log_default_backends.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/ble_app.h \
+ /Users/chenkocheng/Desktop/CMU/wiseLab/BN_Final/Beluga/Beluga/Application/src/ble_app.h \
  ../deca_driver/deca_device_api.h

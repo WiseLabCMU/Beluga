@@ -1,8 +1,8 @@
 Output/beluga\ Debug/Obj/uart.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/uart.c \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
+ /Users/chenkocheng/Desktop/CMU/wiseLab/BN_Final/Beluga/Beluga/Application/src/uart.c \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdint.h \
  ../nRF52-sdk/components/libraries/uart/app_uart.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdbool.h \
  ../nRF52-sdk/components/libraries/util/app_util_platform.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/device/nrf.h \
@@ -24,8 +24,8 @@ Output/beluga\ Debug/Obj/uart.o: \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_nvic.h \
  ../nRF52-sdk/components/libraries/util/nrf_assert.h \
  ../nRF52-sdk/components/libraries/util/app_error.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdio.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/__crossworks.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \
@@ -44,7 +44,7 @@ Output/beluga\ Debug/Obj/uart.o: \
  ../nRF52-sdk/components/ble/common/ble_srv_common.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
  ../nRF52-sdk/components/libraries/util/app_util.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stddef.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gap.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gatt.h \
  ../nRF52-sdk/components/softdevice/common/nrf_sdh_ble.h \
@@ -57,7 +57,7 @@ Output/beluga\ Debug/Obj/uart.o: \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_uart.h \
  ../nRF52-sdk/components/drivers_nrf/hal/nrf_peripherals.h \
  ../nRF52-sdk/components/device/nrf52832_peripherals.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/Application/src/uart.h \
+ /Users/chenkocheng/Desktop/CMU/wiseLab/BN_Final/Beluga/Beluga/Application/src/uart.h \
  ../nRF52-sdk/external/freertos/source/include/FreeRTOS.h \
  ../nRF52-sdk/external/freertos/config/FreeRTOSConfig.h \
  ../nRF52-sdk/external/freertos/source/include/projdefs.h \
@@ -66,5 +66,5 @@ Output/beluga\ Debug/Obj/uart.o: \
  ../nRF52-sdk/external/freertos/portable/ARM/nrf52/portmacro.h \
  ../nRF52-sdk/external/freertos/portable/CMSIS/nrf52/portmacro_cmsis.h \
  ../nRF52-sdk/external/freertos/source/include/mpu_wrappers.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/string.h \
  ../nRF52-sdk/external/freertos/source/include/queue.h

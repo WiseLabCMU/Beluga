@@ -1,10 +1,10 @@
 Output/beluga\ Debug/Obj/nrf_fstorage_sd.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.c \
+ /Users/chenkocheng/Desktop/CMU/wiseLab/BN_Final/Beluga/Beluga/nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.c \
  ../nRF52-sdk/components/libraries/util/sdk_common.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdint.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdbool.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/string.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/__crossworks.h \
  ../config/sdk_config.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
@@ -12,7 +12,7 @@ Output/beluga\ Debug/Obj/nrf_fstorage_sd.o: \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../nRF52-sdk/components/libraries/util/app_util.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stddef.h \
  ../nRF52-sdk/components/device/nrf.h \
  ../nRF52-sdk/components/device/nrf52.h \
  ../nRF52-sdk/components/toolchain/cmsis/include/core_cm4.h \
@@ -26,8 +26,8 @@ Output/beluga\ Debug/Obj/nrf_fstorage_sd.o: \
  ../nRF52-sdk/components/device/nrf52_name_change.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/sdk_macros.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.h \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/libraries/fstorage/nrf_fstorage.h \
+ /Users/chenkocheng/Desktop/CMU/wiseLab/BN_Final/Beluga/Beluga/nRF52-sdk/components/libraries/fstorage/nrf_fstorage_sd.h \
+ /Users/chenkocheng/Desktop/CMU/wiseLab/BN_Final/Beluga/Beluga/nRF52-sdk/components/libraries/fstorage/nrf_fstorage.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/libraries/experimental_section_vars/nrf_section.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
@@ -40,7 +40,7 @@ Output/beluga\ Debug/Obj/nrf_fstorage_sd.o: \
  ../nRF52-sdk/components/libraries/experimental_section_vars/nrf_section.h \
  ../nRF52-sdk/components/libraries/util/nrf_assert.h \
  ../nRF52-sdk/components/libraries/util/app_error.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdio.h \
  ../nRF52-sdk/components/libraries/util/app_error_weak.h \
  ../nRF52-sdk/components/libraries/util/app_util.h \
  ../nRF52-sdk/components/softdevice/common/nrf_sdh_soc.h \

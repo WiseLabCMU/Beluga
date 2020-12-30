@@ -74,7 +74,6 @@
 /* Dummy buffer for DW1000 wake-up SPI read. See NOTE 2 below. */
 #define DUMMY_BUFFER_LEN 600
 static uint8 dummy_buffer[DUMMY_BUFFER_LEN];
-
 static int mode;
 
 extern ble_uuid_t m_adv_uuids[2];
@@ -88,7 +87,6 @@ int debug_print;
 int streaming_mode;
 int twr_mode;
 int leds_mode;
-
 int sleep_mode;
 
 SemaphoreHandle_t rxSemaphore, txSemaphore, sus_resp, sus_init, print_list_sem;
@@ -203,19 +201,7 @@ TaskHandle_t ranging_task_handle;
 TaskHandle_t uart_task_handle;
 TaskHandle_t list_task_handle;
 TaskHandle_t monitor_task_handle;
-TaskHandle_t ble_task_handle;
 
-void ble_task_fuction(void * pvParameter) {
-
-  while(1) {
-    if (debug_print == 1) printf("BLE task in \r\n");
-    vTaskDelay(100);
-    (void) sd_ble_gap_scan_stop();
-    scan_start();
-    if (debug_print == 1) printf("BLE task out \r\n");
-  }
-
-}
 
 /**
  * @brief Task to print out visible nodes information
@@ -228,23 +214,9 @@ void list_task_function(void * pvParameter)
   while(1){
       
       vTaskDelay(50);
-      if (debug_print == 1) printf("list task in \r\n");
       
-      xSemaphoreTake(print_list_sem, portMAX_DELAY);
-      
+      xSemaphoreTake(print_list_sem, portMAX_DELAY);  
       message new_message = {0};
-
-      ///////////////////////////////////
-      // Temp change BLE chara for testing
-      static int interval = 0;
-      if (interval % 20 == 0) {
-        //change_char_value();
-        //update_char_value(1, 1.37568);
-        interval = 0;
-      }
-      interval++;
-      // End of BLE test
-      ///////////////////////////////////
 
       /* Normal mode to print all neighbor nodes */
       if (streaming_mode == 0) {
@@ -253,7 +225,6 @@ void list_task_function(void * pvParameter)
         for(int j = 0; j < MAX_ANCHOR_COUNT; j++)
         {
           if(seen_list[j].UUID != 0) printf("%d, %f, %d, %d \r\n", seen_list[j].UUID, seen_list[j].range, seen_list[j].RSSI, seen_list[j].time_stamp); 
-          //if(seen_list[j].UUID != 0) printf("%f \r\n", seen_list[j].range); 
         }
       }
 
@@ -281,8 +252,6 @@ void list_task_function(void * pvParameter)
           }
         }
       }
-      
-      if (debug_print == 1) printf("list task out \r\n");
       xSemaphoreGive(print_list_sem);
    }
 }
@@ -301,12 +270,10 @@ void uart_task_function(void * pvParameter){
 
   while(1) {
     vTaskDelay(100);
-    if (debug_print == 1) printf("uart task in \r\n");
     
     if(xQueueReceive(uart_queue, &incoming_message, 0) == pdPASS) {  
 
       //Handle valid AT command begining with AT+
-
       if (0 == strncmp((const char *)incoming_message.data, (const char *)"AT+", (size_t)3)) {
         
         //Handle specific AT commands
@@ -713,7 +680,6 @@ void uart_task_function(void * pvParameter){
         
       }  
     }
-    if (debug_print == 1) printf("uart task out \r\n");
   }
 }
 
@@ -731,45 +697,35 @@ void ranging_task_function(void *pvParameter)
   static int cur_index = 0;
 
   while(1){
-      //printf("ranging task in \r\n\n");
+      // feed watch dog timer
       nrf_drv_wdt_channel_feed(m_channel_id);
-
+      
+      // Only the polling node (not passive node) will init a polling message
       if(initiator_freq != 0)
       {
         
+        // Stop the init task based on the input polling frequency
         vTaskDelay(initiator_freq);
-//        uint16_t rand = get_rand_num_exp_collision(initiator_freq);
-//        printf("%d \r\n", rand);
         
         // If previous polling drop, give a random exponential distribution delay
         if (drop_flag != 0) {
           uint16_t rand_small = get_rand_num_exp_collision(initiator_freq);
-          //printf("Small delay: %d \r\n", rand_small);
           vTaskDelay(rand_small);
           drop_flag = 0;
         }
         
-
-        if (debug_print == 1) printf("ranging task in \r\n");
         
-        xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
+        xSemaphoreTake(sus_resp, 0); // Suspend Responder Task
         xSemaphoreTake(sus_init, portMAX_DELAY);
-
-
         vTaskDelay(2);
 
         dwt_forcetrxoff();
         init_reconfig();
 
-//------- separate ranging codes
+        /* Do separate ranging (that is, poll only one node in the neighbor list, see developer documentation to see the scheme)*/
 
         int search_count = 0;
         float range1;
-
-//        for (int a = 0; a < MAX_ANCHOR_COUNT; a++) {
-//          printf("%d ", seen_list[a].UUID);
-//        }
-//        printf("\n");
 
         while (seen_list[cur_index].UUID == 0) {
           cur_index += 1;
@@ -786,10 +742,10 @@ void ranging_task_function(void *pvParameter)
           search_count += 1;
         }
 
+        // Found a node that we want to poll
         if (break_flag != 1) {
 
-
-          // UWB ranging measurment
+          // Init UWB ranging measurment
           if (twr_mode == 1) {
             range1 = ds_init_run(seen_list[cur_index].UUID);
           }
@@ -797,6 +753,7 @@ void ranging_task_function(void *pvParameter)
             range1 = ss_init_run(seen_list[cur_index].UUID);
           }
           
+          // Set up drop flag if the ranging fail
           if (range1 == -1) drop_flag = 1;
 
           int numThru = 1;
@@ -811,11 +768,10 @@ void ranging_task_function(void *pvParameter)
             seen_list[cur_index].update_flag = 1;
             seen_list[cur_index].range = range;
             seen_list[cur_index].time_stamp = time_keeper;
-            // Update BLE transfer value
-            update_char_value(seen_list[cur_index].UUID, seen_list[cur_index].range);
-            //printf("node: %d; range: %f; timestamp: %u \r\n",seen_list[cur_index].UUID, seen_list[cur_index].range, time_keeper);
-          }      
 
+            // Update BLE transfer value to phone
+            update_char_value(seen_list[cur_index].UUID, seen_list[cur_index].range);
+          }      
 
           cur_index += 1;
           // Back to the head of seen list
@@ -823,8 +779,8 @@ void ranging_task_function(void *pvParameter)
             cur_index = 0;
           }
         }
+
         break_flag = 0;
-        
         resp_reconfig();
         dwt_forcetrxoff();
         
@@ -833,13 +789,11 @@ void ranging_task_function(void *pvParameter)
       }
       else {
         vTaskDelay(1000);
-        if (debug_print == 1) printf("ranging task in \r\n");
       }
 
-    // Check polling flag of each node
+    // Check polling flag of each node (see whether there are active nodes in neighbor list)
     int polling_count = 0;
     for (int x = 0; x < MAX_ANCHOR_COUNT; x++) {
-      //printf("node %d: flag = %d \r\n", x, seen_list[x].polling_flag);
       if(seen_list[x].UUID != 0 && seen_list[x].polling_flag != 0) {
         polling_count += 1;
       }
@@ -847,7 +801,6 @@ void ranging_task_function(void *pvParameter)
 
     // If no polling nodes in the network, suspend UWB response (listening) 
     if (polling_count == 0) {
-      //printf("resp take! \r\n\n");
 
       xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
       xSemaphoreTake(sus_init, portMAX_DELAY);
@@ -869,7 +822,6 @@ void ranging_task_function(void *pvParameter)
       xSemaphoreTake(sus_resp, 0);          
     }
     else {
-      //printf("resp give! \r\n\n");
 
       xSemaphoreTake(sus_resp, 0); //Suspend Responder Task
       xSemaphoreTake(sus_init, portMAX_DELAY);
@@ -886,12 +838,8 @@ void ranging_task_function(void *pvParameter)
 
       xSemaphoreGive(sus_init);
       xSemaphoreGive(sus_resp);
-
       xSemaphoreGive(sus_resp);     
     }
-
-
-      if (debug_print == 1) printf("ranging task out \r\n");
     }
 
  }
@@ -909,15 +857,13 @@ void monitor_task_function(void *pvParameter)
   while(1) {
     
     vTaskDelay(1000);
-    if (debug_print == 1) printf("monitor task in \r\n");
 
     // Feed the watchdog timer
     nrf_drv_wdt_channel_feed(m_channel_id);
 
-    count += 1;
-    
     xSemaphoreTake(sus_init, portMAX_DELAY);
     int removed = 0;
+    count += 1;
 
     // Check for timeout eviction
     for(int x = 0; x < MAX_ANCHOR_COUNT; x++) {
@@ -957,11 +903,7 @@ void monitor_task_function(void *pvParameter)
       count = 0;
     }
 
-    
-      
     xSemaphoreGive(sus_init);
-
-    if (debug_print == 1) printf("monitor task out \r\n");
   }
 }
 
@@ -981,25 +923,20 @@ void responder_task_function (void * pvParameter)
 
   while(1) {
 
-    if (debug_print == 1) printf("resp task in \r\n");
-
     // Feed the watchdog timer
     nrf_drv_wdt_channel_feed(m_channel_id);
-    
     
     //Check if responding is suspended, return 0 means suspended
     int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); 
 
     if(suspend_start != 0) 
     {
-      
       if (twr_mode == 1) ds_resp_run();
       if (twr_mode == 0) ss_resp_run();      
     }
 
     /* Delay a task for a given number of ticks */
     //vTaskDelay(20);   
-    if (debug_print == 1) printf("resp task out \r\n");  
   }
 }
 
@@ -1067,9 +1004,15 @@ int main(void)
        printf("init error \r\n");
     }
 
-    // Logic Analyzer debug used
-    nrf_gpio_cfg_output(12);
-    nrf_gpio_cfg_output(27);
+    /* 
+     * DWM1001-DEV GPIO init (Logic Analyzer debug used)
+     * PIN 12 and 27 corresponding to DWM1001-DEV GPIO output, please reference to schemetic
+     *
+     * nrf_gpio_cfg_output(12);
+     * nrf_gpio_cfg_output(27);
+     * nrf_gpio_pin_set(12);     // Use set and clear in init_main and resp_main file to plot transmisstion scheme
+     * nrf_gpio_pin_clear(27);
+     */    
 
 
     /*------------ UWB config part ------------- */
@@ -1106,7 +1049,7 @@ int main(void)
 
 
     /* Configure sleep and wake-up parameters. */
-//    dwt_configuresleep(DWT_PRESRV_SLEEP | DWT_CONFIG, DWT_WAKE_CS | DWT_SLP_EN);
+    // dwt_configuresleep(DWT_PRESRV_SLEEP | DWT_CONFIG, DWT_WAKE_CS | DWT_SLP_EN);
 
 
     // Init timekeeper from timer. unit: 1ms
@@ -1120,13 +1063,6 @@ int main(void)
     {
         // Scanning and advertising is done upon PM_EVT_PEERS_DELETE_SUCCEEDED event.
         delete_bonds();
-        // Scanning and advertising is done by
-    }
-    else
-    {
-        //adv_scan_start();
-        //sd_ble_gap_adv_stop();
-        //sd_ble_gap_scan_stop();
     }
     
 
@@ -1135,20 +1071,18 @@ int main(void)
     sus_resp = xSemaphoreCreateBinary();
     sus_init = xSemaphoreCreateBinary();
     print_list_sem = xSemaphoreCreateBinary();
-    //xSemaphoreGive(sus_resp);
 
     uart_queue = xQueueCreate(25, sizeof(struct message));
 
+    // The stack size here is an estimated value
     UNUSED_VARIABLE(xTaskCreate(responder_task_function, "TWR_RESP", configMINIMAL_STACK_SIZE+600, NULL,1, &responder_task_handle));
     UNUSED_VARIABLE(xTaskCreate(ranging_task_function, "RNG", configMINIMAL_STACK_SIZE+200, NULL, 2, &ranging_task_handle));
     UNUSED_VARIABLE(xTaskCreate(uart_task_function, "UART", configMINIMAL_STACK_SIZE+1200, NULL, 2, &uart_task_handle));
     UNUSED_VARIABLE(xTaskCreate(list_task_function, "LIST", configMINIMAL_STACK_SIZE+600, NULL, 2, &list_task_handle));
     UNUSED_VARIABLE(xTaskCreate(monitor_task_function, "MONITOR", configMINIMAL_STACK_SIZE+800, NULL, 2, &monitor_task_handle));
-    //UNUSED_VARIABLE(xTaskCreate(ble_task_fuction, "BLE", configMINIMAL_STACK_SIZE+1600, NULL, 0, &ble_task_handle));
     
 
     printf("Flash Configuration: \r\n");
-
     
     /* Fetch LED mode from flash */
     fds_record_desc_t   record_desc_9;
@@ -1156,7 +1090,7 @@ int main(void)
     memset(&ftok_9, 0x00, sizeof(fds_find_token_t));
     if (fds_record_find(FILE_ID, RECORD_KEY_9, &record_desc_9, &ftok_9) == FDS_SUCCESS)
     {
-      uint32_t led_mode = getFlashID(9);
+      uint32_t led_mode = getFlashID(CONFIG_LED);
       leds_mode = led_mode;
       if (leds_mode == 0) {
         bsp_board_led_on(BSP_BOARD_LED_0);
@@ -1169,30 +1103,24 @@ int main(void)
     }
 
 
-
     /* Fetch ID and bootmode record from flash */
     fds_record_desc_t   record_desc_2;
     fds_find_token_t    ftok_2;
     memset(&ftok_2, 0x00, sizeof(fds_find_token_t));
     if (fds_record_find(FILE_ID, RECORD_KEY_1, &record_desc_2, &ftok_2) == FDS_SUCCESS) //If there is a stored ID
     {      
-      uint32_t id = getFlashID(1); //Get ID
+      uint32_t id = getFlashID(CONFIG_ID); //Get ID
       NODE_UUID = id;
       m_adv_uuids[1].uuid = NODE_UUID; 
-      advertising_init(); //Set UUID
+      advertising_init(); // Set UUID
 
+      // Change advertising package name
       char name[] = "BN ";
       char id_attach[2];
       itoa(id, id_attach, 10);
       strncat(name, id_attach , strlen(id_attach));
       gap_params_init(name);
 
-//      ble_gap_conn_sec_mode_t sec_mode;
-//      BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
-//      err_code = sd_ble_gap_device_name_set(&sec_mode,
-//                    (const uint8_t *)id_attach,
-//                     strlen(id_attach));
-//      APP_ERROR_CHECK(err_code);
       ble_advdata_t    advdata;
       memset(&advdata, 0, sizeof(advdata));
       advdata.uuids_complete.uuid_cnt =  sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
@@ -1201,8 +1129,6 @@ int main(void)
       advdata.include_appearance      = true;
       advdata.flags                   = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
       err_code = ble_advdata_set(&advdata, NULL);
-
-      //printf("%d \n", err_code);
 
       printf("  Node ID: %d \r\n", id);
     }
@@ -1218,7 +1144,7 @@ int main(void)
     memset(&ftok_1, 0x00, sizeof(fds_find_token_t));
     if (fds_record_find(FILE_ID, RECORD_KEY_2, &record_desc_1, &ftok_1) == FDS_SUCCESS) 
     {
-      uint32_t state = getFlashID(2); //Get State
+      uint32_t state = getFlashID(CONFIG_BM); //Get State
       printf("  Boot Mode: %d \r\n", state);
 
       if( (state == 1) || (state == 2) ) //Start BLE
@@ -1247,7 +1173,7 @@ int main(void)
     memset(&ftok_3, 0x00, sizeof(fds_find_token_t));
     if (fds_record_find(FILE_ID, RECORD_KEY_3, &record_desc_3, &ftok_3) == FDS_SUCCESS) 
     {
-      uint32_t rate = getFlashID(3);
+      uint32_t rate = getFlashID(CONFIG_RATE);
       initiator_freq = rate;
 
       // reconfig BLE advertising data
@@ -1270,7 +1196,7 @@ int main(void)
     memset(&ftok_4, 0x00, sizeof(fds_find_token_t));
     if (fds_record_find(FILE_ID, RECORD_KEY_4, &record_desc_4, &ftok_4) == FDS_SUCCESS)
     {
-      uint32_t channel = getFlashID(4);
+      uint32_t channel = getFlashID(CONFIG_CHAN);
       switch (channel) {
         case 1: uwb_pgdelay = ch1;
                 break;
@@ -1301,7 +1227,7 @@ int main(void)
     memset(&ftok_5, 0x00, sizeof(fds_find_token_t));
     if (fds_record_find(FILE_ID, RECORD_KEY_5, &record_desc_5, &ftok_5) == FDS_SUCCESS) 
     {
-      uint32_t timeout = getFlashID(5);
+      uint32_t timeout = getFlashID(CONFIG_TIME);
       time_out = timeout;
       printf("  BLE Timeout: %d \r\n", time_out);
     }
@@ -1315,7 +1241,7 @@ int main(void)
     memset(&ftok_6, 0x00, sizeof(fds_find_token_t));
     if (fds_record_find(FILE_ID, RECORD_KEY_6, &record_desc_6, &ftok_6) == FDS_SUCCESS)
     {
-      uint32_t tx_power = getFlashID(6);
+      uint32_t tx_power = getFlashID(CONFIG_TXP);
       if (tx_power == 1) {
         config_tx.power = TX_POWER_MAX;
         printf("  TX Power: Max \r\n");
@@ -1336,7 +1262,7 @@ int main(void)
     memset(&ftok_7, 0x00, sizeof(fds_find_token_t));
     if (fds_record_find(FILE_ID, RECORD_KEY_7, &record_desc_7, &ftok_7) == FDS_SUCCESS)
     {
-      uint32_t stream_mode = getFlashID(7);
+      uint32_t stream_mode = getFlashID(CONFIG_SM);
       streaming_mode = stream_mode;
       printf("  Stream Mode: %d \r\n", stream_mode);
     }
@@ -1350,15 +1276,13 @@ int main(void)
     memset(&ftok_8, 0x00, sizeof(fds_find_token_t));
     if (fds_record_find(FILE_ID, RECORD_KEY_8, &record_desc_8, &ftok_8) == FDS_SUCCESS)
     {
-      uint32_t ranging_mode = getFlashID(8);
+      uint32_t ranging_mode = getFlashID(CONFIG_TWR);
       twr_mode = ranging_mode;
       printf("  Ranging Mode: %d \r\n", ranging_mode);
     }
     else {
       printf("  Ranging Mode: Default \r\n");
     }
-
-
 
    
     vTaskStartScheduler();

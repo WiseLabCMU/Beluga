@@ -38,15 +38,15 @@ void fds_evt_handler(fds_evt_t const * p_fds_evt)
 void writeFlashID(uint32_t id, int record) {
 
   uint32_t record_key;
-  if(record == 1) record_key = RECORD_KEY_1;
-  if(record == 2) record_key = RECORD_KEY_2;
-  if(record == 3) record_key = RECORD_KEY_3;
-  if(record == 4) record_key = RECORD_KEY_4;
-  if(record == 5) record_key = RECORD_KEY_5;
-  if(record == 6) record_key = RECORD_KEY_6;
-  if(record == 7) record_key = RECORD_KEY_7;
-  if(record == 8) record_key = RECORD_KEY_8;
-  if(record == 9) record_key = RECORD_KEY_9;
+  if(record == CONFIG_ID) record_key = RECORD_KEY_1;
+  if(record == CONFIG_BM) record_key = RECORD_KEY_2;
+  if(record == CONFIG_RATE) record_key = RECORD_KEY_3;
+  if(record == CONFIG_CHAN) record_key = RECORD_KEY_4;
+  if(record == CONFIG_TIME) record_key = RECORD_KEY_5;
+  if(record == CONFIG_TXP) record_key = RECORD_KEY_6;
+  if(record == CONFIG_SM) record_key = RECORD_KEY_7;
+  if(record == CONFIG_TWR) record_key = RECORD_KEY_8;
+  if(record == CONFIG_LED) record_key = RECORD_KEY_9;
 
   static char str[(sizeof("1") + 3) / 4];
   sprintf(str, "%d", id);
@@ -75,7 +75,6 @@ void writeFlashID(uint32_t id, int record) {
       printf("Write 1 Failed\r\n"); /* Handle error. */
     }
   }
-  //if(debug_print)printf("Done write\r\n");
 
 
   fds_flash_record_t  flash_record;
@@ -119,15 +118,15 @@ void writeFlashID(uint32_t id, int record) {
 uint32_t getFlashID(uint32_t record_key) {
 
   uint32_t rec;
-  if (record_key == 1) rec = RECORD_KEY_1;
-  else if (record_key == 2) rec = RECORD_KEY_2;
-  else if (record_key == 3) rec = RECORD_KEY_3;
-  else if (record_key == 4) rec = RECORD_KEY_4;
-  else if (record_key == 5) rec = RECORD_KEY_5;
-  else if (record_key == 6) rec = RECORD_KEY_6;
-  else if (record_key == 7) rec = RECORD_KEY_7;
-  else if (record_key == 8) rec = RECORD_KEY_8;
-  else if (record_key == 9) rec = RECORD_KEY_9;
+  if (record_key == CONFIG_ID) rec = RECORD_KEY_1;
+  else if (record_key == CONFIG_BM) rec = RECORD_KEY_2;
+  else if (record_key == CONFIG_RATE) rec = RECORD_KEY_3;
+  else if (record_key == CONFIG_CHAN) rec = RECORD_KEY_4;
+  else if (record_key == CONFIG_TIME) rec = RECORD_KEY_5;
+  else if (record_key == CONFIG_TXP) rec = RECORD_KEY_6;
+  else if (record_key == CONFIG_SM) rec = RECORD_KEY_7;
+  else if (record_key == CONFIG_TWR) rec = RECORD_KEY_8;
+  else if (record_key == CONFIG_LED) rec = RECORD_KEY_9;
 
   uint32_t ret_val;
   fds_flash_record_t  flash_record;
@@ -146,7 +145,6 @@ uint32_t getFlashID(uint32_t record_key) {
     /* Access the record through the flash_record structure. */
     ret_val = atoi(flash_record.p_data);
 
-    //printf("flash: %s \r\n", flash_record.p_data);
     if (fds_record_close(&record_desc_1) != FDS_SUCCESS) {
       printf("close error\r\n");  /* Handle error. */
     }      

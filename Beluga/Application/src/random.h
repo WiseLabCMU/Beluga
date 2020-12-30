@@ -12,6 +12,7 @@
 #define _RANDOM_H_
 
 #include <stdint.h>
+#define  MIN_DELAY 10
 
 uint16_t get_rand_num_exp_collision(uint32_t freq);
 

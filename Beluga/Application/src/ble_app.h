@@ -8,21 +8,28 @@
  *  @author WiseLab-CMU 
  */
 
-#ifndef  _BLE_APP_
+#ifndef _BLE_APP_
 #define _BLE_APP_
 
 #include "deca_device_api.h"
 
+/*
+ * BLE neighbor node structure 
+ */
 typedef struct node{
-    uint8 UUID;
-    int8_t RSSI;
-    int time_stamp;
-    float range;
-    int update_flag;
-    int polling_flag;
-    int ble_time_stamp;
+    uint8 UUID;         /* node ID */
+    int8_t RSSI;        /* node RSSI value */
+    int time_stamp;     /* Last timestamp updated ranging value */
+    float range;        /* Last updated ranging value */
+    int update_flag;    /* Flag to indicate the ranging value is updated or not, 1 if the node get updated */
+    int polling_flag;   /* Flag to indicate the node is passive or not, 1 if the node will init uwb signal*/ 
+    int ble_time_stamp; /* Last timestamp get the BLE package from this node */
 } node;
 
+/*
+ * Maximum BLE neighbors in the list
+ * NOTE: Change the size based on the network size
+ */
 #define MAX_ANCHOR_COUNT 12
 
 void scan_start(void);
@@ -37,7 +44,6 @@ void conn_params_init(void);
 void advertising_init(void);
 void log_init(void);
 void power_manage(void);
-
 void advertising_reconfig(int change);
 void non_connectable_advertising_init(int mode);
 void services_init(void);

@@ -1,8 +1,8 @@
 Output/beluga\ Debug/Obj/ble_conn_state.o: \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/common/ble_conn_state.c \
- /home/chenkocheng/Desktop/CMU/wiseLab/BelugaV2/Beluga/Beluga/nRF52-sdk/components/ble/common/ble_conn_state.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdbool.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdint.h \
+ /Users/chenkocheng/Desktop/CMU/wiseLab/BN_Final/Beluga/Beluga/nRF52-sdk/components/ble/common/ble_conn_state.c \
+ /Users/chenkocheng/Desktop/CMU/wiseLab/BN_Final/Beluga/Beluga/nRF52-sdk/components/ble/common/ble_conn_state.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdbool.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdint.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_ranges.h \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_types.h \
@@ -28,13 +28,13 @@ Output/beluga\ Debug/Obj/ble_conn_state.o: \
  ../nRF52-sdk/components/softdevice/s132/headers/ble_gatts.h \
  ../nRF52-sdk/components/libraries/util/sdk_mapped_flags.h \
  ../nRF52-sdk/components/libraries/util/app_util.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stddef.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/__crossworks.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stddef.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/__crossworks.h \
  ../nRF52-sdk/components/device/compiler_abstraction.h \
  ../nRF52-sdk/components/libraries/util/nordic_common.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/string.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/string.h \
  ../nRF52-sdk/components/libraries/util/app_error.h \
- /usr/share/segger_embedded_studio_for_arm_4.52b/include/stdio.h \
+ /Applications/SEGGER\ Embedded\ Studio\ for\ ARM\ 4.52c/include/stdio.h \
  ../nRF52-sdk/components/libraries/util/sdk_errors.h \
  ../nRF52-sdk/components/softdevice/s132/headers/nrf_error.h \
  ../config/sdk_config.h \

@@ -66,7 +66,7 @@ static uint32 status_reg = 0;
 // Not enough time to write the data so TX timeout extended for nRF operation.
 // Might be able to get away with 800 uSec but would have to test
 // See note 6 at the end of this file
-#define POLL_RX_TO_RESP_TX_DLY_UUS  1100
+#define POLL_RX_TO_RESP_TX_DLY_UUS  1500
 
 
 /* Timestamps of frames transmission/reception.
@@ -119,8 +119,6 @@ nrf_drv_wdt_channel_id m_channel_id;
 */
 int ds_resp_run(void)
 {
-  //if (debug_print) printf("Waiting for suspend\r\n");
-
 
   int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); //Check if responding is suspended
   if(suspend_start == 0) return 1;
@@ -131,20 +129,15 @@ int ds_resp_run(void)
   /* Poll for reception of a frame or error/timeout. See NOTE 5 below. */
   while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
   {
-    nrf_gpio_pin_set(27);
     int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
     if(suspend == 0) 
     {
-      //if (debug_print) printf("stopped from loop \r\n");
       dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
-    
       /* Reset RX to properly reinitialise LDE operation. */
       dwt_rxreset();
-      nrf_gpio_pin_clear(27);
       return 1;
     }
   }
-  nrf_gpio_pin_clear(27);
 
     #if 0	  // Include to determine the type of timeout if required.
     int temp = 0;
@@ -154,15 +147,6 @@ int ds_resp_run(void)
     else if(status_reg & SYS_STATUS_RXPTO )
     temp =2;
     #endif
-//  if (debug_print) printf("RXFCG:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXFCG);
-//  if (debug_print) printf("RXRFTO:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXRFTO);
-//  if (debug_print) printf("RXPTO:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXPTO);
-//  if (debug_print) printf("RXPHE:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXPHE);
-//  if (debug_print) printf("RXFCE:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXFCE);
-//  if (debug_print) printf("RXRFSL:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXRFSL);
-//  if (debug_print) printf("RXSFDTO:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_RXSFDTO);
-//  if (debug_print) printf("AFFREJ:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_AFFREJ);
-//  if (debug_print) printf("LDEERR:%d \r\n", dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_LDEERR);
 
   if (status_reg & SYS_STATUS_RXFCG)
   {
@@ -183,7 +167,6 @@ int ds_resp_run(void)
     rx_buffer[ALL_MSG_SN_IDX] = 0;  
     if ((memcmp(rx_buffer, rx_poll_msg, ALL_MSG_COMMON_LEN) == 0) && (id == NODE_UUID))
     {
-      if (debug_print) printf("Poll msg received \r\n");
 
       uint32 resp_tx_time;
       int ret;
@@ -192,14 +175,8 @@ int ds_resp_run(void)
       poll_rx_ts = get_rx_timestamp_u64();
 
       /* Compute final message transmission time. See NOTE 7 below. */
-      //resp_tx_time = (poll_rx_ts + (POLL_RX_TO_RESP_TX_DLY_UUS * UUS_TO_DWT_TIME)) >> 8;
-      resp_tx_time = (poll_rx_ts + (1500 * UUS_TO_DWT_TIME)) >> 8;
+      resp_tx_time = (poll_rx_ts + (POLL_RX_TO_RESP_TX_DLY_UUS * UUS_TO_DWT_TIME)) >> 8;
       dwt_setdelayedtrxtime(resp_tx_time);
-
-//--  /* Set expected delay and timeout for final message reception. See NOTE 4 and 5 below. */
-  //  dwt_setrxaftertxdelay(RESP_TX_TO_FINAL_RX_DLY_UUS);
-  //  dwt_setrxtimeout(FINAL_RX_TIMEOUT_UUS);
-//--
 
       /* Write and send the response message. See NOTE 9 below. */
       tx_resp_msg[ALL_MSG_SN_IDX] = NODE_UUID;
@@ -208,36 +185,19 @@ int ds_resp_run(void)
 
       /* Send Response message */
       ret = dwt_starttx(DWT_START_TX_DELAYED | DWT_RESPONSE_EXPECTED);
-      nrf_gpio_pin_set(12);
 
       /* If dwt_starttx() returns an error, abandon this ranging exchange and proceed to the next one. */
       if (ret == DWT_SUCCESS)
       {
-        if (debug_print) printf("Second msg sent \r\n");
       
         /* Poll DW1000 until TX frame sent event set. See NOTE 5 below. */
         while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
-        {
-//          int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
-//          if(suspend == 0) 
-//          {
-//            //if (debug_print) printf("Left while waiting\r\n");
-//            nrf_gpio_pin_clear(12);
-//            dwt_forcetrxoff();
-//            return 1;
-//           }
-        }
-        nrf_gpio_pin_clear(12);
-
+        {}
         /* Clear TXFRS event. */
         dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
-      
       }
       else
       {
-        if (debug_print) printf("Second message fail \r\n");
-        nrf_gpio_pin_clear(12);
-
         /* If we end up in here then we have not succeded in transmitting the packet we sent up.
         POLL_RX_TO_RESP_TX_DLY_UUS is a critical value for porting to different processors. 
         For slower platforms where the SPI is at a slower speed or the processor is operating at a lower 
@@ -252,24 +212,18 @@ int ds_resp_run(void)
         return 1;
       }
 
-      
       /* Poll for reception of a frame or error/timeout. See NOTE 5 below. */
       while (!((status_reg = dwt_read32bitreg(SYS_STATUS_ID)) & (SYS_STATUS_RXFCG | SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR)))
       {
-        nrf_gpio_pin_set(27);
         int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
         if(suspend == 0) 
         {
-          //if (debug_print) printf("stopped from loop \r\n");
           dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
-    
           /* Reset RX to properly reinitialise LDE operation. */
           dwt_rxreset();
-          nrf_gpio_pin_clear(27);
           return 1;
         }
       };
-      nrf_gpio_pin_clear(27);
 
         #if 0	  // Include to determine the type of timeout if required.
         int temp = 0;
@@ -303,7 +257,6 @@ int ds_resp_run(void)
 
         if (memcmp(rx_buffer, rx_final_msg, ALL_MSG_COMMON_LEN) == 0  && (id == NODE_UUID))
         {
-          if (debug_print) printf("Final msg received \r\n");
           int ret;
           uint32 resp_rx_ts, poll_tx_ts, final_tx_ts;
           uint32 poll_rx_ts_32, resp_tx_ts_32, final_rx_ts_32;
@@ -334,8 +287,6 @@ int ds_resp_run(void)
           tof_dtu = (uint64) ((roundA * roundB - replyA * replyB) / (roundA + roundB + replyA + replyB));
           tof = tof_dtu * DWT_TIME_UNITS;
           distance = tof * SPEED_OF_LIGHT;
-          //if (tof_dtu== 0) printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ \r\n");
-          //printf("SDS-TWR Distance : %f\r\n",distance);
 
 
 //----- Send report message
@@ -348,31 +299,18 @@ int ds_resp_run(void)
           dwt_writetxdata(sizeof(tx_report_msg), tx_report_msg, 0); /* Zero offset in TX buffer. See Note 5 below.*/
           dwt_writetxfctrl(sizeof(tx_report_msg), 0, 1); /* Zero offset in TX buffer, ranging. */
           int ret_report = dwt_starttx(DWT_START_TX_IMMEDIATE);
-          nrf_gpio_pin_set(12);
 
           if (ret_report == DWT_SUCCESS)
           {
-            if (debug_print) printf("Report message sent! \r\n");
             /* Poll DW1000 until TX frame sent event set. See NOTE 5 below. */
             while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
-            {
-//              int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
-//              if(suspend == 0) 
-//              {
-//                //if (debug_print) printf("Left while waiting\r\n");
-//                dwt_forcetrxoff();
-//                nrf_gpio_pin_clear(12);
-//                return 1;
-//               }
-            };
-            nrf_gpio_pin_clear(12);
+            {};
             /* Clear TXFRS event. */
             dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
           }
 
           else
           {
-            if (debug_print) printf("Report message error! \r\n");
             /* If we end up in here then we have not succeded in transmitting the packet we sent up.
             POLL_RX_TO_RESP_TX_DLY_UUS is a critical value for porting to different processors. 
             For slower platforms where the SPI is at a slower speed or the processor is operating at a lower 
@@ -381,40 +319,25 @@ int ds_resp_run(void)
             calculation. The specification of the time of respnse must allow the processor enough time to do its 
             calculations and put the packet in the Tx buffer. So more time is required for a slower system(processor).
             */
-            nrf_gpio_pin_clear(12);
             /* Reset RX to properly reinitialise LDE operation. */
             dwt_rxreset();
             return 1;
           }
-        } //memcpy
-        else
-        {
-          /* Reset RX to properly reinitialise LDE operation. */
-//          dwt_rxreset();
-//          return -1;
         }
-      } //status_reg
+      }
       else
       {
         /* Clear RX error/timeout events in the DW1000 status register. */
         dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR);
-
         /* Reset RX to properly reinitialise LDE operation. */
         dwt_rxreset();
       } 
-    } //memcpy
-    else
-    {
-      /* Reset RX to properly reinitialise LDE operation. */
-//      dwt_rxreset();
-//      return -1;
     }
-  } //status_reg
+  }
   else
   {
     /* Clear RX error events in the DW1000 status register. */
     dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_TO | SYS_STATUS_ALL_RX_ERR);
-
     /* Reset RX to properly reinitialise LDE operation. */
     dwt_rxreset();
   }
@@ -435,7 +358,6 @@ int ds_resp_run(void)
 */
 int ss_resp_run(void)
 {
-  //printf("Waiting for suspend\r\n");
   int suspend_start = uxQueueMessagesWaiting((QueueHandle_t) sus_resp); //Check if responding is suspended
   if(suspend_start == 0) return 1;
 
@@ -447,16 +369,12 @@ int ss_resp_run(void)
     int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
     if(suspend == 0) 
     {
-      if (debug_print) printf("stopped from loop \r\n");
       dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
-    
       /* Reset RX to properly reinitialise LDE operation. */
       dwt_rxreset();
       return 1;
     }
   }
-
-   if (debug_print) printf("gotrx sem\r\n");
 
     #if 0	  // Include to determine the type of timeout if required.
     int temp = 0;
@@ -468,17 +386,10 @@ int ss_resp_run(void)
     #endif
 
   if (status_reg & SYS_STATUS_RXFCG)
-  //if(rx_int_flag)
   {
-    if(debug_print) printf("rx good \r\n");
-    //printf("good\r\n");
     uint32 frame_len;
-
     /* Clear good RX frame event in the DW1000 status register. */
     dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_RXFCG);
-    //rx_int_flag = 0;
-
-
 
     /* A frame has been received, read it into the local buffer. */
     frame_len = dwt_read32bitreg(RX_FINFO_ID) & RX_FINFO_RXFL_MASK_1023;
@@ -492,11 +403,8 @@ int ss_resp_run(void)
     int id = rx_buffer[ALL_MSG_SN_IDX];
     rx_buffer[ALL_MSG_SN_IDX] = 0;
     
-   
     if ((memcmp(rx_buffer, rx_poll_msg, ALL_MSG_COMMON_LEN) == 0) && (id == NODE_UUID))
     {
-
-      if(debug_print) printf("match\r\n");
       uint32 resp_tx_time;
       int ret;
 
@@ -520,64 +428,48 @@ int ss_resp_run(void)
       dwt_writetxfctrl(sizeof(tx_resp_msg), 0, 1); /* Zero offset in TX buffer, ranging. */
 
       ret = dwt_starttx(DWT_START_TX_DELAYED);
-      //
-      //ret = dwt_starttx(DWT_START_TX_IMMEDIATE);
 
       /* If dwt_starttx() returns an error, abandon this ranging exchange and proceed to the next one. */
       if (ret == DWT_SUCCESS)
       {
-       if (debug_print) printf("succ\r\n");
 
-      while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
-      {
-        int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
-        if(suspend == 0) 
+        while (!(dwt_read32bitreg(SYS_STATUS_ID) & SYS_STATUS_TXFRS))
         {
-          if (debug_print) printf("Left while waiting\r\n");
-          dwt_forcetrxoff();
-          return 1;
-         }
-      }
+          int suspend = uxQueueMessagesWaiting((QueueHandle_t) sus_resp);
+          if(suspend == 0) 
+          {
+            dwt_forcetrxoff();
+            return 1;
+           }
+        }
 
-      /* Clear TXFRS event. */
-      dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
+        /* Clear TXFRS event. */
+        dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_TXFRS);
 
-      /* Increment frame sequence number after transmission of the poll message (modulo 256). */
-      frame_seq_nb++;
-
-      if (debug_print) printf("sent tx \r\n");
+        /* Increment frame sequence number after transmission of the poll message (modulo 256). */
+        frame_seq_nb++;
       }
       else
       {
-        if (debug_print) printf("fail\r\n");
-
-      /* Reset RX to properly reinitialise LDE operation. */
-      dwt_rxreset();
+        /* Reset RX to properly reinitialise LDE operation. */
+        dwt_rxreset();
       }
     }
     else
     {
-      if(debug_print) printf("no match\r\n");
       dwt_rxreset();
     }
     
   }
   else
   {
-    if(debug_print) printf("rx err/to \r\n");
     /* Clear RX error events in the DW1000 status register. */
     dwt_write32bitreg(SYS_STATUS_ID, SYS_STATUS_ALL_RX_ERR);
-    
     /* Reset RX to properly reinitialise LDE operation. */
     dwt_rxreset();
-
   }
- 
   return(1);	
-
 }
-
-
 
 
 /*! ------------------------------------------------------------------------------------------------------------------
