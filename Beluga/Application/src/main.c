@@ -666,6 +666,12 @@ void uart_task_function(void * pvParameter){
               printf("OK \r\n");
             }
         }
+        else if (0 == strncmp((const char *)incoming_message.data, (const char *)"AT+REBOOT", (size_t)9)) {
+            
+            //Reboot device
+            sd_nvic_SystemReset();
+           
+        }
 
         else printf("ERROR Invalid AT Command\r\n");
       }
